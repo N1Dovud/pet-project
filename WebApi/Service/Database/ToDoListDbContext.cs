@@ -5,7 +5,15 @@ namespace WebApi.Service.Database;
 
 public class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : DbContext(options)
 {
-    public DbSet<ToDoListEntity> ToDoLists { get; set; } = null!;
+    public DbSet<ToDoListEntity> ToDoLists { get; set; }
+
+    public DbSet<CommentEntity> Comments { get; set; }
+
+    public DbSet<TagEntity> Tags { get; set; }
+
+    public DbSet<ToDoListPermissionEntity> ListPermissions { get; set; }
+
+    public DbSet<ToDoListTaskEntity> Tasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
