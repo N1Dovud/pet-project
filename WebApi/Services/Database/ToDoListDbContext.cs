@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Models.Entities;
 
-namespace WebApi.Service.Database;
+namespace WebApi.Services.Database;
 
 public class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : DbContext(options)
 {

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Service.Database;
+using WebApi.Services.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

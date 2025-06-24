@@ -1,4 +1,4 @@
-namespace WebApi.Service;
+namespace WebApi.Services;
 
 public class ToDoListDatabaseService : IToDoListDatabaseService
 {
