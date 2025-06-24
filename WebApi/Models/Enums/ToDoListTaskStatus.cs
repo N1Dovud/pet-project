@@ -1,4 +1,4 @@
-namespace WebApi.Models;
+namespace WebApi.Models.Enums;
 
 public enum ToDoListTaskStatus
 {

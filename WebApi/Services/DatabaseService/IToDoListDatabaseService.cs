@@ -1,5 +1,6 @@
-namespace WebApi.Services;
+namespace WebApi.Services.DatabaseService;
 
 public interface IToDoListDatabaseService
 {
+
 }

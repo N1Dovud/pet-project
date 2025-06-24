@@ -1,5 +1,7 @@
-﻿namespace WebApi.Controllers;
+using WebApi.Services.DatabaseService;
 
-public class ToDoListController
+namespace WebApi.Controllers;
+
+public class ToDoListController(IToDoListDatabaseService service)
 {
 }
