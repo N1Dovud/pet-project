@@ -1,24 +1,30 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Models;
+using WebApi.Models.Entities;
 
 namespace WebApi.Service.Database;
 
-public class ToDoListDbContext : DbContext
+public class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : DbContext(options)
 {
-    public ToDoListDbContext(DbContextOptions<ToDoListDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<ToDoListEntity> ToDoLists { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        _ = modelBuilder.Entity<ToDoListEntity>()
-            .HasKey(t => t.Id);
-        _ = modelBuilder.Entity<ToDoListEntity>()
-            .Property(t => t.Name)
-            .IsRequired()
-            .HasMaxLength(100);
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+        _ = modelBuilder.Entity<ToDoListTaskEntity>()
+            .HasMany(t => t.Tags)
+            .WithMany(t => t.Tasks)
+            .UsingEntity<Dictionary<string, object>>(
+                "task_tag",
+                right => right.HasOne<TagEntity>()
+                                .WithMany()
+                                .HasForeignKey("tag_id")
+                                .OnDelete(DeleteBehavior.Cascade),
+                left => left.HasOne<ToDoListTaskEntity>()
+                                .WithMany()
+                                .HasForeignKey("task_id"),
+                join =>
+                {
+                    _ = join.HasKey("task_id", "tag_id");
+                });
     }
 }
