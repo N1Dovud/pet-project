@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Models.Entities;
+using WebApi.Services.Database.Entities;
 
 namespace WebApi.Services.Database;
 

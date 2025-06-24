@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using WebApi.Models.Entities;
+using WebApi.Services.Database.Entities;
 
-namespace WebApi.Models.DTOs;
+namespace WebApi.Business;
 
-public class ToDoListModel
+public class ToDoList
 {
     public long Id { get; set; }
 

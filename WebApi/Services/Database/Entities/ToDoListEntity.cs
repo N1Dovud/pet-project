@@ -1,15 +1,22 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using WebApi.Models.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApi.Models.Business;
+namespace WebApi.Services.Database.Entities;
 
-public class ToDoList
+[Table("todo_list")]
+public class ToDoListEntity
 {
+    [Key]
+    [Column("id")]
     public long Id { get; set; }
 
+    [Required]
+    [MaxLength(100)]
+    [Column("title")]
     public string Title { get; set; } = string.Empty;
 
+    [Required]
+    [Column("description")]
     public string Description { get; set; } = string.Empty;
 
     public List<ToDoListTaskEntity> Tasks { get; set; } = [];

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApi.Models.Entities;
+namespace WebApi.Services.Database.Entities;
 
 [Table("tag")]
 public class TagEntity

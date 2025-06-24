@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebApi.Models.Enums;
 
-namespace WebApi.Models.Entities;
+namespace WebApi.Services.Database.Entities;
 
 [Table("todo_task")]
 public class ToDoListTaskEntity
