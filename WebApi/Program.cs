@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi.Services;
 using WebApi.Services.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("ToDoListDatabase");
     _ = options.UseSqlServer(connectionString);
 });
+builder.Services.AddScoped<IToDoListDatabaseService, ToDoListDatabaseService>();
 
 var app = builder.Build();
 
