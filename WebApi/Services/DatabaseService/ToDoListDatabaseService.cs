@@ -7,7 +7,7 @@ namespace WebApi.Services.DatabaseService;
 
 public class ToDoListDatabaseService(ToDoListDbContext context) : IToDoListDatabaseService
 {
-    public async Task<List<ToDoList>> GetAllToDoListsAsync(long userId)
+    public async Task<List<ToDoList>> GetAllToDoListsAsync(long? userId)
     {
         var lists = await context.ListPermissions
             .Where(p => p.UserId == userId)

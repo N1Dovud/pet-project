@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi.Services.Authentication;
 using WebApi.Services.Database;
-using WebApi.Services.DatabaseService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,8 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("ToDoListDatabase");
     _ = options.UseSqlServer(connectionString);
 });
-builder.Services.AddScoped<IToDoListDatabaseService, ToDoListDatabaseService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
