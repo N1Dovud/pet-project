@@ -6,13 +6,13 @@ namespace WebApi.Models;
 
 public class ToDoListModel
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
 
-    public string Description { get; set; } = string.Empty;
+    public required string Description { get; set; }
 
     public List<ToDoListTaskEntity> Tasks { get; set; } = [];
 
-    public List<ToDoListPermissionEntity> Permissions { get; set; } = [];
+    public required long OwnerId { get; set; }
 }

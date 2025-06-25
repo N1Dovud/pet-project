@@ -27,11 +27,15 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
         return this.Ok(listModels);
     }
 
-    [HttpGet("addlist")]
-    public async ActionResult<List<ToDoListModel>> AddList([FromBody] ToDoListModel)
+    [HttpPost("addlist")]
+    public async Task<ActionResult> AddList([FromBody] ToDoListModel list)
     {
-        List<ToDoList> lists = await dbService.AddToDoListAsync(ToDoListModel.);
-        var listModels = lists.Select(l => l.ToModel()).ToList();
-        return this.Ok(listModels);
+        bool success = await dbService.AddToDoListAsync(list.ToDomain());
+        if (success)
+        {
+            return this.Ok();
+        }
+
+        return this.BadRequest();
     }
 }

@@ -21,5 +21,7 @@ public class ToDoListEntity
 
     public List<ToDoListTaskEntity> Tasks { get; set; } = [];
 
+    [Required]
+    [Column("owner_id")]
     public long OwnerId { get; set; }
 }

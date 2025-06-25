@@ -6,7 +6,7 @@ namespace WebApi.Business;
 
 public class ToDoList
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
@@ -14,5 +14,5 @@ public class ToDoList
 
     public List<ToDoListTaskEntity> Tasks { get; set; } = [];
 
-    public List<ToDoListPermissionEntity> Permissions { get; set; } = [];
+    public long OwnerId { get; set; }
 }

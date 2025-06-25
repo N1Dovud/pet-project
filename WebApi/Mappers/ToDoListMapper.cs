@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WebApi.Business;
 using WebApi.Models;
 using WebApi.Services.Database.Entities;
@@ -19,7 +20,7 @@ public static class ToDoListMapper
             Title = entity.Title,
             Description = entity.Description,
             Tasks = entity.Tasks,
-            Permissions = entity.Permissions,
+            OwnerId = entity.OwnerId,
         };
     }
 
@@ -36,7 +37,7 @@ public static class ToDoListMapper
             Title = list.Title,
             Description = list.Description,
             Tasks = list.Tasks,
-            Permissions = list.Permissions,
+            OwnerId = list.OwnerId,
         };
     }
 
@@ -53,7 +54,7 @@ public static class ToDoListMapper
             Title = list.Title,
             Description = list.Description,
             Tasks = list.Tasks,
-            Permissions = list.Permissions,
+            OwnerId = list.OwnerId,
         };
     }
 
@@ -66,11 +67,10 @@ public static class ToDoListMapper
 
         return new ToDoListEntity
         {
-            Id = list.Id,
             Title = list.Title,
             Description = list.Description,
             Tasks = list.Tasks,
-            Permissions = list.Permissions,
+            OwnerId = list.OwnerId,
         };
     }
 }

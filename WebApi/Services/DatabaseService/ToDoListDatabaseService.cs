@@ -8,9 +8,9 @@ namespace WebApi.Services.DatabaseService;
 
 public class ToDoListDatabaseService(ToDoListDbContext context, ILogger<ToDoListDatabaseService> logger) : IToDoListDatabaseService
 {
-    public async Task<bool> AddToDoListAsync(ToDoList list)
+    public async Task<bool> AddToDoListAsync(ToDoList? list)
     {
-        var entity = list.ToEntity();
+        var entity = list?.ToEntity();
         if (entity != null)
         {
             _ = await context.ToDoLists.AddAsync(entity);
@@ -26,10 +26,8 @@ public class ToDoListDatabaseService(ToDoListDbContext context, ILogger<ToDoList
 
     public async Task<List<ToDoList>> GetAllToDoListsAsync(long userId)
     {
-        var lists = await context.ListPermissions
-            .Where(p => p.UserId == userId)
-            .Select(p => p.ToDoList)
-            .Distinct()
+        var lists = await context.ToDoLists
+            .Where(p => p.OwnerId == userId)
             .ToListAsync();
         return [.. lists.Select(l => l?.ToDomain())];
     }

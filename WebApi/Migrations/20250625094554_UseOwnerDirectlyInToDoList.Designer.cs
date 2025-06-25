@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Services.Database;
 
@@ -11,9 +12,11 @@ using WebApi.Services.Database;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    partial class ToDoListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250625094554_UseOwnerDirectlyInToDoList")]
+    partial class UseOwnerDirectlyInToDoList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

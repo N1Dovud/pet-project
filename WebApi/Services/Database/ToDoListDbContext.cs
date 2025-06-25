@@ -11,8 +11,6 @@ public class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : Db
 
     public DbSet<TagEntity> Tags { get; set; }
 
-    public DbSet<ToDoListPermissionEntity> ListPermissions { get; set; }
-
     public DbSet<ToDoListTaskEntity> Tasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
