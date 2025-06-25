@@ -6,7 +6,9 @@ public interface IToDoListDatabaseService
 {
     Task<List<ToDoList>> GetAllToDoListsAsync(long userId);
 
-    Task<bool> AddToDoListAsync(ToDoList? list);
+    Task<Result> AddToDoListAsync(ToDoList? list);
 
-    Task<DeleteResult> DeleteToDoListAsync(long listId, long ownerId);
+    Task<Result> DeleteToDoListAsync(long listId, long userId);
+
+    Task<Result> UpdateToDoListAsync(ToDoList? list, long userId);
 }

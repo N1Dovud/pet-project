@@ -1,6 +1,7 @@
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Business;
+using WebApi.Helpers;
 using WebApi.Mappers;
 using WebApi.Models;
 using WebApi.Services.Authentication;
@@ -30,17 +31,18 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
     [HttpPost("list")]
     public async Task<ActionResult> AddList([FromBody] ToDoListModel list)
     {
-        bool success = await dbService.AddToDoListAsync(list.ToDomain());
-        if (success)
+        Result result = await dbService.AddToDoListAsync(list.ToDomain());
+
+        if (result.Status == ResultStatus.Success)
         {
-            return this.Ok();
+            return this.StatusCode(201);
         }
 
         return this.BadRequest();
     }
 
     [HttpDelete("list")]
-    public async Task<ActionResult> DeleteList([FromQuery] long listId, [FromQuery] long ownerId)
+    public async Task<IActionResult> DeleteList([FromQuery] long listId, [FromQuery] long ownerId)
     {
         long? id = authenticator.Authenticate(ownerId);
         if (id == null)
@@ -48,13 +50,14 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
             return this.Forbid("Authentication problem");
         }
 
-        DeleteResult result = await dbService.DeleteToDoListAsync(listId, id.Value);
-        return result switch
-        {
-            DeleteResult.Success => this.NoContent(),
-            DeleteResult.NotFound => this.NotFound("List not found"),
-            DeleteResult.Forbidden => this.StatusCode(403, "You are not allowed to delete this list"),
-            _ => this.StatusCode(500, "An unexpected error occurred")
-        };
+        Result result = await dbService.DeleteToDoListAsync(listId, id.Value);
+        return this.ToHttpResponse(result);
+    }
+
+    [HttpPut("list")]
+    public async Task<IActionResult> UpdateList([FromBody] ToDoListModel list, [FromQuery] long userId)
+    {
+        Result result = await dbService.UpdateToDoListAsync(list.ToDomain(), userId);
+        return this.ToHttpResponse(result);
     }
 }

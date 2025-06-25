@@ -1,8 +1,9 @@
 namespace WebApi.Services.DatabaseService;
 
-public enum DeleteResult
+public enum ResultStatus
 {
     Success,
     NotFound,
     Forbidden,
+    Error,
 }

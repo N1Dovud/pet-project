@@ -1,15 +1,20 @@
-namespace WebApi.Services.DatabaseService
+namespace WebApi.Services.DatabaseService;
+
+public class Result
 {
-    public class Result<T>
+    public ResultStatus Status { get; }
+
+    public string? Message { get; }
+
+    private Result(ResultStatus status, string? message)
     {
-        public bool Success { get; set; }
-
-        public string? Error { get; set; }
-
-        public T? Data { get; set; }
-
-        public static Result<T> Ok(T data) => new() { Success = true, Data = data };
-
-        public static Result<T> Fail(string error) => new() { Success = false, Error = error };
+        this.Status = status;
+        this.Message = message;
     }
+
+    public static Result Success(string? message = null) => new(ResultStatus.Success, message);
+    public static Result NotFound(string? message = null) => new(ResultStatus.NotFound, message);
+    public static Result Forbidden(string? message = null) => new(ResultStatus.Forbidden, message);
+    public static Result Error(string? message = null) => new(ResultStatus.Error, message);
+    
 }
