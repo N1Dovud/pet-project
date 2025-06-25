@@ -21,5 +21,5 @@ public class ToDoListEntity
 
     public List<ToDoListTaskEntity> Tasks { get; set; } = [];
 
-    public List<ToDoListPermissionEntity> Permissions { get; set; } = [];
+    public long OwnerId { get; set; }
 }

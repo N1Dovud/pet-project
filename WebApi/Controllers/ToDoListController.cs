@@ -22,7 +22,15 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
             return this.Unauthorized();
         }
 
-        List<ToDoList> lists = await dbService.GetAllToDoListsAsync(id);
+        List<ToDoList> lists = await dbService.GetAllToDoListsAsync(id.Value);
+        var listModels = lists.Select(l => l.ToModel()).ToList();
+        return this.Ok(listModels);
+    }
+
+    [HttpGet("addlist")]
+    public async ActionResult<List<ToDoListModel>> AddList([FromBody] ToDoListModel)
+    {
+        List<ToDoList> lists = await dbService.AddToDoListAsync(ToDoListModel.);
         var listModels = lists.Select(l => l.ToModel()).ToList();
         return this.Ok(listModels);
     }
