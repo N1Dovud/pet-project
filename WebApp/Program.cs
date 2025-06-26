@@ -1,7 +1,10 @@
+using WebApp.Services.DatabaseService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IToDoListWebApiService, ToDoListWebApiService>();
 
 var app = builder.Build();
 

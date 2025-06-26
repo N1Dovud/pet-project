@@ -1,4 +1,4 @@
-namespace WebApp.Services;
+namespace WebApp.Services.DatabaseService;
 
 public interface IToDoListWebApiService
 {
