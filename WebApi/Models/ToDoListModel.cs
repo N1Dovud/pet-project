@@ -14,5 +14,5 @@ public class ToDoListModel
 
     public List<ToDoListTaskEntity> Tasks { get; set; } = [];
 
-    public required long OwnerId { get; set; }
+    public long OwnerId { get; set; }
 }

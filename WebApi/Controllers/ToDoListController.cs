@@ -1,25 +1,27 @@
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using WebApi.Business;
 using WebApi.Helpers;
 using WebApi.Mappers;
 using WebApi.Models;
-using WebApi.Services.Authentication;
 using WebApi.Services.DatabaseService;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api")]
-public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDoListController> logger, IAuthenticationService authenticator) : ControllerBase
+[Authorize]
+public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDoListController> logger) : ControllerBase
 {
     [HttpGet("lists")]
-    public async Task<ActionResult<List<ToDoListModel>>> GetLists([FromQuery] long userId)
+    public async Task<ActionResult<List<ToDoListModel>>> GetLists()
     {
-        var id = authenticator.Authenticate(userId);
+        var id = this.GetUserId();
         if (id == null)
         {
-            logger.LogWarning("Authentication failed for userId: {UserId}", userId);
+            logger.LogWarning("Authentication failed for userId: {UserId}", id);
             return this.Unauthorized();
         }
 
@@ -31,6 +33,18 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
     [HttpPost("list")]
     public async Task<ActionResult> AddList([FromBody] ToDoListModel list)
     {
+        if (list == null)
+        {
+            return this.BadRequest("list empty");
+        }
+
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        list.OwnerId = id.Value;
         Result result = await dbService.AddToDoListAsync(list.ToDomain());
 
         if (result.Status == ResultStatus.Success)
@@ -42,12 +56,12 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
     }
 
     [HttpDelete("list")]
-    public async Task<IActionResult> DeleteList([FromQuery] long listId, [FromQuery] long ownerId)
+    public async Task<IActionResult> DeleteList([FromQuery] long listId)
     {
-        long? id = authenticator.Authenticate(ownerId);
+        long? id = this.GetUserId();
         if (id == null)
         {
-            return this.Forbid("Authentication problem");
+            return this.Unauthorized();
         }
 
         Result result = await dbService.DeleteToDoListAsync(listId, id.Value);
@@ -55,9 +69,15 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
     }
 
     [HttpPut("list")]
-    public async Task<IActionResult> UpdateList([FromBody] ToDoListModel list, [FromQuery] long userId)
+    public async Task<IActionResult> UpdateList([FromBody] ToDoListModel list)
     {
-        Result result = await dbService.UpdateToDoListAsync(list.ToDomain(), userId);
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        Result result = await dbService.UpdateToDoListAsync(list.ToDomain(), id.Value);
         return this.ToHttpResponse(result);
     }
 }

@@ -1,5 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Services.Authentication;
+using Microsoft.IdentityModel.Tokens;
 using WebApi.Services.Database;
 using WebApi.Services.DatabaseService;
 
@@ -17,7 +19,23 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
     _ = options.UseSqlServer(connectionString);
 });
 builder.Services.AddScoped<IToDoListDatabaseService, ToDoListDatabaseService>();
-builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!)),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(5),
+        };
+    });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -28,6 +46,7 @@ if (app.Environment.IsDevelopment())
     _ = app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
