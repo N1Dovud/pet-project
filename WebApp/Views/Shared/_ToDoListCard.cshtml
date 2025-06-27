@@ -1,0 +1,14 @@
+@model ToDoListModel
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>@Model.Title</h5>
+    </div>
+    <div class="card-body">
+        <p>@Model.Description</p>
+    </div>
+    <div class="card-footer">
+        <a href="/lists/@Model.Id" class="btn btn-primary">View</a>
+        <a href="/lists/@Model.Id/edit" class="btn btn-secondary">Edit</a>
+    </div>
+</div>

@@ -7,24 +7,7 @@ namespace WebApp.Mappers;
 
 public static class ToDoListMapper
 {
-    public static ToDoList? ToDomain(this ToDoListEntity entity)
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new ToDoList
-        {
-            Id = entity.Id,
-            Title = entity.Title,
-            Description = entity.Description,
-            Tasks = entity.Tasks,
-            OwnerId = entity.OwnerId,
-        };
-    }
-
-    public static ToDoList? ToDomain(this ToDoListModel list)
+    public static ToDoList? ToDomain(this ToDoListWebApiModel list)
     {
         if (list == null)
         {
@@ -41,7 +24,7 @@ public static class ToDoListMapper
         };
     }
 
-    public static ToDoListModel? ToModel(this ToDoList list)
+    public static ToDoListModel? ToDTO(this ToDoList list)
     {
         if (list == null)
         {
@@ -51,22 +34,6 @@ public static class ToDoListMapper
         return new ToDoListModel
         {
             Id = list.Id,
-            Title = list.Title,
-            Description = list.Description,
-            Tasks = list.Tasks,
-            OwnerId = list.OwnerId,
-        };
-    }
-
-    public static ToDoListEntity? ToEntity(this ToDoList list)
-    {
-        if (list == null)
-        {
-            return null;
-        }
-
-        return new ToDoListEntity
-        {
             Title = list.Title,
             Description = list.Description,
             Tasks = list.Tasks,

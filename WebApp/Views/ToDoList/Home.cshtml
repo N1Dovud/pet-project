@@ -1,0 +1,9 @@
+@model List<ToDoListModel>
+
+
+<div>
+	@foreach (var list in @Model?.Where(l => l != null) ?? [])
+	{
+		@await Html.PartialAsync("_ToDoListCard", list)
+	}
+</div>
