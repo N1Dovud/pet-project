@@ -12,7 +12,5 @@ public class ToDoList
 
     public string Description { get; set; } = string.Empty;
 
-    public List<ToDoListTaskEntity> Tasks { get; set; } = [];
-
     public long OwnerId { get; set; }
 }

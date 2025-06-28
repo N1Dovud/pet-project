@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Models;
 
-namespace WebApp.Services.JWTService;
+namespace WebApp.Services.AuthenticationService;
 
 public class JWTService(IConfiguration configuration) : IJWTService
 {

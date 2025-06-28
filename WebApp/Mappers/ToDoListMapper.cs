@@ -19,7 +19,6 @@ public static class ToDoListMapper
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
             OwnerId = list.OwnerId,
         };
     }

@@ -18,7 +18,7 @@ public class ToDoListController(IToDoListWebApiService service) : Controller
         List<ToDoList?>? lists = await service.GetToDoLists();
         if (lists == null)
         {
-            return RedirectToAction("Home", "SignIn");
+            return this.RedirectToAction("Index", "Auth");
         }
 
         return this.View(lists.Select(l => l?.ToDTO()).ToList());

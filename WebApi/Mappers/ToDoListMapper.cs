@@ -19,7 +19,6 @@ public static class ToDoListMapper
             Id = entity.Id,
             Title = entity.Title,
             Description = entity.Description,
-            Tasks = entity.Tasks,
             OwnerId = entity.OwnerId,
         };
     }
@@ -36,7 +35,6 @@ public static class ToDoListMapper
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
             OwnerId = list.OwnerId,
         };
     }
@@ -53,7 +51,6 @@ public static class ToDoListMapper
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
             OwnerId = list.OwnerId,
         };
     }
@@ -69,7 +66,6 @@ public static class ToDoListMapper
         {
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
             OwnerId = list.OwnerId,
         };
     }

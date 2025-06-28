@@ -1,6 +1,6 @@
 using WebApp.Models;
 
-namespace WebApp.Services.JWTService;
+namespace WebApp.Services.AuthenticationService;
 
 public interface IJWTService
 {

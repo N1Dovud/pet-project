@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
-using WebApp.Services.JWTService;
+using WebApp.Services.AuthenticationService;
 
 namespace WebApp.Controllers;
 public class AuthController(UserManager<User> userManager, IJWTService jwtService) : Controller

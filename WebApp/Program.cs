@@ -6,7 +6,8 @@ using WebApp.Helpers;
 using WebApp.Models;
 using WebApp.Services.Database;
 using WebApp.Services.DatabaseService;
-using WebApp.Services.JWTService;
+using WebApp.Services.AuthenticationService;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<JwtDelegatingHandler>();
 builder.Services.AddHttpClient("ApiWithJwt")
     .AddHttpMessageHandler<JwtDelegatingHandler>();
+builder.Services.AddDbContext<UserDbContext>(options =>
+{
+    _ = options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddIdentityCore<User>(options =>
 {
     options.Password.RequireNonAlphanumeric = false;
