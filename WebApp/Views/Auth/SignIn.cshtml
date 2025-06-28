@@ -1,0 +1,10 @@
+@model SignInViewModel
+
+<form method="post" asp-action="SignIn" asp-controller="Account">
+	<label asp-for="Username">Username</label>
+	<input asp-for="Username" required/>
+	<label asp-for="Password">Password</label>
+	<input asp-for="Password" type="password" required />
+	<div asp-validation-summary="All" class="text-danger"></div>
+	<input type="submit" value="Sign In" class="btn btn-submit" />
+</form>

@@ -6,6 +6,7 @@ using WebApp.Helpers;
 using WebApp.Models;
 using WebApp.Services.Database;
 using WebApp.Services.DatabaseService;
+using WebApp.Services.JWTService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,18 @@ builder.Services.AddScoped<IToDoListWebApiService, ToDoListWebApiService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.ContainsKey("jwt"))
+                {
+                    context.Token = context.Request.Cookies["jwt"];
+                }
+
+                return Task.CompletedTask;
+            },
+        };
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
@@ -25,7 +38,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidAudience = builder.Configuration["JwtSettings:Audience"],
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromMinutes(5),
         };
     });
 builder.Services.AddHttpContextAccessor();
@@ -42,8 +54,8 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Lockout.AllowedForNewUsers = true;
     options.Lockout.MaxFailedAccessAttempts = 7;
 }).AddEntityFrameworkStores<UserDbContext>();
-builder.Services.AddScoped<SignInManager<User>>();
 builder.Services.AddScoped<UserManager<User>>();
+builder.Services.AddScoped<IJWTService, JWTService>();
 
 var app = builder.Build();
 

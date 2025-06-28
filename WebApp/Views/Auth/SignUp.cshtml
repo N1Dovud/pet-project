@@ -12,10 +12,14 @@
 	<input asp-for="Username" />
 	<span asp-validation-for="Username" class="text-danger"></span>
 	<label asp-for="Password">Password</label>
-	<input asp-for="Password" />
+	<input asp-for="Password" type="password"/>
 	<span asp-validation-for="Password" class="text-danger"></span>
 	<label asp-for="ConfirmPassword">Confirm password</label>
-	<input asp-for="ConfirmPassword"/>
+	<input asp-for="ConfirmPassword" type="password"/>
 	<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 	<input type="submit" value="Sign Up" class="btn btn-submit" />
 </form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

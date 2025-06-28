@@ -1,9 +1,11 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Services.JWTService;
 
 namespace WebApp.Controllers;
-public class AuthController(UserManager<User> userManager) : Controller
+public class AuthController(UserManager<User> userManager, IJWTService jwtService) : Controller
 {
     [Route("")]
     [Route("/")]
@@ -63,18 +65,40 @@ public class AuthController(UserManager<User> userManager) : Controller
             return this.View(model);
         }
 
+        jwtService.SetJwtToken(this.HttpContext, user);
+
         return this.RedirectToAction("Home", "ToDoList");
     }
 
     [HttpGet("/sign-in")]
     public IActionResult SignIn()
     {
+        if (this.User.Identity?.IsAuthenticated == true)
+        {
+            return this.RedirectToAction("Home", "ToDoList");
+        }
 
+        return this.View();
     }
 
     [HttpPost("/sign-in")]
-    public IActionResult SignIn()
+    public async Task<IActionResult> SignIn(SignInViewModel model)
     {
+        var user = await userManager.FindByNameAsync(model?.Username ?? string.Empty);
+        if (user != null && await userManager.CheckPasswordAsync(user, model?.Password ?? string.Empty))
+        {
+            jwtService.SetJwtToken(this.HttpContext, user);
+            return this.RedirectToAction("Home", "ToDoList");
+        }
 
+        this.ModelState.AddModelError(string.Empty, "Login or Password is wrong");
+        return this.View();
+    }
+
+    [HttpGet("/logout")]
+    public IActionResult Logout()
+    {
+        jwtService.ClearJwtToken(this.HttpContext);
+        return this.RedirectToAction("Home", "ToDoList");
     }
 }
