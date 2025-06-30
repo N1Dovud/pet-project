@@ -13,17 +13,25 @@
 		<nav>
 			@if (User.Identity?.IsAuthenticated == true)
 			{
-				<form asp-action="Logout" asp-controller="Account">
+				<form asp-action="Logout" asp-controller="Auth">
 					<button type="submit" class="btn btn-danger">Sign out</button>
 				</form>
 			} else
 			{
-				<a asp-action="SignIn" asp-controller="Account">Sign in</a>
-				<a asp-action="SignOut" asp-controller="Account">Sign up</a>
+				<a asp-action="SignIn" asp-controller="Auth">Sign in</a>
+				<a asp-action="SignUp" asp-controller="Auth">Sign up</a>
 			}
 		</nav>
     </header>
     <div class="container">
+		@if (ViewBag.Error != null)
+		{
+			<div class="alert alert-danger">@ViewBag.Error</div>
+		}
+		@if (TempData["Error"] != null)
+		{
+			<div class="alert alert-danger">@TempData["Error"]</div>
+		}
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

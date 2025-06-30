@@ -39,4 +39,37 @@ public static class ToDoListMapper
             OwnerId = list.OwnerId,
         };
     }
+
+    public static ToDoListWebApiModel? ToWebApiModel(this ToDoList? list)
+    {
+        if (list == null)
+        {
+            return null;
+        }
+
+        return new ToDoListWebApiModel
+        {
+            Id = list.Id,
+            Title = list.Title,
+            Description = list.Description,
+            OwnerId = list.OwnerId,
+        };
+    }
+
+    public static ToDoList? ToDomain(this ToDoListModel? list)
+    {
+        if (list == null)
+        {
+            return null;
+        }
+
+        return new ToDoList
+        {
+            Id = list.Id,
+            Title = list.Title,
+            Description = list.Description,
+            Tasks = list.Tasks,
+            OwnerId = list.OwnerId,
+        };
+    }
 }

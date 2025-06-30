@@ -19,4 +19,6 @@ public class Result
     public static Result Forbidden(string? message = null) => new(ResultStatus.Forbidden, message);
 
     public static Result Error(string? message = null) => new(ResultStatus.Error, message);
+
+    public static Result Unauthorized(string? message = null) => new(ResultStatus.Unauthorized, message);
 }

@@ -14,6 +14,8 @@ public static class Authenticate
         }
 
         var idString = controller.User.FindFirst("userId")?.Value;
+
+        Console.WriteLine($"UserId: {idString}");
         if (long.TryParse(idString, out var userId))
         {
             return userId;

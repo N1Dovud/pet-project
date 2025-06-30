@@ -8,15 +8,24 @@ namespace WebApp.Controllers;
 public class AuthController(UserManager<User> userManager, IJWTService jwtService) : Controller
 {
     [Route("")]
-    [Route("/")]
     public IActionResult Index()
     {
+        if (this.User.Identity?.IsAuthenticated == true)
+        {
+            return this.RedirectToAction("Home", "ToDoList");
+        }
+
         return this.View("LandingPage");
     }
 
     [HttpGet("/sign-up")]
     public IActionResult SignUp()
     {
+        if (this.User.Identity?.IsAuthenticated == true)
+        {
+            return this.RedirectToAction("Home", "ToDoList");
+        }
+
         return this.View();
     }
 

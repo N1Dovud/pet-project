@@ -1,6 +1,6 @@
 @model List<ToDoListModel>
 
-
+<a href="@Url.Action("AddList", "ToDoList")" class="btn btn-primary mb-3">Create New List</a>
 <div>
 	@foreach (var list in @Model?.Where(l => l != null) ?? [])
 	{

@@ -6,4 +6,5 @@ public enum ResultStatus
     NotFound,
     Forbidden,
     Error,
+    Unauthorized,
 }
