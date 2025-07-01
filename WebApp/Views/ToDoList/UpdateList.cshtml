@@ -1,0 +1,17 @@
+@model ToDoListModel
+
+<form method="post" asp-action="UpdateList" asp-controller="ToDoList">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="Id" />
+	<label asp-for="Title">List Title</label>
+	<input asp-for="Title" />
+	<span asp-validation-for="Title" class="text-danger"></span>
+	<label asp-for="Description">Description</label>
+	<input asp-for="Description" />
+	<span asp-validation-for="Description" class="text-danger"></span>
+	<input type="submit" value="Create list" class="btn btn-submit" />
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

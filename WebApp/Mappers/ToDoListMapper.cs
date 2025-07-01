@@ -72,4 +72,21 @@ public static class ToDoListMapper
             OwnerId = list.OwnerId,
         };
     }
+
+    public static ToDoListModel? ToModel(this ToDoList? list)
+    {
+        if (list == null)
+        {
+            return null;
+        }
+
+        return new ToDoListModel
+        {
+            Id = list.Id,
+            Title = list.Title,
+            Description = list.Description,
+            Tasks = list.Tasks,
+            OwnerId = list.OwnerId,
+        };
+    }
 }

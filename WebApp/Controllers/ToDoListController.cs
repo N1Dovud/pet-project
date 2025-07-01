@@ -16,7 +16,7 @@ public class ToDoListController(IToDoListWebApiService service) : Controller
     [Route("home")]
     public async Task<IActionResult> Home()
     {
-        List<ToDoList?>? lists = await service.GetToDoLists();
+        List<ToDoList?>? lists = await service.GetToDoListsAsync();
         if (lists == null)
         {
             return this.RedirectToAction("Index", "Auth");
@@ -50,7 +50,7 @@ public class ToDoListController(IToDoListWebApiService service) : Controller
             return this.RedirectToAction("Home", "ToDoList");
         }
 
-        if (result.Status == ResultStatus.Forbidden)
+        if (result.Status == ResultStatus.Unauthorized)
         {
             return this.RedirectToAction("SignIn", "Auth");
         }
@@ -81,5 +81,47 @@ public class ToDoListController(IToDoListWebApiService service) : Controller
 
         this.TempData["Error"] = result.Message ?? "Failed to delete list";
         return this.RedirectToAction("Home", "ToDoList");
+    }
+
+    [HttpPost("update-list")]
+    public async Task<IActionResult> UpdateList(ToDoListModel list)
+    {
+        if (list == null)
+        {
+            return this.BadRequest("List cannot be null");
+        }
+
+        if (!this.ModelState.IsValid)
+        {
+            return this.View(list);
+        }
+
+        Result result = await service.UpdateToDoListAsync(list.ToDomain());
+        if (result.Status == ResultStatus.Success)
+        {
+            return this.RedirectToAction("Home", "ToDoList");
+        }
+
+        if (result.Status == ResultStatus.Unauthorized)
+        {
+            return this.RedirectToAction("SignIn", "Auth");
+        }
+
+        this.ViewBag.Error = result.Message ?? "Failed to update list";
+        return this.View(list);
+    }
+
+    [HttpGet("update-list")]
+    public async Task<IActionResult> UpdateList(long id)
+    {
+        var list = await service.GetToDoListAsync(id);
+
+        if (list == null)
+        {
+            this.TempData["Error"] = "List not found";
+            return this.RedirectToAction("Home", "ToDoList");
+        }
+
+        return this.View(list.ToModel());
     }
 }

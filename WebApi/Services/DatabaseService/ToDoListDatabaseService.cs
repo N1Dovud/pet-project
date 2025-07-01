@@ -51,6 +51,19 @@ public class ToDoListDatabaseService(ToDoListDbContext context, ILogger<ToDoList
         return [.. lists.Select(l => l?.ToDomain())];
     }
 
+    public async Task<ToDoList?> GetToDoListAsync(long userId, long listId)
+    {
+        var list = await context.ToDoLists
+            .FirstOrDefaultAsync(p => p.Id == listId);
+
+        if (list == null || list.OwnerId != userId)
+        {
+            return null;
+        }
+
+        return list.ToDomain();
+    }
+
     public async Task<Result> UpdateToDoListAsync(ToDoList? list, long userId)
     {
         if (list == null)

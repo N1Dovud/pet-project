@@ -30,6 +30,26 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
         return this.Ok(listModels);
     }
 
+    [HttpGet("list")]
+    public async Task<ActionResult<List<ToDoListModel>>> GetList(long listId)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            logger.LogWarning("Authentication failed for userId: {UserId}", id);
+            return this.Unauthorized();
+        }
+
+        ToDoList? list = await dbService.GetToDoListAsync(id.Value, listId);
+
+        if (list == null)
+        {
+            return this.BadRequest();
+        }
+
+        return this.Ok(list.ToModel());
+    }
+
     [HttpPost("list")]
     public async Task<ActionResult> AddList([FromBody] ToDoListModel list)
     {
