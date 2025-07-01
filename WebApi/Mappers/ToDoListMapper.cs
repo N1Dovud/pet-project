@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using WebApi.Business;
-using WebApi.Models;
+using WebApi.Business.ToDoLists;
+using WebApi.Models.ToDoLists;
 using WebApi.Services.Database.Entities;
 
 namespace WebApi.Mappers;

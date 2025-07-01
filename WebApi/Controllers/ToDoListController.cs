@@ -2,10 +2,10 @@ using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using WebApi.Business;
+using WebApi.Business.ToDoLists;
 using WebApi.Helpers;
 using WebApi.Mappers;
-using WebApi.Models;
+using WebApi.Models.ToDoLists;
 using WebApi.Services.DatabaseService;
 
 namespace WebApi.Controllers;
