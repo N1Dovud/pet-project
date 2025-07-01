@@ -50,4 +50,30 @@ public class ListTaskController(IListTaskService service) : Controller
 
         return this.ToHttpResponse(result);
     }
+
+    [HttpDelete("task")]
+    public async Task<IActionResult> DeleteTask(long taskId, long listId)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        var result = await service.DeleteTaskAsync(taskId, id.Value, listId);
+        return this.ToHttpResponse(result);
+    }
+
+    [HttpPut("task")]
+    public async Task<IActionResult> UpdateTask([FromBody] TaskDetailsModel task, [FromQuery] long listId)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        var result = await service.UpdateTaskAsync(task.ToDomain(), id.Value, listId);
+        return this.ToHttpResponse(result);
+    }
 }

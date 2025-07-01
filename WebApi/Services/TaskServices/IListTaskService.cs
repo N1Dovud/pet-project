@@ -8,9 +8,9 @@ public interface IListTaskService
 
     Task<Result> AddTaskAsync(TaskDetails task, long userId, long listId);
 
-    Task<Result> DeleteToDoListAsync(long listId, long userId);
+    Task<Result> DeleteTaskAsync(long taskId, long userId, long listId);
 
-    Task<Result> UpdateToDoListAsync(ToDoList? list, long userId);
+    Task<Result> UpdateTaskAsync(TaskDetails task, long userId, long listId);
 
     Task<ToDoList?> GetToDoListAsync(long userId, long listId);
 }
