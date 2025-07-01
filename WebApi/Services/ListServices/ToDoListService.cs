@@ -5,9 +5,9 @@ using WebApi.Mappers;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
 
-namespace WebApi.Services.DatabaseService;
+namespace WebApi.Services.ListServices;
 
-public class ToDoListDatabaseService(ToDoListDbContext context, ILogger<ToDoListDatabaseService> logger) : IToDoListDatabaseService
+public class ToDoListService(ToDoListDbContext context, ILogger<ToDoListService> logger) : IToDoListService
 {
     public async Task<Result> AddToDoListAsync(ToDoList? list)
     {
@@ -27,7 +27,7 @@ public class ToDoListDatabaseService(ToDoListDbContext context, ILogger<ToDoList
 
     public async Task<Result> DeleteToDoListAsync(long listId, long userId)
     {
-        ToDoListEntity? list = await context.ToDoLists.FindAsync(listId);
+        var list = await context.ToDoLists.FindAsync(listId);
         if (list == null)
         {
             return Result.NotFound();
@@ -71,7 +71,7 @@ public class ToDoListDatabaseService(ToDoListDbContext context, ILogger<ToDoList
             return Result.NotFound();
         }
 
-        ToDoListEntity? entity = await context.ToDoLists.FindAsync(list.Id);
+        var entity = await context.ToDoLists.FindAsync(list.Id);
         if (entity == null)
         {
             return Result.NotFound("list not found");

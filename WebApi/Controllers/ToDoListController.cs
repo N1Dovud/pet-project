@@ -6,14 +6,15 @@ using WebApi.Business.ToDoLists;
 using WebApi.Helpers;
 using WebApi.Mappers;
 using WebApi.Models.ToDoLists;
-using WebApi.Services.DatabaseService;
+using WebApi.Services;
+using WebApi.Services.ListServices;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api")]
 [Authorize]
-public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDoListController> logger) : ControllerBase
+public class ToDoListController(IToDoListService listService, ILogger<ToDoListController> logger) : ControllerBase
 {
     [HttpGet("lists")]
     public async Task<ActionResult<List<ToDoListModel>>> GetLists()
@@ -25,7 +26,7 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
             return this.Unauthorized();
         }
 
-        List<ToDoList> lists = await dbService.GetAllToDoListsAsync(id.Value);
+        List<ToDoList> lists = await listService.GetAllToDoListsAsync(id.Value);
         var listModels = lists.Select(l => l.ToModel()).ToList();
         return this.Ok(listModels);
     }
@@ -40,7 +41,7 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
             return this.Unauthorized();
         }
 
-        ToDoList? list = await dbService.GetToDoListAsync(id.Value, listId);
+        ToDoList? list = await listService.GetToDoListAsync(id.Value, listId);
 
         if (list == null)
         {
@@ -65,7 +66,7 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
         }
 
         list.OwnerId = id.Value;
-        Result result = await dbService.AddToDoListAsync(list.ToDomain());
+        Result result = await listService.AddToDoListAsync(list.ToDomain());
 
         if (result.Status == ResultStatus.Success)
         {
@@ -84,7 +85,7 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
             return this.Unauthorized();
         }
 
-        Result result = await dbService.DeleteToDoListAsync(listId, id.Value);
+        Result result = await listService.DeleteToDoListAsync(listId, id.Value);
         return this.ToHttpResponse(result);
     }
 
@@ -97,7 +98,7 @@ public class ToDoListController(IToDoListDatabaseService dbService, ILogger<ToDo
             return this.Unauthorized();
         }
 
-        Result result = await dbService.UpdateToDoListAsync(list.ToDomain(), id.Value);
+        Result result = await listService.UpdateToDoListAsync(list.ToDomain(), id.Value);
         return this.ToHttpResponse(result);
     }
 }

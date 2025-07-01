@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Services.DatabaseService;
+using WebApi.Services;
 
 namespace WebApi.Helpers;
 

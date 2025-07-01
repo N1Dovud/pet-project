@@ -1,4 +1,4 @@
-namespace WebApi.Services.DatabaseService;
+namespace WebApi.Services;
 
 public class Result
 {

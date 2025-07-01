@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Services.Database;
-using WebApi.Services.DatabaseService;
+using WebApi.Services.ListService;
 
 var builder = WebApplication.CreateBuilder(args);
 

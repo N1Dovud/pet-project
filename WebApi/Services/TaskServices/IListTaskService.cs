@@ -1,8 +1,6 @@
-using WebApi.Business.ToDoLists;
+namespace WebApi.Services.TaskServices;
 
-namespace WebApi.Services.DatabaseService;
-
-public interface IToDoListDatabaseService
+public interface IListTaskService
 {
     Task<List<ToDoList>> GetAllToDoListsAsync(long userId);
 
