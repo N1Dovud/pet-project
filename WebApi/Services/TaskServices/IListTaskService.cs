@@ -1,8 +1,10 @@
+using WebApi.Business.ListTasks;
+
 namespace WebApi.Services.TaskServices;
 
 public interface IListTaskService
 {
-    Task<List<ToDoList>> GetAllToDoListsAsync(long userId);
+    Task<ListTaskInfo?> GetAllTasksAsync(long userId, long listId);
 
     Task<Result> AddToDoListAsync(ToDoList? list);
 

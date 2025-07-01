@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Services.Database;
-using WebApi.Services.ListService;
+using WebApi.Services.ListServices;
+using WebApi.Services.TaskServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,8 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     _ = options.UseSqlServer(connectionString);
 });
-builder.Services.AddScoped<IToDoListDatabaseService, ToDoListDatabaseService>();
+builder.Services.AddScoped<IToDoListService, ToDoListService>();
+builder.Services.AddScoped<IListTaskService, ListTaskService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
