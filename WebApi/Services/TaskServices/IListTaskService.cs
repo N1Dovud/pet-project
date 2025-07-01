@@ -6,7 +6,7 @@ public interface IListTaskService
 {
     Task<ListTaskInfo?> GetAllTasksAsync(long userId, long listId);
 
-    Task<Result> AddToDoListAsync(ToDoList? list);
+    Task<Result> AddTaskAsync(TaskDetails task, long userId, long listId);
 
     Task<Result> DeleteToDoListAsync(long listId, long userId);
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Business.ListTasks;
 using WebApi.Helpers;
 using WebApi.Mappers;
+using WebApi.Models.ListTasks;
 using WebApi.Services.TaskServices;
 
 namespace WebApi.Controllers;
@@ -29,5 +30,24 @@ public class ListTaskController(IListTaskService service) : Controller
         }
 
         return this.Ok(listTaskInfo.ToModel());
+    }
+
+    [HttpPost("task")]
+    public async Task<IActionResult> AddTask(TaskDetailsModel task, long listId)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        if (task == null)
+        {
+            return this.BadRequest();
+        }
+
+        var result = await service.AddTaskAsync(task.ToDomain(), id.Value, listId);
+
+        return this.ToHttpResponse(result);
     }
 }

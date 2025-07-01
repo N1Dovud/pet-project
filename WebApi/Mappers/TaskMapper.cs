@@ -86,4 +86,33 @@ public static class TaskMapper
             Name = tag.Name,
         };
     }
+
+    public static ToDoListTaskEntity ToEntity(this TaskDetails task, long userId)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return new ToDoListTaskEntity
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            CreationDateTime = task.CreationDateTime,
+            DueDateTime = task.DueDateTime,
+            TaskStatus = task.TaskStatus,
+            Assignee = userId,
+        };
+    }
+
+    public static TaskDetails ToDomain(this TaskDetailsModel model)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+        return new TaskDetails
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Description = model.Description,
+            CreationDateTime = model.CreationDateTime,
+            DueDateTime = model.DueDateTime,
+            TaskStatus = model.TaskStatus,
+        };
+    }
 }

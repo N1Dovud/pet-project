@@ -2,6 +2,7 @@ using WebApi.Models.Enums;
 using WebApi.Business.Comments;
 using WebApi.Models.Tags;
 using WebApi.Models.Comments;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Models.ListTasks;
 
@@ -9,15 +10,18 @@ public class TaskDetailsModel
 {
     public long Id { get; set; }
 
-    public string Title { get; set; } = string.Empty;
+    [Required]
+    public string Title { get; set; } = default!;
 
-    public string Description { get; set; } = string.Empty;
+    [Required]
+    public string Description { get; set; } = default!;
 
-    public DateTime CreationDateTime { get; set; }
+    public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
+    [Required]
     public DateTime DueDateTime { get; set; }
 
-    public ToDoListTaskStatus TaskStatus { get; set; }
+    public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
     public List<TagModel> Tags { get; set; } = [];
 
