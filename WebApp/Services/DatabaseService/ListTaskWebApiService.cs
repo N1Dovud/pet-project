@@ -23,7 +23,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         this.baseUrl = configuration["WebApiAddress"];
     }
 
-    public async Task<ListTaskInfo?> GetTasksByListIdAsync(long listId)
+    public async Task<ListTaskInfo?> GetListInfoAsync(long listId)
     {
         var route = "tasks";
         var uri = new Uri(this.baseUrl + route + "?listId=" + listId);

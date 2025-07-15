@@ -16,7 +16,7 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest("Invalid list ID");
         }
 
-        var tasks = taskService.GetTasksByListIdAsync(listId).Result;
+        var listInfo = taskService.GetListInfoAsync(listId).Result;
         return View();
     }
 }

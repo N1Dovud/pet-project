@@ -5,5 +5,5 @@ namespace WebApp.Services.DatabaseService;
 
 public interface IListTaskWebApiService
 {
-    Task<ListTaskInfo?> GetTasksByListIdAsync(long listId);
+    Task<ListTaskInfo?> GetListInfoAsync(long listId);
 }
