@@ -44,4 +44,52 @@ public static class ListTaskMapper
             Name = tag.Name,
         };
     }
+
+    public static ListTaskInfoModel? ToModel(this ListTaskInfo? taskInfo)
+    {
+        if (taskInfo == null)
+        {
+            return null;
+        }
+
+        return new ListTaskInfoModel
+        {
+            ListId = taskInfo.ListId,
+            Title = taskInfo.Title,
+            Tasks = [.. taskInfo.Tasks.Select(t => t.ToModel())],
+        };
+    }
+
+    public static TaskSummaryModel? ToModel(this TaskSummary taskSummary)
+    {
+        if (taskSummary == null)
+        {
+            return null;
+        }
+
+        return new TaskSummaryModel
+        {
+            Id = taskSummary.Id,
+            Title = taskSummary.Title,
+            Description = taskSummary.Description,
+            CreationDateTime = taskSummary.CreationDateTime,
+            DueDateTime = taskSummary.DueDateTime,
+            TaskStatus = taskSummary.TaskStatus,
+            Tags = [.. taskSummary.Tags.Select(t => t.ToModel())],
+        };
+    }
+
+    public static TagModel? ToModel(this Tag tag)
+    {
+        if (tag == null)
+        {
+            return null;
+        }
+
+        return new TagModel
+        {
+            Id = tag.Id,
+            Name = tag.Name,
+        };
+    }
 }

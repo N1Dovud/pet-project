@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Mappers;
 using WebApp.Services.DatabaseService;
 
 namespace WebApp.Controllers;
@@ -9,7 +10,7 @@ namespace WebApp.Controllers;
 public class ListTaskController(IListTaskWebApiService taskService) : Controller
 {
     [Route("tasks")]
-    public IActionResult Index([FromQuery] long listId)
+    public IActionResult GetListInfo([FromQuery] long listId)
     {
         if (listId <= 0)
         {
@@ -17,6 +18,12 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
         }
 
         var listInfo = taskService.GetListInfoAsync(listId).Result;
-        return View();
+
+        if (listInfo == null)
+        {
+            return this.BadRequest();
+        }
+
+        return this.View("ListInfo", listInfo.ToModel());
     }
 }
