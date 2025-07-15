@@ -1,4 +1,4 @@
-using WebApp.Models;
+using WebApp.Models.Users;
 
 namespace WebApp.Services.AuthenticationService;
 

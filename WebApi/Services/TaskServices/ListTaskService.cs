@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Business.ListTasks;
 using WebApi.Business.ToDoLists;
@@ -86,9 +88,16 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return list.ToListTask();
     }
 
-    public Task<ToDoList?> GetToDoListAsync(long userId, long listId)
+    public async Task<TaskDetails?> GetTaskAsync(long userId, long taskId)
     {
-        throw new NotImplementedException();
+        var task = await context.Tasks
+                .FindAsync(taskId);
+        if (task == null)
+        {
+            return null;
+        }
+
+        return task.ToTaskDetails();
     }
 
     public async Task<Result> UpdateTaskAsync(TaskDetails task, long userId, long listId)

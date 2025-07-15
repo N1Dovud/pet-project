@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Models;
+using WebApp.Models.Auth;
+using WebApp.Models.Users;
 using WebApp.Services.AuthenticationService;
 
 namespace WebApp.Controllers;

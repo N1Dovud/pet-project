@@ -1,6 +1,6 @@
 using WebApp.Services.Database.Entities;
 
-namespace WebApp.Models;
+namespace WebApp.Models.ToDoLists;
 
 public class ToDoListModel
 {

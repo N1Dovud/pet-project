@@ -115,4 +115,32 @@ public static class TaskMapper
             TaskStatus = model.TaskStatus,
         };
     }
+
+    public static TaskDetails ToTaskDetails(this ToDoListTaskEntity task)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return new TaskDetails
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            CreationDateTime = task.CreationDateTime,
+            DueDateTime = task.DueDateTime,
+            TaskStatus = task.TaskStatus,
+        };
+    }
+
+    public static TaskDetailsModel ToModel(this TaskDetails task)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return new TaskDetailsModel
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            CreationDateTime = task.CreationDateTime,
+            DueDateTime = task.DueDateTime,
+            TaskStatus = task.TaskStatus,
+        };
+    }
 }

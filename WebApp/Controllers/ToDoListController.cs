@@ -2,9 +2,9 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Business;
+using WebApp.Business.ToDoLists;
 using WebApp.Mappers;
-using WebApp.Models;
+using WebApp.Models.ToDoLists;
 using WebApp.Services.DatabaseService;
 
 namespace WebApp.Controllers;

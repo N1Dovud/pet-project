@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
+using WebApp.Models.Users;
 
 namespace WebApp.Services.Database;
 

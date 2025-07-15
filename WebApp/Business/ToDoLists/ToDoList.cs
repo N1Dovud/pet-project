@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Services.Database.Entities;
 
-namespace WebApp.Business;
+namespace WebApp.Business.ToDoLists;
 
 public class ToDoList
 {

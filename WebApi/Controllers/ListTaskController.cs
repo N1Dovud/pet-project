@@ -76,4 +76,17 @@ public class ListTaskController(IListTaskService service) : Controller
         var result = await service.UpdateTaskAsync(task.ToDomain(), id.Value, listId);
         return this.ToHttpResponse(result);
     }
+
+    [HttpGet("task")]
+    public async Task<IActionResult> GetTask([FromQuery] long taskId)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        var task = await service.GetTaskAsync(id.Value, taskId);
+        return this.Ok(task.ToModel());
+    }
 }

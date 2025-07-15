@@ -12,5 +12,5 @@ public interface IListTaskService
 
     Task<Result> UpdateTaskAsync(TaskDetails task, long userId, long listId);
 
-    Task<ToDoList?> GetToDoListAsync(long userId, long listId);
+    Task<TaskDetails> GetTaskAsync(long userId, long taskId);
 }

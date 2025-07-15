@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApp.Helpers;
-using WebApp.Models;
 using WebApp.Services.Database;
 using WebApp.Services.DatabaseService;
 using WebApp.Services.AuthenticationService;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Models.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 

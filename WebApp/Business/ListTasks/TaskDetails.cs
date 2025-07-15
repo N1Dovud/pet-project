@@ -1,0 +1,26 @@
+using WebApp.Business.Comments;
+using WebApp.Business.Tags;
+using WebApp.Models.Comments;
+using WebApp.Models.Enums;
+using WebApp.Models.Tags;
+
+namespace WebApp.Business.ListTasks;
+
+public class TaskDetails
+{
+    public long Id { get; set; }
+
+    public string Title { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public DateTime CreationDateTime { get; set; }
+
+    public DateTime DueDateTime { get; set; }
+
+    public ToDoListTaskStatus TaskStatus { get; set; }
+
+    public List<Tag> Tags { get; set; } = [];
+
+    public List<Comment> Comments { get; set; } = [];
+}
