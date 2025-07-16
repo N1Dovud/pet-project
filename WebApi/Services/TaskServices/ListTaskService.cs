@@ -38,11 +38,11 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return Result.Success("Task added successfully.");
     }
 
-    public async Task<Result> DeleteTaskAsync(long taskId, long userId, long listId)
+    public async Task<Result> DeleteTaskAsync(long taskId, long userId)
     {
         var list = await context.ToDoLists
                 .Include(l => l.Tasks)
-                .FirstOrDefaultAsync(l => l.Id == listId);
+                .FirstOrDefaultAsync(l => l.Tasks.Any(t => t.Id == taskId));
         if (list == null)
         {
             return Result.NotFound("list not found");
@@ -100,7 +100,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return task.ToTaskDetails();
     }
 
-    public async Task<Result> UpdateTaskAsync(TaskDetails task, long userId, long listId)
+    public async Task<Result> UpdateTaskAsync(TaskDetails task, long userId)
     {
         if (task == null)
         {
@@ -115,22 +115,12 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         }
 
         var ownerId = await context.ToDoLists
-                .Where(l => l.Id == listId)
+                .Where(l => l.OwnerId == userId)
                 .Select(l => l.OwnerId)
                 .FirstOrDefaultAsync();
         if (ownerId == 0)
         {
             return Result.NotFound("list not found");
-        }
-
-        if (ownerId != userId)
-        {
-            return Result.Forbidden("You do not own this list.");
-        }
-
-        if (taskEntity.ToDoListId != listId)
-        {
-            return Result.Error("Task does not belong to the specified list.");
         }
 
         if (string.IsNullOrEmpty(task.Description) || string.IsNullOrEmpty(task.Title))

@@ -52,7 +52,7 @@ public class ListTaskController(IListTaskService service) : Controller
     }
 
     [HttpDelete("task")]
-    public async Task<IActionResult> DeleteTask(long taskId, long listId)
+    public async Task<IActionResult> DeleteTask(long taskId)
     {
         var id = this.GetUserId();
         if (id == null)
@@ -60,12 +60,12 @@ public class ListTaskController(IListTaskService service) : Controller
             return this.Unauthorized();
         }
 
-        var result = await service.DeleteTaskAsync(taskId, id.Value, listId);
+        var result = await service.DeleteTaskAsync(taskId, id.Value);
         return this.ToHttpResponse(result);
     }
 
     [HttpPut("task")]
-    public async Task<IActionResult> UpdateTask([FromBody] TaskDetailsModel task, [FromQuery] long listId)
+    public async Task<IActionResult> UpdateTask([FromBody] TaskDetailsModel task)
     {
         var id = this.GetUserId();
         if (id == null)
@@ -73,7 +73,7 @@ public class ListTaskController(IListTaskService service) : Controller
             return this.Unauthorized();
         }
 
-        var result = await service.UpdateTaskAsync(task.ToDomain(), id.Value, listId);
+        var result = await service.UpdateTaskAsync(task.ToDomain(), id.Value);
         return this.ToHttpResponse(result);
     }
 

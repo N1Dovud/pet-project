@@ -1,5 +1,7 @@
+using WebApp.Business.Comments;
 using WebApp.Business.ListTasks;
 using WebApp.Business.Tags;
+using WebApp.Models.Comments;
 using WebApp.Models.ListTasks;
 using WebApp.Models.Tags;
 
@@ -90,6 +92,56 @@ public static class ListTaskMapper
         {
             Id = tag.Id,
             Name = tag.Name,
+        };
+    }
+
+    public static TaskDetailsWebApiModel? ToWebApiModel(this TaskDetails task)
+    {
+        if (task == null)
+        {
+            return null;
+        }
+
+        return new TaskDetailsWebApiModel
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            DueDateTime = task.DueDateTime,
+            CreationDateTime = task.CreationDateTime,
+            TaskStatus = task.TaskStatus,
+            Comments = [.. task.Comments.Select(c => c.ToWebApiModel())],
+            Tags = [.. task.Tags.Select(t => t.ToWebApiModel())],
+        };
+    }
+
+    public static TagWebApiModel? ToWebApiModel(this Tag tag)
+    {
+        if (tag == null)
+        {
+            return null;
+        }
+
+        return new TagWebApiModel
+        {
+            Id = tag.Id,
+            Name = tag.Name,
+        };
+    }
+
+    public static CommentWebApiModel? ToWebApiModel(this Comment comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+
+        return new CommentWebApiModel
+        {
+            Id = comment.Id,
+            Note = comment.Note,
+            CreationDateTime = comment.CreationDateTime,
+            LastEditDateTime = comment.LastEditDateTime,
         };
     }
 }
