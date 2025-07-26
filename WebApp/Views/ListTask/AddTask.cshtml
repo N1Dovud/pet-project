@@ -1,0 +1,24 @@
+@model AddTaskViewModel;
+
+
+<h1>Here you can add a task!</h1>
+
+<form asp-action="AddTask" method="post">
+    <div>
+        <label asp-for="taskDetails.Title"></label>
+        <input asp-for="taskDetails.Title" />
+    </div>
+
+    <div>
+        <label asp-for="taskDetails.Description"></label>
+        <input asp-for="taskDetails.Description" />
+    </div>
+
+    <div>
+        <label asp-for="taskDetails.DueDateTime"></label>
+        <input asp-for="taskDetails.DueDateTime" />
+    </div>
+
+    <input type="hidden" value=@Model.listId name="listId" />
+    <input type="submit" value="Submit" />
+</form>

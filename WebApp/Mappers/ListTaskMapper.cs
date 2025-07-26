@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using WebApp.Business.Comments;
 using WebApp.Business.ListTasks;
 using WebApp.Business.Tags;
@@ -142,6 +143,128 @@ public static class ListTaskMapper
             Note = comment.Note,
             CreationDateTime = comment.CreationDateTime,
             LastEditDateTime = comment.LastEditDateTime,
+        };
+    }
+
+    public static TaskDetails? ToDomain(this TaskDetailsWebApiModel? taskDetails)
+    {
+        if (taskDetails == null)
+        {
+            return null;
+        }
+
+        return new TaskDetails
+        {
+            Id = taskDetails.Id,
+            Title = taskDetails.Title,
+            Description = taskDetails.Description,
+            DueDateTime = taskDetails.DueDateTime,
+            CreationDateTime = taskDetails.CreationDateTime,
+            TaskStatus = taskDetails.TaskStatus,
+            Comments = [.. taskDetails.Comments.Select(c => c.ToDomain())],
+            Tags = [.. taskDetails.Tags.Select(t => t.ToDomain())],
+        };
+    }
+
+    public static Comment ToDomain(this CommentWebApiModel? comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+
+        return new Comment
+        {
+            Id = comment.Id,
+            Note = comment.Note,
+            CreationDateTime = comment.CreationDateTime,
+            LastEditDateTime = comment.LastEditDateTime,
+        };
+    }
+
+    public static TaskDetailsModel? ToModel(this TaskDetails taskDetails)
+    {
+        if (taskDetails == null)
+        {
+            return null;
+        }
+
+        return new TaskDetailsModel
+        {
+            Id = taskDetails.Id,
+            Title = taskDetails.Title,
+            Description = taskDetails.Description,
+            CreationDateTime = taskDetails.CreationDateTime,
+            DueDateTime = taskDetails.DueDateTime,
+            TaskStatus = taskDetails.TaskStatus,
+            Tags = [..taskDetails.Tags.Select(t => t.ToModel())],
+            Comments = [..taskDetails.Comments.Select(c => c.ToModel())],
+        };
+    }
+
+    public static CommentModel? ToModel(this Comment comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+
+        return new CommentModel
+        {
+            Id = comment.Id,
+            Note = comment.Note,
+            CreationDateTime = comment.CreationDateTime,
+            LastEditDateTime = comment.LastEditDateTime,
+        };
+    }
+
+    public static TaskDetails? ToDomain(this TaskDetailsModel model)
+    {
+        if (model == null)
+        {
+            return null;
+        }
+
+        return new TaskDetails
+        {
+            Id = model.Id,
+            Description = model.Description,
+            Title = model.Title,
+            CreationDateTime = model.CreationDateTime,
+            DueDateTime = model.DueDateTime,
+            TaskStatus = model.TaskStatus,
+            Comments = [.. model.Comments.Select(c => c.ToDomain())],
+            Tags = [.. model.Tags.Select(t => t.ToDomain())],
+        };
+    }
+
+    public static Comment? ToDomain(this CommentModel model)
+    {
+        if (model == null)
+        {
+            return null;
+        }
+
+        return new Comment
+        {
+            Id = model.Id,
+            CreationDateTime = model.CreationDateTime,
+            LastEditDateTime = model.LastEditDateTime,
+            Note = model.Note,
+        };
+    }
+
+    public static Tag? ToDomain(this TagModel model)
+    {
+        if (model == null)
+        {
+            return null;
+        }
+
+        return new Tag
+        {
+            Id = model.Id,
+            Name = model.Name,
         };
     }
 }

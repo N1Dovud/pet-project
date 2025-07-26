@@ -24,7 +24,49 @@ public class ListTaskWebApiService : IListTaskWebApiService
         this.baseUrl = configuration["WebApiAddress"];
     }
 
-    public async Task<Result> EditTaskAsync(long taskId, TaskDetails task)
+    public async Task<Result> AddTaskAsync(TaskDetails? task, long listId)
+    {
+        if (task == null)
+        {
+            return Result.Error("Task cannot be null");
+        }
+
+        var route = "task";
+        var uri = new Uri(this.baseUrl + route + "?listId=" + listId);
+        var response = await this.httpClient.PostAsJsonAsync(uri, task.ToWebApiModel(), this.options);
+
+        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK)
+        {
+            return Result.Success("Task added successfully");
+        }
+
+        return response.StatusCode switch
+        {
+            HttpStatusCode.BadRequest => Result.Error("Bad request"),
+            HttpStatusCode.Unauthorized => Result.Unauthorized("Unauthorized"),
+            _ => Result.Error($"Failed to add task. Status code: {response.StatusCode}"),
+        };
+    }
+
+    public async Task<Result> DeleteTaskAsync(long taskId)
+    {
+        var route = "task";
+        var uri = new Uri(this.baseUrl + route + "?taskId=" + taskId);
+        var response = await this.httpClient.DeleteAsync(uri);
+        if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            return Result.Success("Task deleted successfully");
+        }
+
+        return response.StatusCode switch
+        {
+            HttpStatusCode.BadRequest => Result.Error("Bad request"),
+            HttpStatusCode.Unauthorized => Result.Unauthorized("Unauthorized"),
+            _ => Result.Error($"Failed to delete a task. Status code: {response.StatusCode}"),
+        };
+    }
+
+    public async Task<Result> EditTaskAsync(TaskDetails task)
     {
         if (task == null)
         {
@@ -32,7 +74,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         }
 
         var route = "task";
-        var uri = new Uri(this.baseUrl + route + "?taskId=" + taskId);
+        var uri = new Uri(this.baseUrl + route);
         var response = await this.httpClient.PutAsJsonAsync(uri, task.ToWebApiModel(), this.options);
         if (response.StatusCode == HttpStatusCode.OK)
         {
@@ -61,5 +103,20 @@ public class ListTaskWebApiService : IListTaskWebApiService
         ListTaskInfoWebApiModel? listTask = JsonSerializer.Deserialize<ListTaskInfoWebApiModel>(json, this.options);
 
         return listTask.ToDomain();
+    }
+
+    public async Task<TaskDetails?> GetTaskDetailsAsync(long taskId)
+    {
+        var route = "task";
+        var uri = new Uri(this.baseUrl + route + "?taskId=" + taskId);
+        var response = await this.httpClient.GetAsync(uri);
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+        TaskDetailsWebApiModel? taskDetails = JsonSerializer.Deserialize<TaskDetailsWebApiModel>(json, this.options);
+        return taskDetails?.ToDomain();
     }
 }

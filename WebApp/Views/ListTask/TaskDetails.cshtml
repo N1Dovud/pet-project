@@ -1,0 +1,40 @@
+@model TaskDetailsModel;
+
+
+<div>
+    <h1>@Model.Id</h1>
+    <h2>@Model.Title</h2>
+    <h3>@Model.Description</h3>
+    <h4>@Model.CreationDateTime</h4>
+    <h5>@Model.DueDateTime</h5>
+    <h6>@Model.TaskStatus</h6>
+    <div>
+        @foreach(var tag in Model.Tags)
+        {
+            <span class="badge bg-secondary">@tag.Name</span>
+        }
+    </div>
+
+    <div>
+        <h3>Comments</h3>
+        @if (Model.Comments != null && Model.Comments.Any())
+        {
+            <ul>
+                @foreach (var comment in Model.Comments)
+                {
+                    <li>
+                        <strong>@comment.Id</strong>:
+                        <span>@comment.Note</span>
+                        <em>@comment.CreationDateTime.ToString("g")</em>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No comments available.</p>
+        }
+    </div>
+    <button>Edit</button>
+    <button>Delete</button>
+</div>
