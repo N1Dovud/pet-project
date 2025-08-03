@@ -6,7 +6,7 @@
 
 
 <div class="container">
-    <button>Add a task</button>
+    <a href="/add-task?listId=@Model.ListId" class="btn btn-primary">Add a task</a>
     <h1>@Model.Title</h1>
     <p>List ID: @Model.ListId</p>
     <h2>Tasks</h2>
@@ -27,8 +27,12 @@
                     {
                         <span class="badge bg-secondary">@tag.Name</span>
                     }
-                    <button>View more</button>
-                    <button>Delete</button>
+                    <a href="task?taskId=@task.Id&listId=@Model.ListId">View more</a>
+                    <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="taskId" value="@task.Id" />
+                        <input type="hidden" name="listId" value="@Model.ListId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             }
     }

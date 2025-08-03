@@ -30,24 +30,45 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     }
 
     [HttpGet("edit-task")]
-    public IActionResult EditTask([FromQuery] long taskId)
+    public IActionResult EditTask([FromQuery] long taskId, long listId)
     {
         if (taskId <= 0)
         {
             return this.BadRequest("Invalid task ID");
         }
 
-        var taskDetails = taskService.GetListInfoAsync(taskId).Result;
+        var taskDetails = taskService.GetTaskDetailsAsync(taskId).Result;
         if (taskDetails == null)
         {
             return this.NotFound();
         }
 
-        return this.View("EditTask", taskDetails.ToModel());
+        return this.View("EditTask", new EditTaskViewModel
+        {
+            listId = listId,
+            taskDetails = taskDetails.ToModel(),
+        });
+    }
+
+    [HttpPost("edit-task")]
+    public async Task<IActionResult> EditTask(EditTaskViewModel model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Model is faulty!");
+        }
+
+        var result = await taskService.EditTaskAsync(model?.taskDetails?.ToDomain());
+        if (result.Status == ResultStatus.Success)
+        {
+            return this.RedirectToAction("GetListInfo", new { listId = model?.listId });
+        }
+
+        return this.BadRequest("Something went off");
     }
 
     [HttpGet("task")]
-    public async Task<IActionResult> GetTaskDetails([FromQuery] long taskId)
+    public async Task<IActionResult> GetTaskDetails([FromQuery] long taskId, long listId)
     {
         if (taskId <= 0)
         {
@@ -61,7 +82,11 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest();
         }
 
-        return this.View("TaskDetails", taskDetails.ToModel());
+        return this.View("TaskDetails", new EditTaskViewModel
+        {
+            listId = listId,
+            taskDetails = taskDetails.ToModel(),
+        });
     }
 
     [HttpGet("add-task")]
@@ -92,14 +117,14 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
 
         if (result.Status == ResultStatus.Success)
         {
-            return this.RedirectToAction("GetListInfo", model.listId);
+            return this.RedirectToAction("GetListInfo", new { model.listId });
         }
 
         return this.BadRequest();
     }
 
     [HttpPost("delete-task")]
-    public async Task<IActionResult> DeleteTask([FromQuery] long taskId)
+    public async Task<IActionResult> DeleteTask(long taskId, long listId)
     {
         if (taskId <= 0)
         {
@@ -115,10 +140,10 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
 
         if (result.Status == ResultStatus.Success)
         {
-            return this.RedirectToAction("Home", "ToDoList");
+            return this.Redirect(this.Url.Action("GetListInfo", new { listId }));
         }
 
-        this.TempData["Error"] = result.Message ?? "Failed to delete list";
+        this.TempData["Error"] = result.Message ?? "Failed to delete task";
         return this.RedirectToAction("Home", "ToDoList");
     }
 }

@@ -74,7 +74,8 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<ListTaskInfo?> GetAllTasksAsync(long userId, long listId)
     {
         ToDoListEntity? list = await context.ToDoLists
-            .FindAsync(listId);
+            .Include(l => l.Tasks)
+            .FirstOrDefaultAsync(l => l.Id == listId);
         if (list == null)
         {
             return null;

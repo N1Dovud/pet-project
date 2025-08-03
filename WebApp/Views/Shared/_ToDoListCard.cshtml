@@ -9,7 +9,7 @@
         <p>@Model.Description</p>
     </div>
     <div class="card-footer">
-        <a href="/tasks/?listId=@Model.Id" class="btn btn-primary">View</a>
+        <a href="/tasks?listId=@Model.Id" class="btn btn-primary">View</a>
         <a asp-action="UpdateList" asp-controller="ToDoList" asp-route-id="@Model.Id">Edit</a>
 
 		<form method="post" asp-action="DeleteList" asp-controller="ToDoList" asp-route-id="@Model.Id">

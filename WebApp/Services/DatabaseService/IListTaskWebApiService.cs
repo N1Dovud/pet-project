@@ -7,7 +7,7 @@ public interface IListTaskWebApiService
 {
     Task<ListTaskInfo?> GetListInfoAsync(long listId);
 
-    Task<Result> EditTaskAsync(TaskDetails task);
+    Task<Result> EditTaskAsync(TaskDetails? task);
 
     Task<TaskDetails?> GetTaskDetailsAsync(long taskId);
 

@@ -1,0 +1,79 @@
+@model EditTaskViewModel;
+<div>
+    <h1>Edit Task</h1>
+
+    <form method="post" asp-action="EditTask" asp-controller="ListTask">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="taskDetails.Id" />
+        <input type="hidden" asp-for="listId" />
+
+        <div class="form-group">
+            <label asp-for="taskDetails.Title">Task Title</label>
+            <input asp-for="taskDetails.Title" class="form-control" />
+            <span asp-validation-for="taskDetails.Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="taskDetails.Description">Description</label>
+            <textarea asp-for="taskDetails.Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="taskDetails.Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="taskDetails.DueDateTime">Due Date</label>
+            <input asp-for="taskDetails.DueDateTime" type="datetime-local" class="form-control" />
+            <span asp-validation-for="taskDetails.DueDateTime" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="taskDetails.TaskStatus">Status</label>
+            <select asp-for="taskDetails.TaskStatus" asp-items="Html.GetEnumSelectList<ToDoListTaskStatus>()" class="form-control"></select>
+            <span asp-validation-for="taskDetails.TaskStatus" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <p><strong>Created:</strong> @Model?.taskDetails?.CreationDateTime.ToString("g")</p>
+        </div>
+
+        <input type="submit" value="Update Task" class="btn btn-primary" />
+        <a href="/task?taskId=@Model?.taskDetails?.Id&listId=@Model?.listId" class="btn btn-secondary">Cancel</a>
+    </form>
+
+    <!-- Display existing tags (read-only for now) -->
+    @if (Model?.taskDetails?.Tags?.Any() == true)
+    {
+        <div class="mt-3">
+            <h5>Tags:</h5>
+            @foreach (var tag in Model.taskDetails.Tags)
+            {
+                <span class="badge bg-secondary me-1">@tag.Name</span>
+            }
+        </div>
+    }
+
+    <!-- Display existing comments (read-only) -->
+    <div class="mt-4">
+        <h4>Comments</h4>
+        @if (Model?.taskDetails?.Comments?.Any() == true)
+        {
+            <ul class="list-unstyled">
+                @foreach (var comment in Model.taskDetails.Comments)
+                {
+                    <li class="border-bottom pb-2 mb-2">
+                        <div>@comment.Note</div>
+                        <small class="text-muted">@comment.CreationDateTime.ToString("g")</small>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">No comments available.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -53,7 +53,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         var route = "task";
         var uri = new Uri(this.baseUrl + route + "?taskId=" + taskId);
         var response = await this.httpClient.DeleteAsync(uri);
-        if (response.StatusCode == HttpStatusCode.NoContent)
+        if (response.StatusCode == HttpStatusCode.OK)
         {
             return Result.Success("Task deleted successfully");
         }
@@ -66,11 +66,11 @@ public class ListTaskWebApiService : IListTaskWebApiService
         };
     }
 
-    public async Task<Result> EditTaskAsync(TaskDetails task)
+    public async Task<Result> EditTaskAsync(TaskDetails? task)
     {
         if (task == null)
         {
-            return Result.Error("List cannot be null");
+            return Result.Error("Task cannot be null");
         }
 
         var route = "task";

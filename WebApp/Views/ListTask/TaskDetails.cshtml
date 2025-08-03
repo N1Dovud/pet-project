@@ -1,15 +1,15 @@
-@model TaskDetailsModel;
+@model EditTaskViewModel;
 
 
 <div>
-    <h1>@Model.Id</h1>
-    <h2>@Model.Title</h2>
-    <h3>@Model.Description</h3>
-    <h4>@Model.CreationDateTime</h4>
-    <h5>@Model.DueDateTime</h5>
-    <h6>@Model.TaskStatus</h6>
+    <h1>@Model?.taskDetails?.Id</h1>
+    <h2>@Model?.taskDetails?.Title</h2>
+    <h3>@Model?.taskDetails?.Description</h3>
+    <h4>@Model?.taskDetails?.CreationDateTime</h4>
+    <h5>@Model?.taskDetails?.DueDateTime</h5>
+    <h6>@Model?.taskDetails?.TaskStatus</h6>
     <div>
-        @foreach(var tag in Model.Tags)
+        @foreach (var tag in Model?.taskDetails?.Tags ?? [])
         {
             <span class="badge bg-secondary">@tag.Name</span>
         }
@@ -17,10 +17,10 @@
 
     <div>
         <h3>Comments</h3>
-        @if (Model.Comments != null && Model.Comments.Any())
+        @if (Model?.taskDetails?.Comments != null && Model.taskDetails.Comments.Any())
         {
             <ul>
-                @foreach (var comment in Model.Comments)
+                @foreach (var comment in Model.taskDetails.Comments)
                 {
                     <li>
                         <strong>@comment.Id</strong>:
@@ -35,6 +35,10 @@
             <p>No comments available.</p>
         }
     </div>
-    <button>Edit</button>
-    <button>Delete</button>
+    <a href="/edit-task?taskId=@Model?.taskDetails?.Id&listId=@Model?.listId">Edit</a>
+    <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
+        <input type="hidden" name="taskId" value="@Model?.taskDetails?.Id" />
+        <input type="hidden" name="listId" value="@Model?.listId" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
 </div>
