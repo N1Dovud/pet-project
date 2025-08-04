@@ -61,6 +61,11 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
         var result = await taskService.EditTaskAsync(model?.taskDetails?.ToDomain());
         if (result.Status == ResultStatus.Success)
         {
+            if (model?.listId == 0)
+            {
+                return this.Redirect("overdue");
+            }
+
             return this.RedirectToAction("GetListInfo", new { listId = model?.listId });
         }
 
@@ -140,10 +145,23 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
 
         if (result.Status == ResultStatus.Success)
         {
+            if (listId == 0)
+            {
+                return this.Redirect("overdue");
+            }
+
             return this.Redirect(this.Url.Action("GetListInfo", new { listId }));
         }
 
         this.TempData["Error"] = result.Message ?? "Failed to delete task";
         return this.RedirectToAction("Home", "ToDoList");
+    }
+
+    [HttpGet("overdue")]
+    public async Task<IActionResult> GetOverdueTasks()
+    {
+        var tasks = await taskService.GetOverdueTasksAsync();
+
+        return this.View("OverdueTasks", tasks.Select(t => t.ToModel()).ToList());
     }
 }

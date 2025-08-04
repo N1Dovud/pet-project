@@ -143,4 +143,30 @@ public static class TaskMapper
             TaskStatus = task.TaskStatus,
         };
     }
+
+    public static TaskSummary? ToDomain(this ToDoListTaskEntity task)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+
+        return new TaskSummary
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            CreationDateTime = task.CreationDateTime,
+            DueDateTime = task.DueDateTime,
+            TaskStatus = task.TaskStatus,
+            Tags = [.. task.Tags.Select(t => t.ToDomain())],
+        };
+    }
+
+    public static Tag ToDomain(this TagEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        return new Tag
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+        };
+    }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Business.ListTasks;
 using WebApi.Business.ToDoLists;
 using WebApi.Mappers;
+using WebApi.Models.Enums;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
 
@@ -87,6 +88,17 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         }
 
         return list.ToListTask();
+    }
+
+    public async Task<List<TaskSummary>?> GetOverdueTasks(long userId)
+    {
+        var tasks = await context.Tasks
+            .Where(t => t.Assignee == userId)
+            .Where(t => t.TaskStatus != ToDoListTaskStatus.Completed)
+            .Where(t => t.DueDateTime < DateTime.Now)
+            .ToListAsync();
+
+        return [.. tasks.Select(t => t.ToDomain())];
     }
 
     public async Task<TaskDetails?> GetTaskAsync(long userId, long taskId)

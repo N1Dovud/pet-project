@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using WebApp.Business.ToDoLists;
 using WebApp.Models.ToDoLists;
 using WebApp.Services.Database.Entities;
-
+using WebApp.Mappers;
 namespace WebApp.Mappers;
 
 public static class ToDoListMapper
@@ -35,7 +35,7 @@ public static class ToDoListMapper
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
+            Tasks = [.. list.Tasks.Select(t => t.ToModel())],
             OwnerId = list.OwnerId,
         };
     }
@@ -68,7 +68,7 @@ public static class ToDoListMapper
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
+            Tasks = [.. list.Tasks.Select(t => t.ToDomain())],
             OwnerId = list.OwnerId,
         };
     }
@@ -85,7 +85,7 @@ public static class ToDoListMapper
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = list.Tasks,
+            Tasks = [.. list.Tasks.Select(t => t.ToModel())],
             OwnerId = list.OwnerId,
         };
     }

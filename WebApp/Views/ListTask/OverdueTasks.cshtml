@@ -1,0 +1,40 @@
+@model List<TaskSummaryModel>;
+
+
+@{
+    ViewData["Title"] = "List Info";
+}
+
+
+<div class="container">
+    <h2>Overdue Tasks</h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var task in Model)
+        {
+            <div>
+                <strong>@task.Title</strong> - @task.Description
+                <br />
+                Created on: @task.CreationDateTime.ToString("g")
+                <br />
+                Due by: @task.DueDateTime.ToString("g")
+                <br />
+                Status: @task.TaskStatus
+                <br />
+                @foreach (var tag in task.Tags)
+                {
+                    <span class="badge bg-secondary">@tag.Name</span>
+                }
+                <a href="task?taskId=@task.Id&listId=0">View more</a>
+                <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
+                    <input type="hidden" name="taskId" value="@task.Id" />
+                    <input type="hidden" name="listId" value="0" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        }
+    } else
+    {
+        <p>Seems like there are no overdues</p>
+    }
+</div>

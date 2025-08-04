@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Services.Database.Entities;
+using WebApp.Business.ListTasks;
 
 namespace WebApp.Business.ToDoLists;
 
@@ -12,7 +13,7 @@ public class ToDoList
 
     public string Description { get; set; } = string.Empty;
 
-    public List<ToDoListTaskEntity> Tasks { get; set; } = [];
+    public List<TaskDetails> Tasks { get; set; } = [];
 
     public long OwnerId { get; set; }
 }

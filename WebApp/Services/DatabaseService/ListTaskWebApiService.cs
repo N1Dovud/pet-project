@@ -119,4 +119,19 @@ public class ListTaskWebApiService : IListTaskWebApiService
         TaskDetailsWebApiModel? taskDetails = JsonSerializer.Deserialize<TaskDetailsWebApiModel>(json, this.options);
         return taskDetails?.ToDomain();
     }
+
+    public async Task<List<TaskSummary?>?> GetOverdueTasksAsync()
+    {
+        var route = "overdue";
+        var uri = new Uri(this.baseUrl + route);
+        var response = await this.httpClient.GetAsync(uri);
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+        List<TaskSummaryWebApiModel>? tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
+        return [.. tasks.Select(t => t.ToDomain())];
+    }
 }
