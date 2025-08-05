@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Business.ListTasks;
 using WebApi.Helpers;
 using WebApi.Mappers;
+using WebApi.Models.Helpers;
 using WebApi.Models.ListTasks;
 using WebApi.Services.TaskServices;
 
@@ -114,5 +115,24 @@ public class ListTaskController(IListTaskService service) : Controller
 
         var tasks = await service.GetAssignedTasks(id.Value);
         return this.Ok(tasks?.Select(t => t.ToModel()));
+    }
+
+    [HttpPost("status-update")]
+    public async Task<IActionResult> EditTaskStatus(EditTaskStatusModel model)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        if (model == null)
+        {
+            return this.BadRequest();
+        }
+
+        var result = await service.EditTaskStatusAsync(id.Value, model.ToDomain());
+
+        return this.ToHttpResponse(result);
     }
 }

@@ -180,8 +180,13 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest();
         }
 
-        var result = await taskService.UpdateTaskStatusAsync(model.ToDomain());
+        var result = await taskService.EditTaskStatusAsync(model.ToDomain());
 
-        if ()
+        if (result.Status == ResultStatus.Success)
+        {
+            return this.Redirect("/assigned");
+        }
+
+        return this.BadRequest(result.Message);
     }
 }

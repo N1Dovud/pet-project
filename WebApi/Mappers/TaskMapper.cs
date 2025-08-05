@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
 using WebApi.Business.Tags;
 using WebApi.Business.ToDoLists;
+using WebApi.Models.Helpers;
 using WebApi.Models.ListTasks;
 using WebApi.Models.Tags;
 using WebApi.Models.ToDoLists;
@@ -167,6 +169,20 @@ public static class TaskMapper
         {
             Id = entity.Id,
             Name = entity.Name,
+        };
+    }
+
+    public static EditTaskStatus? ToDomain(this EditTaskStatusModel model)
+    {
+        if (model == null)
+        {
+            return null;
+        }
+
+        return new EditTaskStatus
+        {
+            TaskId = model.TaskId,
+            TaskStatus = model.TaskStatus,
         };
     }
 }

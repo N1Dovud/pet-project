@@ -1,3 +1,4 @@
+using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
 
 namespace WebApi.Services.TaskServices;
@@ -17,4 +18,6 @@ public interface IListTaskService
     Task<List<TaskSummary?>?> GetOverdueTasks(long userId);
 
     Task<List<TaskSummary?>?> GetAssignedTasks(long userId);
+
+    Task<Result> EditTaskStatusAsync(long userId, EditTaskStatus model);
 }

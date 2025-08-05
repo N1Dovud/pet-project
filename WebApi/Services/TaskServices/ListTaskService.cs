@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
 using WebApi.Business.ToDoLists;
 using WebApi.Mappers;
@@ -70,6 +71,36 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         }
 
         return Result.Success("Task deleted successfully.");
+    }
+
+    public async Task<Result> EditTaskStatusAsync(long userId, EditTaskStatus model)
+    {
+        if (model == null)
+        {
+            return Result.Error("model is null");
+        }
+
+        var taskEntity = await context.Tasks
+            .Include(t => t.ToDoList)
+            .SingleOrDefaultAsync(t => t.Id == model.TaskId);
+        if (taskEntity == null)
+        {
+            return Result.NotFound("task not found");
+        }
+
+        if (taskEntity.ToDoList?.OwnerId == userId || taskEntity.Assignee == userId)
+        {
+            taskEntity.TaskStatus = model.TaskStatus;
+            int rows = await context.SaveChangesAsync();
+            if (rows == 0)
+            {
+                return Result.Error("update failed");
+            }
+
+            return Result.Success("Task updated successfully.");
+        }
+
+        return Result.Forbidden("You cannot edit this task");
     }
 
     public async Task<ListTaskInfo?> GetAllTasksAsync(long userId, long listId)
