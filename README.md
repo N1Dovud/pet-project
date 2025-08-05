@@ -32,7 +32,7 @@ Here are some hints for you:
 | EP02 | US08       | Delete a to-do task.                                                            | 1        |      +        |
 | EP02 | US09       | Edit a to-do task.                                                              | 1        |      +        |
 | EP02 | US10       | Highlight tasks that are overdue.                                               | 1        |      +        |
-| EP03 | US11       | View a list of tasks assigned to me.                                            | 2        |               |
+| EP03 | US11       | View a list of tasks assigned to me.                                            | 2        |      +        |
 | EP03 | US12       | Filter tasks in my assigned task list.                                          | 2        |               |
 | EP03 | US13       | Sort tasks in my assigned task list.                                            | 2        |               |
 | EP03 | US14       | Change the status of a task from the list of assigned tasks.                    | 2        |               |
