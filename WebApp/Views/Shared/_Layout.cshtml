@@ -13,6 +13,9 @@
 		<nav>
 			@if (User.Identity?.IsAuthenticated == true)
 			{
+                <a asp-action="GetOverdueTasks" asp-controller="ListTask">Overdue tasks</a>
+                <a asp-action="GetAssignedTasks" asp-controller="ListTask">Assigned tasks</a>
+                <a href="/">Home</a>
 				<form asp-action="Logout" asp-controller="Auth">
 					<button type="submit" class="btn btn-danger">Sign out</button>
 				</form>
@@ -21,8 +24,6 @@
 				<a asp-action="SignIn" asp-controller="Auth">Sign in</a>
 				<a asp-action="SignUp" asp-controller="Auth">Sign up</a>
 			}
-
-            <a asp-action="GetOverdueTasks" asp-controller="ListTask">Overdue tasks</a>
 		</nav>
     </header>
     <div class="container">

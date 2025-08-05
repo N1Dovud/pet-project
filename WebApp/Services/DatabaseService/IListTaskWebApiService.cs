@@ -1,3 +1,4 @@
+using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
 using WebApp.Models.ListTasks;
 
@@ -18,4 +19,6 @@ public interface IListTaskWebApiService
     Task<List<TaskSummary?>?> GetOverdueTasksAsync();
 
     Task<List<TaskSummary?>?> GetAssignedTasksAsync();
+
+    Task<Result> EditTaskStatusAsync(EditTaskStatus? model);
 }

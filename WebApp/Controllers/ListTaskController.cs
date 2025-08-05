@@ -171,4 +171,17 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
         var tasks = await taskService.GetAssignedTasksAsync();
         return this.View("AssignedTasks", tasks.Select(t => t.ToModel()).ToList());
     }
+
+    [HttpPost("task/update-task-status")]
+    public async Task<IActionResult> UpdateTaskStatus(EditTaskStatusModel model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest();
+        }
+
+        var result = await taskService.UpdateTaskStatusAsync(model.ToDomain());
+
+        if ()
+    }
 }

@@ -14,7 +14,9 @@
     {
             @foreach (var task in Model.Tasks)
             {
-                <div>
+            var isOverdue = task.DueDateTime < DateTime.Now && task.TaskStatus != ToDoListTaskStatus.Completed;
+            var rowClass = isOverdue ? "overdue" : "task"; 
+            <div class="@rowClass">
                     <strong>@task.Title</strong> - @task.Description
                     <br />
                     Created on: @task.CreationDateTime.ToString("g")

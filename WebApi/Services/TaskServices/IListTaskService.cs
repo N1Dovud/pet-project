@@ -12,7 +12,9 @@ public interface IListTaskService
 
     Task<Result> UpdateTaskAsync(TaskDetails task, long userId);
 
-    Task<TaskDetails> GetTaskAsync(long userId, long taskId);
+    Task<TaskDetails?> GetTaskAsync(long userId, long taskId);
 
-    Task<List<TaskSummary>?> GetOverdueTasks(long userId);
+    Task<List<TaskSummary?>?> GetOverdueTasks(long userId);
+
+    Task<List<TaskSummary?>?> GetAssignedTasks(long userId);
 }

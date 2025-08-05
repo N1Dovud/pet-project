@@ -90,10 +90,20 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return list.ToListTask();
     }
 
-    public async Task<List<TaskSummary>?> GetOverdueTasks(long userId)
+    public async Task<List<TaskSummary?>?> GetAssignedTasks(long userId)
     {
         var tasks = await context.Tasks
             .Where(t => t.Assignee == userId)
+            .ToListAsync();
+
+        return [.. tasks.Select(t => t.ToDomain())];
+    }
+
+    public async Task<List<TaskSummary?>?> GetOverdueTasks(long userId)
+    {
+        var tasks = await context.Tasks
+            .Include(t => t.ToDoList)
+            .Where(t => t.ToDoList.OwnerId == userId)
             .Where(t => t.TaskStatus != ToDoListTaskStatus.Completed)
             .Where(t => t.DueDateTime < DateTime.Now)
             .ToListAsync();
@@ -104,13 +114,19 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<TaskDetails?> GetTaskAsync(long userId, long taskId)
     {
         var task = await context.Tasks
-                .FindAsync(taskId);
+            .Include(t => t.ToDoList)
+            .SingleOrDefaultAsync(t => t.Id == taskId);
         if (task == null)
         {
             return null;
         }
 
-        return task.ToTaskDetails();
+        if (task.ToDoList?.OwnerId == userId || task.Assignee == userId)
+        {
+            return task.ToTaskDetails();
+        }
+
+        return null;
     }
 
     public async Task<Result> UpdateTaskAsync(TaskDetails task, long userId)

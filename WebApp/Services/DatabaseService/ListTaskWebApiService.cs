@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
 using WebApp.Mappers;
 using WebApp.Models.ListTasks;
@@ -148,5 +149,23 @@ public class ListTaskWebApiService : IListTaskWebApiService
         var json = await response.Content.ReadAsStringAsync();
         List<TaskSummaryWebApiModel>? tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
         return [.. tasks.Select(t => t.ToDomain())];
+    }
+
+    public async Task<Result> EditTaskStatusAsync(EditTaskStatus? model)
+    {
+        var route = "status-update";
+        var uri = new Uri(this.baseUrl + route);
+        var response = await this.httpClient.PostAsJsonAsync(uri, model?.ToApiModel());
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            return Result.Success("Task updated successfully");
+        }
+
+        return response.StatusCode switch
+        {
+            HttpStatusCode.BadRequest => Result.Error("Bad request"),
+            HttpStatusCode.Unauthorized => Result.Unauthorized("Unauthorized"),
+            _ => Result.Error($"Failed to update a task status. Status code: {response.StatusCode}"),
+        };
     }
 }

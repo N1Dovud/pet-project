@@ -102,4 +102,17 @@ public class ListTaskController(IListTaskService service) : Controller
         var tasks = await service.GetOverdueTasks(id.Value);
         return this.Ok(tasks?.Select(t => t.ToModel()));
     }
+
+    [HttpGet("assigned")]
+    public async Task<IActionResult> GetAssignedTasks()
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        var tasks = await service.GetAssignedTasks(id.Value);
+        return this.Ok(tasks?.Select(t => t.ToModel()));
+    }
 }

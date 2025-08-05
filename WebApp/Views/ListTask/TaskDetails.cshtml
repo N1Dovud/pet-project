@@ -35,10 +35,12 @@
             <p>No comments available.</p>
         }
     </div>
-    <a href="/edit-task?taskId=@Model?.taskDetails?.Id&listId=@Model?.listId">Edit</a>
-    <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
-        <input type="hidden" name="taskId" value="@Model?.taskDetails?.Id" />
-        <input type="hidden" name="listId" value="@Model?.listId" />
-        <button type="submit" class="btn btn-danger">Delete</button>
-    </form>
+    @if (@Model?.listId != -1) {
+        <a href="/edit-task?taskId=@Model?.taskDetails?.Id&listId=@Model?.listId">Edit</a>
+        <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
+            <input type="hidden" name="taskId" value="@Model?.taskDetails?.Id" />
+            <input type="hidden" name="listId" value="@Model?.listId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    }
 </div>
