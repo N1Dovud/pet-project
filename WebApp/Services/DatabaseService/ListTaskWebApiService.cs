@@ -134,4 +134,19 @@ public class ListTaskWebApiService : IListTaskWebApiService
         List<TaskSummaryWebApiModel>? tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
         return [.. tasks.Select(t => t.ToDomain())];
     }
+
+    public async Task<List<TaskSummary?>?> GetAssignedTasksAsync()
+    {
+        var route = "assigned";
+        var uri = new Uri(this.baseUrl + route);
+        var response = await this.httpClient.GetAsync(uri);
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+        List<TaskSummaryWebApiModel>? tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
+        return [.. tasks.Select(t => t.ToDomain())];
+    }
 }

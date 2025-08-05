@@ -164,4 +164,11 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
 
         return this.View("OverdueTasks", tasks.Select(t => t.ToModel()).ToList());
     }
+
+    [HttpGet("assigned")]
+    public async Task<IActionResult> GetAssignedTasks()
+    {
+        var tasks = await taskService.GetAssignedTasksAsync();
+        return this.View("AssignedTasks", tasks.Select(t => t.ToModel()).ToList());
+    }
 }

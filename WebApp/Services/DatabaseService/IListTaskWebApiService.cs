@@ -15,5 +15,7 @@ public interface IListTaskWebApiService
 
     Task<Result> DeleteTaskAsync(long taskId);
 
-    Task<List<TaskSummary>> GetOverdueTasksAsync();
+    Task<List<TaskSummary?>?> GetOverdueTasksAsync();
+
+    Task<List<TaskSummary?>?> GetAssignedTasksAsync();
 }
