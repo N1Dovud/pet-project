@@ -6,6 +6,7 @@ using WebApi.Business.ListTasks;
 using WebApi.Business.ToDoLists;
 using WebApi.Mappers;
 using WebApi.Models.Enums;
+using WebApi.Models.Helpers;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
 
@@ -121,10 +122,11 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return list.ToListTask();
     }
 
-    public async Task<List<TaskSummary?>?> GetAssignedTasks(long userId)
+    public async Task<List<TaskSummary?>?> GetAssignedTasks(long userId, StatusFilter filter)
     {
+        var domainFilter = filter.ToDomain();
         var tasks = await context.Tasks
-            .Where(t => t.Assignee == userId)
+            .Where(t => t.Assignee == userId && domainFilter.Contains(t.TaskStatus))
             .ToListAsync();
 
         return [.. tasks.Select(t => t.ToDomain())];

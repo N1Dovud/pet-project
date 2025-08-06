@@ -1,4 +1,4 @@
-@model List<TaskSummaryModel>;
+@model AssignedTasksModel;
 
 
 @{
@@ -7,36 +7,48 @@
 
 
 <div class="container">
+    <div class="filter">
+        <form method="get" asp-action="GetAssignedTasks">
+            <select name="filter" onchange="this.form.submit()" class="filter-select">
+                @foreach (StatusFilter filter in Enum.GetValues(typeof(StatusFilter)))
+                {
+                    <option value="@filter" selected="@(filter == Model.Filter)">
+                        @filter
+                    </option>
+                }
+            </select>
+        </form>
+    </div>
     <h2>Assigned Tasks</h2>
-    @if (Model != null && Model.Count > 0)
+    @if (Model != null && Model.Tasks != null && Model.Tasks.Count > 0)
     {
-        @foreach (var task in Model)
+        @foreach (var task in Model.Tasks)
         {
             <div>
-                <strong>@task.Title</strong> - @task.Description
+                <strong>@task?.Title</strong> - @task?.Description
                 <br />
-                Created on: @task.CreationDateTime.ToString("g")
+                Created on: @task?.CreationDateTime.ToString("g")
                 <br />
-                Due by: @task.DueDateTime.ToString("g")
+                Due by: @task?.DueDateTime.ToString("g")
                 <br />
-                Status: @task.TaskStatus
+                Status: @task?.TaskStatus
                 <br />
-                @foreach (var tag in task.Tags)
+                @foreach (var tag in task?.Tags ?? [])
                 {
                     <span class="badge bg-secondary">@tag.Name</span>
                 }
                 <form asp-action="UpdateTaskStatus" method="post">
-                    <input type="hidden" name="TaskId" value="@task.Id" />
+                    <input type="hidden" name="TaskId" value="@task?.Id" />
                     <select name="TaskStatus" onchange="this.form.submit()">
                         @foreach (ToDoListTaskStatus status in Enum.GetValues(typeof(ToDoListTaskStatus)))
                         {
-                            <option value="@status" selected="@(task.TaskStatus == status)">
+                            <option value="@status" selected="@(task?.TaskStatus == status)">
                                 @status
                             </option>
                         }
                     </select>
                 </form>
-                <a href="task?taskId=@task.Id&listId=-1">View more</a>
+                <a href="task?taskId=@task?.Id&listId=-1">View more</a>
             </div>
         }
     }

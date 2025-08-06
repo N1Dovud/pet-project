@@ -105,7 +105,7 @@ public class ListTaskController(IListTaskService service) : Controller
     }
 
     [HttpGet("assigned")]
-    public async Task<IActionResult> GetAssignedTasks()
+    public async Task<IActionResult> GetAssignedTasks(StatusFilter filter)
     {
         var id = this.GetUserId();
         if (id == null)
@@ -113,7 +113,7 @@ public class ListTaskController(IListTaskService service) : Controller
             return this.Unauthorized();
         }
 
-        var tasks = await service.GetAssignedTasks(id.Value);
+        var tasks = await service.GetAssignedTasks(id.Value, filter);
         return this.Ok(tasks?.Select(t => t.ToModel()));
     }
 

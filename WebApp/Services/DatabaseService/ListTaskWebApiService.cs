@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
 using WebApp.Mappers;
+using WebApp.Models.Helpers;
 using WebApp.Models.ListTasks;
 using WebApp.Models.ToDoLists;
 
@@ -136,10 +137,10 @@ public class ListTaskWebApiService : IListTaskWebApiService
         return [.. tasks.Select(t => t.ToDomain())];
     }
 
-    public async Task<List<TaskSummary?>?> GetAssignedTasksAsync()
+    public async Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter)
     {
         var route = "assigned";
-        var uri = new Uri(this.baseUrl + route);
+        var uri = new Uri(this.baseUrl + route + "?filter=" + filter);
         var response = await this.httpClient.GetAsync(uri);
         if (!response.IsSuccessStatusCode)
         {

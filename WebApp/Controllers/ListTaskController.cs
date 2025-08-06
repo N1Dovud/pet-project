@@ -166,10 +166,14 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     }
 
     [HttpGet("assigned")]
-    public async Task<IActionResult> GetAssignedTasks()
+    public async Task<IActionResult> GetAssignedTasks(StatusFilter filter = StatusFilter.Active)
     {
-        var tasks = await taskService.GetAssignedTasksAsync();
-        return this.View("AssignedTasks", tasks.Select(t => t.ToModel()).ToList());
+        var tasks = await taskService.GetAssignedTasksAsync(filter);
+        return this.View("AssignedTasks", new AssignedTasksModel
+        {
+            Filter = filter,
+            Tasks = tasks.Select(t => t.ToModel()).ToList(),
+        });
     }
 
     [HttpPost("task/update-task-status")]
