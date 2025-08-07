@@ -7,18 +7,34 @@
 
 
 <div class="container">
-    <div class="filter">
-        <form method="get" asp-action="GetAssignedTasks">
-            <select name="filter" onchange="this.form.submit()" class="filter-select">
-                @foreach (StatusFilter filter in Enum.GetValues(typeof(StatusFilter)))
-                {
-                    <option value="@filter" selected="@(filter == Model.Filter)">
-                        @filter
-                    </option>
-                }
-            </select>
-        </form>
-    </div>
+    <form method="get" asp-action="GetAssignedTasks">
+        <div class="filter">
+            <h3>Filter</h3>
+                <select name="filter" onchange="this.form.submit()" class="filter-select">
+                    @foreach (StatusFilter filter in Enum.GetValues(typeof(StatusFilter)))
+                    {
+                        <option value="@filter" selected="@(filter == Model.Filter)">
+                            @filter
+                        </option>
+                    }
+                </select>
+        </div>
+
+        <div class="sort">
+            <h3>Sort</h3>
+                <select name="sortBy" onchange="this.form.submit()" class="sort-select">
+                    <option value="" ></option>
+                    @foreach (SortField sortField in Enum.GetValues(typeof(SortField)))
+                    {
+                        <option value="@sortField" selected="@(sortField == Model.SortBy)">
+                            @sortField
+                        </option>
+                    }
+                </select>
+                <label for="reverse">Reverse</label>
+                <input id="reverse" type="checkbox" name="descending" checked="@(Model.Descending)" onchange="this.form.submit()" value="true" />
+        </div>
+    </form>
     <h2>Assigned Tasks</h2>
     @if (Model != null && Model.Tasks != null && Model.Tasks.Count > 0)
     {

@@ -6,6 +6,7 @@ using WebApi.Mappers;
 using WebApi.Models.Helpers;
 using WebApi.Models.ListTasks;
 using WebApi.Services.TaskServices;
+using WebApp.Models.Helpers;
 
 namespace WebApi.Controllers;
 
@@ -105,7 +106,7 @@ public class ListTaskController(IListTaskService service) : Controller
     }
 
     [HttpGet("assigned")]
-    public async Task<IActionResult> GetAssignedTasks(StatusFilter filter)
+    public async Task<IActionResult> GetAssignedTasks(StatusFilter filter, SortField? sortBy, bool descending = false)
     {
         var id = this.GetUserId();
         if (id == null)
@@ -113,7 +114,7 @@ public class ListTaskController(IListTaskService service) : Controller
             return this.Unauthorized();
         }
 
-        var tasks = await service.GetAssignedTasks(id.Value, filter);
+        var tasks = await service.GetAssignedTasks(id.Value, filter, sortBy, descending);
         return this.Ok(tasks?.Select(t => t.ToModel()));
     }
 

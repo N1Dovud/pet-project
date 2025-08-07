@@ -166,12 +166,14 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     }
 
     [HttpGet("assigned")]
-    public async Task<IActionResult> GetAssignedTasks(StatusFilter filter = StatusFilter.Active)
+    public async Task<IActionResult> GetAssignedTasks(StatusFilter filter = StatusFilter.Active, SortField? sortBy = null, bool descending = false)
     {
-        var tasks = await taskService.GetAssignedTasksAsync(filter);
+        var tasks = await taskService.GetAssignedTasksAsync(filter, sortBy, descending);
         return this.View("AssignedTasks", new AssignedTasksModel
         {
             Filter = filter,
+            SortBy = sortBy,
+            Descending = descending,
             Tasks = tasks.Select(t => t.ToModel()).ToList(),
         });
     }

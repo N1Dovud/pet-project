@@ -9,6 +9,7 @@ using WebApi.Models.Enums;
 using WebApi.Models.Helpers;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
+using WebApp.Models.Helpers;
 
 namespace WebApi.Services.TaskServices;
 
@@ -122,13 +123,28 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return list.ToListTask();
     }
 
-    public async Task<List<TaskSummary?>?> GetAssignedTasks(long userId, StatusFilter filter)
+    public async Task<List<TaskSummary?>?> GetAssignedTasks(long userId, StatusFilter filter, SortField? sortBy, bool descending)
     {
         var domainFilter = filter.ToDomain();
-        var tasks = await context.Tasks
-            .Where(t => t.Assignee == userId && domainFilter.Contains(t.TaskStatus))
-            .ToListAsync();
+        var query = context.Tasks
+            .Where(t => t.Assignee == userId && domainFilter.Contains(t.TaskStatus));
 
+        if (sortBy != null)
+        {
+            query = sortBy switch
+            {
+                SortField.Name => descending
+                ? query.OrderByDescending(t => t.Title)
+                : query.OrderBy(t => t.Title),
+
+                SortField.DueDate => descending
+                ? query.OrderByDescending(t => t.DueDateTime)
+                : query.OrderBy(t => t.DueDateTime),
+                _ => query,
+            };
+        }
+
+        var tasks = await query.ToListAsync();
         return [.. tasks.Select(t => t.ToDomain())];
     }
 

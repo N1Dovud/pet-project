@@ -19,7 +19,7 @@ public interface IListTaskWebApiService
 
     Task<List<TaskSummary?>?> GetOverdueTasksAsync();
 
-    Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter);
+    Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending);
 
     Task<Result> EditTaskStatusAsync(EditTaskStatus? model);
 }

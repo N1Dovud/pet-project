@@ -137,10 +137,10 @@ public class ListTaskWebApiService : IListTaskWebApiService
         return [.. tasks.Select(t => t.ToDomain())];
     }
 
-    public async Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter)
+    public async Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending)
     {
         var route = "assigned";
-        var uri = new Uri(this.baseUrl + route + "?filter=" + filter);
+        var uri = new Uri($"{this.baseUrl}{route}?filter={filter}&sortBy={sortBy}&descending={descending}");
         var response = await this.httpClient.GetAsync(uri);
         if (!response.IsSuccessStatusCode)
         {

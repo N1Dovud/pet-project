@@ -7,5 +7,9 @@ public class AssignedTasksModel
 {
     public StatusFilter Filter { get; set; }
 
+    public SortField? SortBy { get; set; }
+
+    public bool Descending { get; set; }
+
     public List<TaskSummaryModel?> Tasks { get; set; }
 }
