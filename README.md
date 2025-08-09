@@ -36,8 +36,8 @@ Here are some hints for you:
 | EP03 | US12       | Filter tasks in my assigned task list.                                          | 2        |      +        |
 | EP03 | US13       | Sort tasks in my assigned task list.                                            | 2        |      +        |
 | EP03 | US14       | Change the status of a task from the list of assigned tasks.                    | 2        |      +        |
-| EP04 | US15       | Search for tasks with specified text in the task title.                         | 3        |               |
-| EP04 | US16       | Highlight tasks that are overdue on the search result page.                     | 3        |               |
+| EP04 | US15       | Search for tasks with specified text in the task title.                         | 3        |      +        |
+| EP04 | US16       | Highlight tasks that are overdue on the search result page.                     | 3        |      +        |
 | EP05 | US17       | View a list of tags on the task details page.                                   | 5        |               |
 | EP05 | US18       | View a list of all tags.                                                        | 5        |               |
 | EP05 | US19       | View a list of tasks tagged by a specific tag.                                  | 5        |               |
