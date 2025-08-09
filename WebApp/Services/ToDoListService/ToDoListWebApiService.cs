@@ -4,10 +4,12 @@ using Azure;
 using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Business.ToDoLists;
+using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.ToDoLists;
+using WebApp.Services.DatabaseService;
 
-namespace WebApp.Services.DatabaseService;
+namespace WebApp.Services.ToDoListService;
 
 public class ToDoListWebApiService : IToDoListWebApiService
 {
@@ -111,7 +113,7 @@ public class ToDoListWebApiService : IToDoListWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        List<ToDoListWebApiModel>? lists = JsonSerializer.Deserialize<List<ToDoListWebApiModel>>(json, this.options);
+        var lists = JsonSerializer.Deserialize<List<ToDoListWebApiModel>>(json, this.options);
         if (lists == null)
         {
             return null;
@@ -131,7 +133,7 @@ public class ToDoListWebApiService : IToDoListWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        ToDoListWebApiModel? list = JsonSerializer.Deserialize<ToDoListWebApiModel>(json, this.options);
+        var list = JsonSerializer.Deserialize<ToDoListWebApiModel>(json, this.options);
         if (list == null)
         {
             return null;

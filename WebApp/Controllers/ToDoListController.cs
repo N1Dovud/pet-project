@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Business.ToDoLists;
+using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.ToDoLists;
 using WebApp.Services.DatabaseService;
@@ -62,6 +63,11 @@ public class ToDoListController(IToDoListWebApiService service) : Controller
     [HttpPost("delete-list")]
     public async Task<IActionResult> DeleteList(long id)
     {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("You messed up!");
+        }
+
         if (id == 0)
         {
             return this.RedirectToAction("Home", "ToDoList");

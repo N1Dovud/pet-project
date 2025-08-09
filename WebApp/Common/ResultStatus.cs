@@ -1,4 +1,4 @@
-namespace WebApi.Services;
+namespace WebApp.Common;
 
 public enum ResultStatus
 {
@@ -6,4 +6,5 @@ public enum ResultStatus
     NotFound,
     Forbidden,
     Error,
+    Unauthorized,
 }

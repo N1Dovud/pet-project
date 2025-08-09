@@ -3,7 +3,7 @@ using WebApi.Models.Helpers;
 
 namespace WebApi.Mappers;
 
-public static class Helpers
+public static class HelpersMapper
 {
     public static List<ToDoListTaskStatus> ToDomain(this StatusFilter status)
     {

@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using WebApp.Services.Database.Entities;
 
 namespace WebApp.Business.Comments;
 

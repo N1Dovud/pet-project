@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.Models.Helpers;
+namespace WebApp.Models.Helpers.Enums;
 
 public enum SortField
 {

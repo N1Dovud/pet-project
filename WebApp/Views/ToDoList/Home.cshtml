@@ -1,6 +1,21 @@
 @using WebApp.Models.ToDoLists
 @model List<ToDoListModel>
 
+
+<form class="search-form" method="get" asp-action="SearchTasks" asp-controller="ListTask">
+    <label for="search-type">Search By</label>
+    <select id="search-type" name="searchType" class="search-select">
+        @foreach (SearchFields searchField in Enum.GetValues(typeof(SearchFields)))
+        {
+            <option value="@searchField" selected="@(searchField == SearchFields.Title)">
+                @searchField
+            </option>
+        }
+    </select>
+
+    <input id="query-value" type="text" name="queryValue" class="search-input" placeholder="Search tasks..." />
+    <button type="submit" id="submit-btn" class="submit-button" style="display: none;">Search</button>
+</form>
 <a href="@Url.Action("AddList", "ToDoList")" class="btn btn-primary mb-3">Create New List</a>
 <div>
 	@foreach (var list in @Model?.Where(l => l != null) ?? [])
@@ -8,3 +23,25 @@
 		@await Html.PartialAsync("_ToDoListCard", list)
 	}
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchTypeSelect = document.getElementById("search-type");
+        const queryInput = document.getElementById("query-value");
+        const submitBtn = document.getElementById("submit-btn");
+        function updateInputType() {
+            const selectedValue = searchTypeSelect.value;
+            if (selectedValue === "DueDate" || selectedValue === "CreationDate") {
+                queryInput.type = "date";
+                submitBtn.style.display = "inline-block";
+            }
+            else {
+                queryInput.type = "text";
+                submitBtn.style.display = "none";
+            }
+        }
+
+        updateInputType();
+        searchTypeSelect.addEventListener("change", updateInputType);
+    });
+</script>

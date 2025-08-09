@@ -1,9 +1,13 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Business.ListTasks;
+using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.Helpers;
+using WebApp.Models.Helpers.Enums;
 using WebApp.Models.ListTasks;
-using WebApp.Services.DatabaseService;
+using WebApp.Services.ListTaskService;
 
 namespace WebApp.Controllers;
 
@@ -168,6 +172,11 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     [HttpGet("assigned")]
     public async Task<IActionResult> GetAssignedTasks(StatusFilter filter = StatusFilter.Active, SortField? sortBy = null, bool descending = false)
     {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Invalid filter or sort parameters");
+        }
+
         var tasks = await taskService.GetAssignedTasksAsync(filter, sortBy, descending);
         return this.View("AssignedTasks", new AssignedTasksModel
         {
@@ -194,5 +203,37 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
         }
 
         return this.BadRequest(result.Message);
+    }
+
+    [HttpGet("task-search")]
+    public async Task<IActionResult> SearchTasks(SearchFields searchType, string queryValue)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Invalid search parameters");
+        }
+
+        ResultWithData<List<TaskSummary?>?> result;
+        DateTime date;
+        if (searchType != SearchFields.Title)
+        {
+            if (!DateTime.TryParse(queryValue, out date))
+            {
+                return this.BadRequest("Invalid date provided");
+            }
+
+            result = await taskService.SearchTasksAsync<DateTime>(searchType, date);
+        }
+        else
+        {
+            result = await taskService.SearchTasksAsync<string>(searchType, queryValue);
+        }
+
+        if (result.Result?.Status != ResultStatus.Success)
+        {
+            return this.BadRequest(result.Result?.Message);
+        }
+
+        return this.View("TaskSearchResults", result.Data?.Select(t => t.ToModel()).ToList());
     }
 }

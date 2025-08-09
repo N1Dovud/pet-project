@@ -1,5 +1,4 @@
 using WebApp.Models.ListTasks;
-using WebApp.Services.Database.Entities;
 
 namespace WebApp.Models.ToDoLists;
 

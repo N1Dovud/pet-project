@@ -1,4 +1,4 @@
-namespace WebApp.Services.DatabaseService;
+namespace WebApp.Common;
 
 public class Result
 {

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
 using WebApi.Business.ToDoLists;
+using WebApi.Common;
 using WebApi.Mappers;
 using WebApi.Models.Enums;
 using WebApi.Models.Helpers;
@@ -176,6 +178,35 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         }
 
         return null;
+    }
+
+    public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, DateTime queryValue)
+    {
+        var query = context.Tasks
+            .Where(t => t.ToDoList.OwnerId == userId);
+
+        query = searchType switch
+        {
+            SearchFields.DueDate => query
+                .Where(t => t.DueDateTime.Date == queryValue.Date),
+            SearchFields.CreationDate => query
+                .Where(t => t.CreationDateTime.Date == queryValue.Date),
+            SearchFields.Title => throw new NotImplementedException(),
+            _ => throw new ArgumentException("Invalid search type", nameof(searchType))
+        };
+        var tasks = await query
+            .ToListAsync();
+        return ResultWithData<List<TaskSummary?>?>.Success([.. tasks.Select(t => t.ToTaskSummary())]);
+    }
+
+    public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, string queryValue)
+    {
+        var query = context.Tasks
+            .Where(t => t.ToDoList.OwnerId == userId)
+            .Where(t => t.Title.Contains(queryValue));
+        var tasks = await query
+            .ToListAsync();
+        return ResultWithData<List<TaskSummary?>?>.Success([.. tasks.Select(t => t.ToTaskSummary())]);
     }
 
     public async Task<Result> UpdateTaskAsync(TaskDetails task, long userId)

@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using WebApp.Services.Database.Entities;
 using WebApp.Business.ListTasks;
 
 namespace WebApp.Business.ToDoLists;

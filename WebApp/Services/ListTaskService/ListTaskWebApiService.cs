@@ -4,12 +4,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
+using WebApp.Common;
 using WebApp.Mappers;
-using WebApp.Models.Helpers;
+using WebApp.Models.Helpers.Enums;
 using WebApp.Models.ListTasks;
 using WebApp.Models.ToDoLists;
 
-namespace WebApp.Services.DatabaseService;
+namespace WebApp.Services.ListTaskService;
 
 public class ListTaskWebApiService : IListTaskWebApiService
 {
@@ -102,7 +103,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        ListTaskInfoWebApiModel? listTask = JsonSerializer.Deserialize<ListTaskInfoWebApiModel>(json, this.options);
+        var listTask = JsonSerializer.Deserialize<ListTaskInfoWebApiModel>(json, this.options);
 
         return listTask.ToDomain();
     }
@@ -118,7 +119,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        TaskDetailsWebApiModel? taskDetails = JsonSerializer.Deserialize<TaskDetailsWebApiModel>(json, this.options);
+        var taskDetails = JsonSerializer.Deserialize<TaskDetailsWebApiModel>(json, this.options);
         return taskDetails?.ToDomain();
     }
 
@@ -133,7 +134,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        List<TaskSummaryWebApiModel>? tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
+        var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
         return [.. tasks.Select(t => t.ToDomain())];
     }
 
@@ -148,7 +149,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
-        List<TaskSummaryWebApiModel>? tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
+        var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
         return [.. tasks.Select(t => t.ToDomain())];
     }
 
@@ -168,5 +169,26 @@ public class ListTaskWebApiService : IListTaskWebApiService
             HttpStatusCode.Unauthorized => Result.Unauthorized("Unauthorized"),
             _ => Result.Error($"Failed to update a task status. Status code: {response.StatusCode}"),
         };
+    }
+
+    public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync<T>(SearchFields searchType, T queryValue)
+    {
+        var route = "task-search";
+        var uri = new Uri($"{this.baseUrl}{route}?searchType={searchType}&queryValue={queryValue}");
+
+        var response = await this.httpClient.GetAsync(uri);
+        if (!response.IsSuccessStatusCode)
+        {
+            return ResultWithData<List<TaskSummary?>?>.Error($"Failed to search tasks. Status code: {response.StatusCode}");
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+        var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
+        if (tasks == null)
+        {
+            return ResultWithData<List<TaskSummary?>?>.Error("No tasks found");
+        }
+
+        return ResultWithData<List<TaskSummary?>?>.Success([.. tasks.Select(t => t.ToDomain())], "Tasks found successfully");
     }
 }

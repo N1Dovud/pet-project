@@ -8,6 +8,8 @@ using WebApp.Services.DatabaseService;
 using WebApp.Services.AuthenticationService;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models.Users;
+using WebApp.Services.ListTaskService;
+using WebApp.Services.ToDoListService;
 
 var builder = WebApplication.CreateBuilder(args);
 

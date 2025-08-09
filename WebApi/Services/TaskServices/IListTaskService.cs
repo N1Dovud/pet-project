@@ -1,5 +1,6 @@
 using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
+using WebApi.Common;
 using WebApi.Models.Helpers;
 using WebApp.Models.Helpers;
 
@@ -22,4 +23,8 @@ public interface IListTaskService
     Task<List<TaskSummary?>?> GetAssignedTasks(long userId, StatusFilter filter, SortField? sortBy, bool descending);
 
     Task<Result> EditTaskStatusAsync(long userId, EditTaskStatus model);
+
+    Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, DateTime queryValue);
+
+    Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, string queryValue);
 }

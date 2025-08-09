@@ -1,9 +1,10 @@
 using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
-using WebApp.Models.Helpers;
+using WebApp.Common;
+using WebApp.Models.Helpers.Enums;
 using WebApp.Models.ListTasks;
 
-namespace WebApp.Services.DatabaseService;
+namespace WebApp.Services.ListTaskService;
 
 public interface IListTaskWebApiService
 {
@@ -22,4 +23,6 @@ public interface IListTaskWebApiService
     Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending);
 
     Task<Result> EditTaskStatusAsync(EditTaskStatus? model);
+
+    Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync<T>(SearchFields searchType, T queryValue);
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using WebApp.Business.ToDoLists;
 using WebApp.Models.ToDoLists;
-using WebApp.Services.Database.Entities;
 using WebApp.Mappers;
 namespace WebApp.Mappers;
 

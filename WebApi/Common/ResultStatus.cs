@@ -1,4 +1,4 @@
-namespace WebApp.Services.DatabaseService;
+namespace WebApi.Common;
 
 public enum ResultStatus
 {

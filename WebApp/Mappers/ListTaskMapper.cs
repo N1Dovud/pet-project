@@ -5,7 +5,6 @@ using WebApp.Business.Tags;
 using WebApp.Models.Comments;
 using WebApp.Models.ListTasks;
 using WebApp.Models.Tags;
-using WebApp.Services.Database.Entities;
 
 namespace WebApp.Mappers;
 
@@ -266,56 +265,6 @@ public static class ListTaskMapper
         {
             Id = model.Id,
             Name = model.Name,
-        };
-    }
-
-    public static TaskDetails? ToDomain(this ToDoListTaskEntity entity)
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new TaskDetails
-        {
-            Id = entity.Id,
-            Title = entity.Title,
-            Description = entity.Description,
-            CreationDateTime = entity.CreationDateTime,
-            DueDateTime = entity.DueDateTime,
-            TaskStatus = entity.TaskStatus,
-            Tags = [.. entity.Tags.Select(t => t.ToDomain())],
-            Comments = [.. entity.Comments.Select(c => c.ToDomain())],
-        };
-    }
-
-    public static Tag? ToDomain(this TagEntity entity)
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new Tag
-        {
-            Id = entity.Id,
-            Name = entity.Name,
-        };
-    }
-
-    public static Comment? ToDomain(this CommentEntity entity)
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new Comment
-        {
-            Id = entity.Id,
-            Note = entity.Note,
-            CreationDateTime = entity.CreationDateTime,
-            LastEditDateTime = entity.LastEditDateTime,
         };
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Business.ListTasks;
+using WebApi.Common;
 using WebApi.Helpers;
 using WebApi.Mappers;
 using WebApi.Models.Helpers;
@@ -135,5 +136,44 @@ public class ListTaskController(IListTaskService service) : Controller
         var result = await service.EditTaskStatusAsync(id.Value, model.ToDomain());
 
         return this.ToHttpResponse(result);
+    }
+
+    [HttpGet("task-search")]
+    public async Task<IActionResult> SearchTasks(SearchFields searchType, string queryValue)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Invalid search parameters");
+        }
+
+        var id = this.GetUserId();
+
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        ResultWithData<List<TaskSummary?>?> result;
+        DateTime date;
+        if (searchType != SearchFields.Title)
+        {
+            if (!DateTime.TryParse(queryValue, out date))
+            {
+                return this.BadRequest("Invalid date provided");
+            }
+
+            result = await service.SearchTasksAsync(id.Value, searchType, date);
+        }
+        else
+        {
+            result = await service.SearchTasksAsync(id.Value, searchType, queryValue);
+        }
+
+        if (result.Result?.Status != ResultStatus.Success)
+        {
+            return this.BadRequest(result.Result?.Message);
+        }
+
+        return this.Ok(result.Data?.Select(t => t.ToModel()).ToList());
     }
 }
