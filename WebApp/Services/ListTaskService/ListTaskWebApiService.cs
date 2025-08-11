@@ -27,7 +27,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         this.baseUrl = configuration["WebApiAddress"];
     }
 
-    public async Task<Result> AddTaskAsync(TaskDetails? task, long listId)
+    public async Task<Result> AddTaskAsync(TaskDetails? task, long? listId)
     {
         if (task == null)
         {

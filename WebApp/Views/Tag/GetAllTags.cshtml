@@ -1,0 +1,10 @@
+@model List<TagModel?>?;
+
+<div>
+    @foreach (var tag in @Model ?? []) {
+        @await Html.PartialAsync("_TaskTagCard", new TagViewModel
+        {
+            Tag = tag,
+        })
+    }
+</div>

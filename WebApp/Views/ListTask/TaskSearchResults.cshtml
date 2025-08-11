@@ -1,35 +1,20 @@
-@model List<TaskSummaryModel?>?
+@model TaskSearchModel
 
 <h1>Search Results</h1>
 
 
-@if (Model != null && Model.Count > 0)
+@if (Model != null && Model?.Tasks?.Count > 0)
 {
-        @foreach (var task in Model)
+        @foreach (var task in Model.Tasks)
         {
-            var isOverdue = task?.DueDateTime < DateTime.Now && task.TaskStatus != ToDoListTaskStatus.Completed;
-            var rowClass = isOverdue ? "overdue" : "task";
-            <div class="@rowClass">
-                <strong>@task?.Title</strong> - @task?.Description
-                <br />
-                Created on: @task?.CreationDateTime.ToString("g")
-                <br />
-                Due by: @task?.DueDateTime.ToString("g")
-                <br />
-                Status: @task?.TaskStatus
-                <br />
-                @foreach (var tag in task?.Tags ?? [])
-                {
-                    <span class="badge bg-secondary">@tag.Name</span>
-                }
-                <a href="task?taskId=@task?.Id&listId=-2">View more</a>
-                <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
-                    <input type="hidden" name="taskId" value="@task?.Id" />
-                    <input type="hidden" name="listId" value="-2" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
-    }
+            @await Html.PartialAsync("_TaskSummaryCard", new TaskCardModel
+            {
+                HighlightOverdues = true,
+                IsOwner = true,
+                ReturnUrl = Model.ReturnUrl,
+                TaskSummary = task,
+            });
+        }
 } else
 {
     <p>Nothing matched your search!</p>

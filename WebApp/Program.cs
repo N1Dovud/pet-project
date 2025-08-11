@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Models.Users;
 using WebApp.Services.ListTaskService;
 using WebApp.Services.ToDoListService;
+using WebApp.Services.TagService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IToDoListWebApiService, ToDoListWebApiService>();
 builder.Services.AddScoped<IListTaskWebApiService, ListTaskWebApiService>();
+builder.Services.AddScoped<TagWebApiService, TagWebApiService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

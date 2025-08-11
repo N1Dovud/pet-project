@@ -1,15 +1,15 @@
-@model EditTaskViewModel;
+@model TaskViewModel;
 
 
 <div>
-    <h1>@Model?.taskDetails?.Id</h1>
-    <h2>@Model?.taskDetails?.Title</h2>
-    <h3>@Model?.taskDetails?.Description</h3>
-    <h4>@Model?.taskDetails?.CreationDateTime</h4>
-    <h5>@Model?.taskDetails?.DueDateTime</h5>
-    <h6>@Model?.taskDetails?.TaskStatus</h6>
+    <h1>@Model?.TaskDetails?.Id</h1>
+    <h2>@Model?.TaskDetails?.Title</h2>
+    <h3>@Model?.TaskDetails?.Description</h3>
+    <h4>@Model?.TaskDetails?.CreationDateTime</h4>
+    <h5>@Model?.TaskDetails?.DueDateTime</h5>
+    <h6>@Model?.TaskDetails?.TaskStatus</h6>
     <div>
-        @foreach (var tag in Model?.taskDetails?.Tags ?? [])
+        @foreach (var tag in Model?.TaskDetails?.Tags ?? [])
         {
             <span class="badge bg-secondary">@tag.Name</span>
         }
@@ -17,10 +17,10 @@
 
     <div>
         <h3>Comments</h3>
-        @if (Model?.taskDetails?.Comments != null && Model.taskDetails.Comments.Any())
+        @if (Model?.TaskDetails?.Comments != null && Model.TaskDetails.Comments.Any())
         {
             <ul>
-                @foreach (var comment in Model.taskDetails.Comments)
+                @foreach (var comment in Model.TaskDetails.Comments)
                 {
                     <li>
                         <strong>@comment.Id</strong>:
@@ -35,12 +35,14 @@
             <p>No comments available.</p>
         }
     </div>
-    @if (@Model?.listId != -1) {
-        <a href="/edit-task?taskId=@Model?.taskDetails?.Id&listId=@Model?.listId">Edit</a>
+    @if (@Model?.IsOwner ?? false)
+    {
+        <a href="/edit-task?taskId=@Model?.TaskDetails?.Id&returnUrl=@Model?.ReturnUrl">Edit</a>
         <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
-            <input type="hidden" name="taskId" value="@Model?.taskDetails?.Id" />
-            <input type="hidden" name="listId" value="@Model?.listId" />
+            <input type="hidden" name="taskId" value="@Model?.TaskDetails?.Id" />
+                <input type="hidden" name="returnUrl" value="@Uri.UnescapeDataString(Model?.ReturnUrl?.ToString() ?? string.Empty)" />
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     }
 </div>
+<a href="@Model?.ReturnUrl">Go back!</a>

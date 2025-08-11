@@ -34,7 +34,7 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     }
 
     [HttpGet("edit-task")]
-    public IActionResult EditTask([FromQuery] long taskId, long listId)
+    public IActionResult EditTask([FromQuery] long taskId, string? returnUrl)
     {
         if (taskId <= 0)
         {
@@ -47,38 +47,38 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.NotFound();
         }
 
-        return this.View("EditTask", new EditTaskViewModel
+        return this.View("EditTask", new TaskViewModel
         {
-            listId = listId,
-            taskDetails = taskDetails.ToModel(),
+            ReturnUrl = returnUrl,
+            TaskDetails = taskDetails.ToModel(),
         });
     }
 
     [HttpPost("edit-task")]
-    public async Task<IActionResult> EditTask(EditTaskViewModel model)
+    public async Task<IActionResult> EditTask(TaskViewModel model)
     {
         if (!this.ModelState.IsValid)
         {
             return this.BadRequest("Model is faulty!");
         }
 
-        var result = await taskService.EditTaskAsync(model?.taskDetails?.ToDomain());
+        var result = await taskService.EditTaskAsync(model?.TaskDetails?.ToDomain());
         if (result.Status == ResultStatus.Success)
         {
-            if (model?.listId == 0)
-            {
-                return this.Redirect("overdue");
-            }
-
-            return this.RedirectToAction("GetListInfo", new { listId = model?.listId });
+            return this.Redirect(model?.ReturnUrl ?? "/");
         }
 
         return this.BadRequest("Something went off");
     }
 
     [HttpGet("task")]
-    public async Task<IActionResult> GetTaskDetails([FromQuery] long taskId, long listId)
+    public async Task<IActionResult> GetTaskDetails([FromQuery] long taskId, string? returnUrl, bool isOwner)
     {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Model is faulty");
+        }
+
         if (taskId <= 0)
         {
             return this.BadRequest("Invalid task ID");
@@ -91,16 +91,22 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest();
         }
 
-        return this.View("TaskDetails", new EditTaskViewModel
+        return this.View("TaskDetails", new TaskViewModel
         {
-            listId = listId,
-            taskDetails = taskDetails.ToModel(),
+            ReturnUrl = returnUrl,
+            TaskDetails = taskDetails.ToModel(),
+            IsOwner = isOwner,
         });
     }
 
     [HttpGet("add-task")]
-    public async Task<IActionResult> AddTask([FromQuery] long listId)
+    public IActionResult AddTask([FromQuery] long listId)
     {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Model is faulty");
+        }
+
         if (listId <= 0)
         {
             return this.BadRequest("Invalid list ID");
@@ -122,39 +128,33 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest();
         }
 
-        Result result = await taskService.AddTaskAsync(model.taskDetails.ToDomain(), model.listId);
+        Result result = await taskService.AddTaskAsync(model?.taskDetails.ToDomain(), model?.listId);
 
         if (result.Status == ResultStatus.Success)
         {
-            return this.RedirectToAction("GetListInfo", new { model.listId });
+            return this.RedirectToAction("GetListInfo", new { model?.listId });
         }
 
         return this.BadRequest();
     }
 
     [HttpPost("delete-task")]
-    public async Task<IActionResult> DeleteTask(long taskId, long listId)
+    public async Task<IActionResult> DeleteTask(long taskId, string? returnUrl)
     {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest();
+        }
+
         if (taskId <= 0)
         {
             return this.BadRequest();
         }
 
         var result = await taskService.DeleteTaskAsync(taskId);
-        if (result.Status == ResultStatus.Unauthorized)
-        {
-            this.TempData["Error"] = result.Message ?? "Sign in please";
-            return this.RedirectToAction("SignIn", "Auth");
-        }
-
         if (result.Status == ResultStatus.Success)
         {
-            if (listId == 0)
-            {
-                return this.Redirect("overdue");
-            }
-
-            return this.Redirect(this.Url.Action("GetListInfo", new { listId }));
+            return this.Redirect(returnUrl ?? "/");
         }
 
         this.TempData["Error"] = result.Message ?? "Failed to delete task";
@@ -188,7 +188,7 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     }
 
     [HttpPost("task/update-task-status")]
-    public async Task<IActionResult> UpdateTaskStatus(EditTaskStatusModel model)
+    public async Task<IActionResult> UpdateTaskStatus(EditTaskStatusModel model, string? returnUrl)
     {
         if (!this.ModelState.IsValid)
         {
@@ -199,7 +199,7 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
 
         if (result.Status == ResultStatus.Success)
         {
-            return this.Redirect("/assigned");
+            return this.Redirect(returnUrl ?? "/");
         }
 
         return this.BadRequest(result.Message);
@@ -217,16 +217,16 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
         DateTime date;
         if (searchType != SearchFields.Title)
         {
-            if (!DateTime.TryParse(queryValue, out date))
+            if (!DateTime.TryParse(queryValue, CultureInfo.InvariantCulture, out date))
             {
                 return this.BadRequest("Invalid date provided");
             }
 
-            result = await taskService.SearchTasksAsync<DateTime>(searchType, date);
+            result = await taskService.SearchTasksAsync(searchType, date);
         }
         else
         {
-            result = await taskService.SearchTasksAsync<string>(searchType, queryValue);
+            result = await taskService.SearchTasksAsync(searchType, queryValue);
         }
 
         if (result.Result?.Status != ResultStatus.Success)
@@ -234,6 +234,9 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest(result.Result?.Message);
         }
 
-        return this.View("TaskSearchResults", result.Data?.Select(t => t.ToModel()).ToList());
+        return this.View("TaskSearchResults", new TaskSearchModel {
+            Tasks = result.Data?.Select(t => t.ToModel()).ToList(),
+            ReturnUrl = $"/task-search?searchType={searchType}&queryValue={queryValue}",
+        });
     }
 }

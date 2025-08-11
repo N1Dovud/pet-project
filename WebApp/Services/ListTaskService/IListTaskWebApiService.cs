@@ -14,7 +14,7 @@ public interface IListTaskWebApiService
 
     Task<TaskDetails?> GetTaskDetailsAsync(long taskId);
 
-    Task<Result> AddTaskAsync(TaskDetails? task, long listId);
+    Task<Result> AddTaskAsync(TaskDetails? task, long? listId);
 
     Task<Result> DeleteTaskAsync(long taskId);
 
