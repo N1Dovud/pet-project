@@ -10,7 +10,7 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-public class TagsController(ITagWebApiService tagservice) : Controller
+public class TagController(ITagWebApiService tagservice) : Controller
 {
     [HttpGet("tags")]
     public async Task<IActionResult> GetTags()
