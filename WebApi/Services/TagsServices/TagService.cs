@@ -1,5 +1,5 @@
 namespace WebApi.Services.TagsServices;
 
-public class TagSerivce : ITagService
+public class TagService : ITagService
 {
 }

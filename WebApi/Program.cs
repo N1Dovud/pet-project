@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Services.Database;
 using WebApi.Services.ListServices;
+using WebApi.Services.TagsServices;
 using WebApi.Services.TaskServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
 });
 builder.Services.AddScoped<IToDoListService, ToDoListService>();
 builder.Services.AddScoped<IListTaskService, ListTaskService>();
+builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
