@@ -37,6 +37,8 @@ public class TagWebApiService : ITagWebApiService
 
         var tags = JsonSerializer.Deserialize<List<TagWebApiModel>>(json, this.options);
 
-        return ResultWithData<List<Tag?>?>.Success([.. tags?.Select(t => t.ToDomain()) ?? []], "successfully obtained");
+        return ResultWithData<List<Tag?>?>.Success(
+            [.. tags?.Select(t => t.ToDomain()) ?? Enumerable.Empty<Tag?>()],
+            "successfully obtained");
     }
 }
