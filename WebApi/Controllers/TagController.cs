@@ -23,7 +23,7 @@ public class TagController(ITagService tagService) : ControllerBase
         }
 
         var work = await tagService.GetAllTags(id.Value);
-        if (work?.Result?.Status == ResultStatus.Success)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
             return this.BadRequest();
         }

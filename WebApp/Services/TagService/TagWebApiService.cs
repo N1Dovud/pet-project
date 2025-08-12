@@ -24,18 +24,19 @@ public class TagWebApiService : ITagWebApiService
     public async Task<ResultWithData<List<Tag?>?>> GetAllTags()
     {
         var route = "tags";
-        var url = new Uri(baseUrl + route);
-        var result = await httpClient.GetAsync(url);
+        var url = new Uri(this.baseUrl + route);
+        var result = await this.httpClient.GetAsync(url);
 
         if (result.StatusCode != System.Net.HttpStatusCode.OK)
         {
-            return ResultWithData<List<Tag?>?>.Error("boom!");
+            var errorMessage = await result.Content.ReadAsStringAsync();
+            return ResultWithData<List<Tag?>?>.Error("boom!" + result.StatusCode + errorMessage);
         }
 
         var json = await result.Content.ReadAsStringAsync();
 
-        var tags = JsonSerializer.Deserialize<List<TagWebApiModel>>(json, options);
+        var tags = JsonSerializer.Deserialize<List<TagWebApiModel>>(json, this.options);
 
-        return ResultWithData<List<Tag?>?>.Success([.. tags?.Select(t => t.ToDomain())], "successfully obtained");
+        return ResultWithData<List<Tag?>?>.Success([.. tags?.Select(t => t.ToDomain()) ?? []], "successfully obtained");
     }
 }
