@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IToDoListWebApiService, ToDoListWebApiService>();
 builder.Services.AddScoped<IListTaskWebApiService, ListTaskWebApiService>();
-builder.Services.AddScoped<TagWebApiService, TagWebApiService>();
+builder.Services.AddScoped<ITagWebApiService, TagWebApiService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

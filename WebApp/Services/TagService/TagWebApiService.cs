@@ -34,7 +34,7 @@ public class TagWebApiService : ITagWebApiService
 
         var json = await result.Content.ReadAsStringAsync();
 
-        var tags = JsonSerializer.Deserialize<List<TagWebApiModel>>(json);
+        var tags = JsonSerializer.Deserialize<List<TagWebApiModel>>(json, options);
 
         return ResultWithData<List<Tag?>?>.Success([.. tags?.Select(t => t.ToDomain())], "successfully obtained");
     }
