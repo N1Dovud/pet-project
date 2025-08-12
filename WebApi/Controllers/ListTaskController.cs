@@ -14,7 +14,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Authorize]
 [Route("api")]
-public class ListTaskController(IListTaskService service) : Controller
+public class ListTaskController(IListTaskService service) : ControllerBase
 {
     [HttpGet("tasks")]
     public async Task<IActionResult> GetTasks(long listId)
