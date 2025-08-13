@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.Enums;
+using WebApp.Models.Tags;
 using WebApp.Services.ListTaskService;
 using WebApp.Services.TagService;
 
@@ -21,6 +22,6 @@ public class TagController(ITagWebApiService tagservice) : Controller
             return this.BadRequest(work?.Result?.Message);
         }
 
-        return this.View(work?.Data?.Select(t => t?.ToModel()));
+        return this.View(work?.Data?.Select(t => t?.ToModel()).ToList());
     }
 }
