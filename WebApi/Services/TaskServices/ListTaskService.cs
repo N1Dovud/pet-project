@@ -153,8 +153,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<List<TaskSummary?>?> GetOverdueTasks(long userId)
     {
         var tasks = await context.Tasks
-            .Include(t => t.ToDoList)
-            .Where(t => t.ToDoList.OwnerId == userId)
+            .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId)
             .Where(t => t.TaskStatus != ToDoListTaskStatus.Completed)
             .Where(t => t.DueDateTime < DateTime.Now)
             .ToListAsync();
@@ -165,7 +164,6 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<TaskDetails?> GetTaskAsync(long userId, long taskId)
     {
         var task = await context.Tasks
-            .Include(t => t.ToDoList)
             .SingleOrDefaultAsync(t => t.Id == taskId);
         if (task == null)
         {
@@ -183,7 +181,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, DateTime queryValue)
     {
         var query = context.Tasks
-            .Where(t => t.ToDoList.OwnerId == userId);
+            .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId);
 
         query = searchType switch
         {
@@ -202,7 +200,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, string queryValue)
     {
         var query = context.Tasks
-            .Where(t => t.ToDoList.OwnerId == userId)
+            .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId)
             .Where(t => t.Title.Contains(queryValue));
         var tasks = await query
             .ToListAsync();
