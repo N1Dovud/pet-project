@@ -11,11 +11,8 @@ public class TagService(ToDoListDbContext context) : ITagService
 {
     public async Task<ResultWithData<List<Tag?>?>> GetAllTags(long userId)
     {
-        var tags = await context.Tasks
-            .Include(t => t.Tags)
-            .Include(t => t.ToDoList)
-            .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId)
-            .SelectMany(t => t.Tags)
+        var tags = await context.Tags
+            .Where(t => t.Tasks.Any(task => task.ToDoList != null && task.ToDoList.OwnerId == userId))
             .ToListAsync();
         return ResultWithData<List<Tag?>?>.Success([.. tags.Select(t => t.ToDomain())]);
     }
