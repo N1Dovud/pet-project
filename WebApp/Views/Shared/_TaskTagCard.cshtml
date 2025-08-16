@@ -1,5 +1,19 @@
 @model TagViewModel;
 
-<div>
-    @Model?.Tag?.Name
+<div class="tag">
+    @if (Model.FiltersTasks)
+    {
+        <form class="tag-filter-form" method="get" asp-action="GetTasksByTag" asp-controller="Tag">
+            <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
+            <input type="submit" value="@Model?.Tag?.Name" />
+        </form>
+    }
+    @if (Model.HasDeleteButton)
+    {
+        <form class="tag-delete-form" method="post" asp-action="DeleteTag" asp-controller="Tag">
+            <h3>@Model?.Tag?.Name</h3>
+            <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
+            <input type="submit" value="&times;" />
+        </form>
+    }
 </div>

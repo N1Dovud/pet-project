@@ -1,7 +1,9 @@
 using System.Text.Json;
+using WebApp.Business.ListTasks;
 using WebApp.Business.Tags;
 using WebApp.Common;
 using WebApp.Mappers;
+using WebApp.Models.ListTasks;
 using WebApp.Models.Tags;
 
 namespace WebApp.Services.TagService;
@@ -39,6 +41,26 @@ public class TagWebApiService : ITagWebApiService
 
         return ResultWithData<List<Tag?>?>.Success(
             [.. tags?.Select(t => t.ToDomain()) ?? Enumerable.Empty<Tag?>()],
+            "successfully obtained");
+    }
+
+    public async Task<ResultWithData<List<TaskSummary?>?>> GetTasksByTag(long tagId)
+    {
+        var route = "tag";
+        var url = new Uri(this.baseUrl + route + "?tagId=" + tagId);
+        var result = await httpClient.GetAsync(url);
+
+        if (!result.IsSuccessStatusCode)
+        {
+            return ResultWithData<List<TaskSummary?>?>.Error("something went wrong" + result.StatusCode);
+        }
+
+        var json = await result.Content.ReadAsStringAsync();
+
+        var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel?>?>(json, this.options);
+
+        return ResultWithData<List<TaskSummary?>?>.Success(
+            [.. tasks?.Select(t => t.ToDomain()) ?? Enumerable.Empty<TaskSummary?>()],
             "successfully obtained");
     }
 }

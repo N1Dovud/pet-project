@@ -5,6 +5,8 @@
         @await Html.PartialAsync("_TaskTagCard", new TagViewModel
         {
             Tag = tag,
+            FiltersTasks = true,
+            HasDeleteButton = false,
         })
     }
 </div>

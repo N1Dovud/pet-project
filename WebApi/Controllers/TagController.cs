@@ -31,4 +31,22 @@ public class TagController(ITagService tagService) : ControllerBase
         return this.Ok(work?.Data?.Select(t => t.ToModel()));
 
     }
+
+    [HttpGet("tag")]
+    public async Task<IActionResult> GetTasksByTag(long tagId)
+    {
+        var id = this.GetUserId();
+        if (id == null)
+        {
+            return this.Unauthorized();
+        }
+
+        var work = await tagService.GetTasksByTag(tagId, id.Value);
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.BadRequest();
+        }
+
+        return this.Ok(work?.Data?.Select(t => t.ToModel()));
+    }
 }
