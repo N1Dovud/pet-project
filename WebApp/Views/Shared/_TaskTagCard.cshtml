@@ -5,6 +5,7 @@
     {
         <form class="tag-filter-form" method="get" asp-action="GetTasksByTag" asp-controller="Tag">
             <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
+            <input type="hidden" name="TagName" value="@Model?.Tag?.Name" />
             <input type="submit" value="@Model?.Tag?.Name" />
         </form>
     }

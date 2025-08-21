@@ -6,7 +6,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <input type="hidden" asp-for="TaskDetails.Id" />
-        <input type="hidden" asp-for="ReturnUrl" />
+        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
 
         <div class="form-group">
             <label asp-for="TaskDetails.Title">Task Title</label>

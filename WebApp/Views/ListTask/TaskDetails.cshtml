@@ -13,6 +13,14 @@
         {
             <span class="badge bg-secondary">@tag.Name</span>
         }
+        @if (Model?.IsOwner ?? false)
+        {
+            @await Html.PartialAsync("_AddTag", new AddTagViewModel
+            {
+                ReturnUrl = Model?.ReturnUrl ?? "",
+                TaskId = Model?.TaskDetails?.Id ?? 0,
+            })
+        }
     </div>
 
     <div>

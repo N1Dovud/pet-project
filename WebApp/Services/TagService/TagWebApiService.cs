@@ -23,6 +23,46 @@ public class TagWebApiService : ITagWebApiService
         this.baseUrl = configuration["WebApiAddress"];
     }
 
+    public async Task<Result> AddTag(long taskId, string tagName)
+    {
+        var route = "add-tag";
+        var url = new Uri($"{this.baseUrl}{route}");
+        var obj = new
+        {
+            taskId,
+            tagName,
+        };
+        var result = await this.httpClient.PostAsJsonAsync(url, obj, this.options);
+
+        if (result.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+            var errorMessage = await result.Content.ReadAsStringAsync();
+            return Result.Error("Could not add tag" + result.StatusCode + errorMessage);
+        }
+
+        return Result.Success();
+    }
+
+    public async Task<Result> DeleteTag(long taskId, long tagId)
+    {
+        var route = "delete-tag";
+        var url = new Uri($"{this.baseUrl}{route}");
+        var obj = new
+        {
+            taskId,
+            tagId,
+        };
+        var result = await this.httpClient.PostAsJsonAsync(url, obj, this.options);
+
+        if (result.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+            var errorMessage = await result.Content.ReadAsStringAsync();
+            return Result.Error("Could not delete tag" + result.StatusCode + errorMessage);
+        }
+
+        return Result.Success();
+    }
+
     public async Task<ResultWithData<List<Tag?>?>> GetAllTags()
     {
         var route = "tags";

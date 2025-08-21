@@ -29,13 +29,21 @@
         {
             <span class="badge bg-secondary">@tag.Name</span>
         }
-    <a href="task?taskId=@Model.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model.ReturnUrl?.ToString() ?? string.Empty)">View more</a>
         @if (Model.IsOwner)
         {
-            <a href="/edit-task?taskId=@Model?.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model?.ReturnUrl?.ToString() ?? string.Empty)">Edit</a>
+            @await Html.PartialAsync("_AddTag", new AddTagViewModel
+            {
+              ReturnUrl = Model?.ReturnUrl ?? "",
+              TaskId = Model?.TaskSummary?.Id ?? 0,
+            })
+        }
+        <a href="task?taskId=@Model?.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)&isOwner=@Model?.IsOwner">View more</a>
+        @if (Model?.IsOwner ?? false)
+        {
+            <a href="/edit-task?taskId=@Model?.TaskSummary.Id&returnUrl=@Model?.ReturnUrl">Edit</a>
             <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
                 <input type="hidden" name="taskId" value="@Model?.TaskSummary.Id" />
-                <input type="hidden" name="returnUrl" value="@Model?.ReturnUrl" />
+                <input type="hidden" name="returnUrl" value="@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)" />
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         } else

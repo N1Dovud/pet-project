@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebApi.Business.Comments;
 using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
 using WebApi.Business.Tags;
 using WebApi.Business.ToDoLists;
+using WebApi.Models.Comments;
 using WebApi.Models.Helpers;
 using WebApi.Models.ListTasks;
 using WebApi.Models.Tags;
@@ -129,6 +132,8 @@ public static class TaskMapper
             CreationDateTime = task.CreationDateTime,
             DueDateTime = task.DueDateTime,
             TaskStatus = task.TaskStatus,
+            Tags = [.. task.Tags.Select(t => t.ToDomain())],
+            Comments = [.. task.Comments.Select(c => c.ToDomain())],
         };
     }
 
@@ -142,6 +147,8 @@ public static class TaskMapper
             Description = task.Description,
             CreationDateTime = task.CreationDateTime,
             DueDateTime = task.DueDateTime,
+            Tags = [.. task.Tags.Select(t => t.ToModel())],
+            Comments = [.. task.Comments.Select(c => c.ToModel())],
             TaskStatus = task.TaskStatus,
         };
     }
@@ -169,6 +176,30 @@ public static class TaskMapper
         {
             Id = entity.Id,
             Name = entity.Name,
+        };
+    }
+
+    public static Comment ToDomain(this CommentEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        return new Comment
+        {
+            Id = entity.Id,
+            CreationDateTime = entity.CreationDateTime,
+            LastEditDateTime = entity.LastEditDateTime,
+            Note = entity.Note,
+        };
+    }
+
+    public static CommentModel ToModel(this Comment entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        return new CommentModel
+        {
+            Id = entity.Id,
+            CreationDateTime = entity.CreationDateTime,
+            LastEditDateTime = entity.LastEditDateTime,
+            Note = entity.Note,
         };
     }
 

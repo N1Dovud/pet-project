@@ -119,7 +119,9 @@ public class ListTaskWebApiService : IListTaskWebApiService
         }
 
         var json = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(json);
         var taskDetails = JsonSerializer.Deserialize<TaskDetailsWebApiModel>(json, this.options);
+        Console.WriteLine("here is the task Details: " + taskDetails.Tags.Count);
         return taskDetails?.ToDomain();
     }
 

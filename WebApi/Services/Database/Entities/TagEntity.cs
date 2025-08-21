@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Services.Database.Entities;
 
 [Table("tag")]
+[Index(nameof(Name), IsUnique = true)]
 public class TagEntity
 {
     [Key]

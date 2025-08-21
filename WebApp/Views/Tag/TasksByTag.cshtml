@@ -1,0 +1,17 @@
+@model TasksByTagViewModel
+
+<div>
+    <h1>@Model.Tag.Name</h1>
+    @foreach (var task in (Model.TaskSummaries ?? Enumerable.Empty<TaskSummaryModel?>())
+        .Where(t => t is not null)
+        .Cast<TaskSummaryModel>())
+    {
+        @await Html.PartialAsync("_TaskSummaryCard", new TaskCardModel
+        {
+            HighlightOverdues = true,
+            IsOwner = true,
+            ReturnUrl = $"tag?TagId={Model.Tag.Id}&TagName={Model.Tag.Name}",
+            TaskSummary = task,
+        })
+    }
+</div>

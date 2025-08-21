@@ -111,6 +111,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     {
         ToDoListEntity? list = await context.ToDoLists
             .Include(l => l.Tasks)
+            .ThenInclude(t => t.Tags)
             .FirstOrDefaultAsync(l => l.Id == listId);
         if (list == null)
         {
@@ -129,6 +130,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     {
         var domainFilter = filter.ToDomain();
         var query = context.Tasks
+            .Include(t => t.Tags)
             .Where(t => t.Assignee == userId && domainFilter.Contains(t.TaskStatus));
 
         if (sortBy != null)
@@ -153,6 +155,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<List<TaskSummary?>?> GetOverdueTasks(long userId)
     {
         var tasks = await context.Tasks
+            .Include(t => t.Tags)
             .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId)
             .Where(t => t.TaskStatus != ToDoListTaskStatus.Completed)
             .Where(t => t.DueDateTime < DateTime.Now)
@@ -164,6 +167,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<TaskDetails?> GetTaskAsync(long userId, long taskId)
     {
         var task = await context.Tasks
+            .Include(t => t.Tags)
             .SingleOrDefaultAsync(t => t.Id == taskId);
         if (task == null)
         {
@@ -181,6 +185,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, DateTime queryValue)
     {
         var query = context.Tasks
+            .Include(t => t.Tags)
             .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId);
 
         query = searchType switch
@@ -200,6 +205,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
     public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, string queryValue)
     {
         var query = context.Tasks
+            .Include(t => t.Tags)
             .Where(t => t.ToDoList != null && t.ToDoList.OwnerId == userId)
             .Where(t => t.Title.Contains(queryValue));
         var tasks = await query
@@ -240,11 +246,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         taskEntity.DueDateTime = task.DueDateTime;
         taskEntity.TaskStatus = task.TaskStatus;
 
-        int rows = await context.SaveChangesAsync();
-        if (rows == 0)
-        {
-            return Result.Error("update failed");
-        }
+        _ = await context.SaveChangesAsync();
 
         return Result.Success("Task updated successfully.");
     }
