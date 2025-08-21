@@ -7,7 +7,7 @@
 {
         @foreach (var task in Model.Tasks)
         {
-            @await Html.PartialAsync("_TaskSummaryCard", new TaskCardModel
+        @await Html.PartialAsync("Partials/Task/_TaskSummaryCard", new TaskCardModel
             {
                 HighlightOverdues = true,
                 IsOwner = true,

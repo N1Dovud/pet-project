@@ -20,7 +20,7 @@
 <div>
 	@foreach (var list in @Model?.Where(l => l != null) ?? [])
 	{
-		@await Html.PartialAsync("_ToDoListCard", list)
+		@await Html.PartialAsync("Partials/ToDoList/_ToDoListCard", list)
 	}
 </div>
 

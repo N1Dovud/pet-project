@@ -2,7 +2,7 @@
 
 <div>
     @foreach (var tag in @Model ?? []) {
-        @await Html.PartialAsync("_TaskTagCard", new TagViewModel
+        @await Html.PartialAsync("Partials/Tag/_TaskTagCard", new TagViewModel
         {
             Tag = tag,
             FiltersTasks = true,

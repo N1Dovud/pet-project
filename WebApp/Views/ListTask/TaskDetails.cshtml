@@ -9,18 +9,13 @@
     <h5>@Model?.TaskDetails?.DueDateTime</h5>
     <h6>@Model?.TaskDetails?.TaskStatus</h6>
     <div>
-        @foreach (var tag in Model?.TaskDetails?.Tags ?? [])
+        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel
         {
-            <span class="badge bg-secondary">@tag.Name</span>
-        }
-        @if (Model?.IsOwner ?? false)
-        {
-            @await Html.PartialAsync("_AddTag", new AddTagViewModel
-            {
-                ReturnUrl = Model?.ReturnUrl ?? "",
-                TaskId = Model?.TaskDetails?.Id ?? 0,
-            })
-        }
+            IsOwner = Model?.IsOwner ?? false,
+            ReturnUrl = Model?.ReturnUrl ?? "",
+            Tags = Model?.TaskDetails?.Tags ?? [],
+            TaskId = Model?.TaskDetails?.Id ?? 0,
+        })
     </div>
 
     <div>

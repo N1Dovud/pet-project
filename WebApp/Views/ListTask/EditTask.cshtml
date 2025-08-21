@@ -45,9 +45,13 @@
     {
         <div class="mt-3">
             <h5>Tags:</h5>
-            @foreach (var tag in Model.TaskDetails.Tags)
+            @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel
             {
-                <span class="badge bg-secondary me-1">@tag.Name</span>
+                IsOwner = Model?.IsOwner ?? false,
+                ReturnUrl = Model?.ReturnUrl ?? "",
+                Tags = Model?.TaskDetails?.Tags ?? [],
+                TaskId = Model?.TaskDetails?.Id ?? 0,
+                })
             }
         </div>
     }

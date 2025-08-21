@@ -41,7 +41,7 @@
     {
         @foreach (var task in Model.Tasks)
         {
-            @await Html.PartialAsync("_TaskSummaryCard", new TaskCardModel
+            @await Html.PartialAsync("Partials/Task/_TaskSummaryCard", new TaskCardModel
             {
                 TaskSummary = task,
                 IsOwner = false,

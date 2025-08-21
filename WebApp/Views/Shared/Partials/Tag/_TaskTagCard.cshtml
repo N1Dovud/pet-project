@@ -9,11 +9,16 @@
             <input type="submit" value="@Model?.Tag?.Name" />
         </form>
     }
-    @if (Model.HasDeleteButton)
+    @if (Model.DisplayTag)
+    {
+        <span class="badge bg-secondary">@Model?.Tag?.Name</span>
+    }
+    @if (Model?.HasDeleteButton ?? false)
     {
         <form class="tag-delete-form" method="post" asp-action="DeleteTag" asp-controller="Tag">
-            <h3>@Model?.Tag?.Name</h3>
             <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
+            <input type="hidden" name="taskId" value="@Model?.TaskId" />
+            <input type="hidden" name="returnUrl" value="@Model?.ReturnUrl" />
             <input type="submit" value="&times;" />
         </form>
     }
