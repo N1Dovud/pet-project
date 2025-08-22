@@ -11,6 +11,7 @@ using WebApp.Models.Users;
 using WebApp.Services.ListTaskService;
 using WebApp.Services.ToDoListService;
 using WebApp.Services.TagService;
+using WebApp.Services.CommentService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IToDoListWebApiService, ToDoListWebApiService>();
 builder.Services.AddScoped<IListTaskWebApiService, ListTaskWebApiService>();
 builder.Services.AddScoped<ITagWebApiService, TagWebApiService>();
+builder.Services.AddScoped<ICommentWebApiService, CommentWebApiService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
