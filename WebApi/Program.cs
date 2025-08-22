@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.Services.CommentServices;
 using WebApi.Services.Database;
 using WebApi.Services.ListServices;
 using WebApi.Services.TagsServices;
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<ToDoListDbContext>(options =>
 builder.Services.AddScoped<IToDoListService, ToDoListService>();
 builder.Services.AddScoped<IListTaskService, ListTaskService>();
 builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
