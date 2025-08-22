@@ -1,0 +1,20 @@
+@model CommentViewModel
+
+<div>
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        <ul class="comment-list">
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="comment-item">
+                    <div class="comment-content">@comment.Note</div>
+                    <div class="comment-date">@comment.LastEditDateTime.ToString("g")</div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No comments available.</p>
+    }
+</div>
