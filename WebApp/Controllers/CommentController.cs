@@ -24,11 +24,16 @@ public class CommentController(ICommentWebApiService service) : Controller
             return this.BadRequest(result.Message);
         }
 
-        return this.Redirect(model.ReturnUrl);
+        return this.RedirectToAction("GetTaskDetails", "ListTask", new
+        {
+            taskId = model.TaskId,
+            returnUrl = model.ReturnUrl,
+            isOwner = true,
+        });
     }
 
     [HttpPost("delete-comment")]
-    public async Task<IActionResult> DeleteComment(long commentId, string returnUrl)
+    public async Task<IActionResult> DeleteComment(long commentId, string returnUrl, long taskId)
     {
         if (!this.ModelState.IsValid)
         {
@@ -41,11 +46,16 @@ public class CommentController(ICommentWebApiService service) : Controller
             return this.BadRequest(result.Message);
         }
 
-        return this.Redirect(returnUrl);
+        return this.RedirectToAction("GetTaskDetails", "ListTask", new
+        {
+            taskId = taskId,
+            returnUrl = returnUrl,
+            isOwner = true,
+        });
     }
 
     [HttpPost("edit-comment")]
-    public async Task<IActionResult> EditComment(long commentId, string note, string returnUrl)
+    public async Task<IActionResult> EditComment(long commentId, string note, string returnUrl, long taskId)
     {
         if (!this.ModelState.IsValid)
         {
@@ -58,6 +68,11 @@ public class CommentController(ICommentWebApiService service) : Controller
             return this.BadRequest(result.Message);
         }
 
-        return this.Redirect(returnUrl);
+        return this.RedirectToAction("GetTaskDetails", "ListTask", new
+        {
+            taskId = taskId,
+            returnUrl = returnUrl,
+            isOwner = true,
+        });
     }
 }

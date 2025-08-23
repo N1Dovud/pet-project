@@ -16,9 +16,10 @@
                             </time>
                         </div>
                         <div class="comment-actions">
-                            <button type="button" class="edit-comment-btn" data-comment-id="@comment.Id" data-return-url="@Model.ReturnUrl">Edit</button>
-                            <form method="post" action="delete-comment" style="display: inline;">
+                            <button type="button" class="edit-comment-btn" data-task-id="@Model.TaskId" data-comment-id="@comment.Id" data-return-url="@Model.ReturnUrl">Edit</button>
+                            <form method="post" class="delete-comment-form" action="delete-comment" style="display: inline;">
                                 <input type="hidden" name="commentId" value="@comment.Id" />
+                                <input type="hidden" name="taskId" value="@Model.TaskId" />
                                 <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
                                 <button type="submit" onclick="return confirm('Delete this comment?')">&times;</button>
                             </form>
