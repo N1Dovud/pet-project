@@ -24,7 +24,7 @@
         {
             Comments = Model?.TaskDetails?.Comments ?? [],
             IsOwner = Model?.IsOwner ?? false,
-            ReturnUrl = Model?.ReturnUrl ?? "",
+            ReturnUrl = $"task?taskId={Model?.TaskDetails?.Id}",
             TaskId = Model?.TaskDetails?.Id ?? 0,
         })
     </div>
