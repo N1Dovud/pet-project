@@ -1,20 +1,55 @@
 @model CommentViewModel
 
-<div>
+<section class="comments-section">
     @if (Model.Comments != null && Model.Comments.Any())
     {
-        <ul class="comment-list">
-            @foreach (var comment in Model.Comments)
+        <ul class="comments-list">
+            @if (Model.IsOwner)
             {
-                <li class="comment-item">
-                    <div class="comment-content">@comment.Note</div>
-                    <div class="comment-date">@comment.LastEditDateTime.ToString("g")</div>
-                </li>
+                @foreach (var comment in Model.Comments)
+                {
+                    <li class="comment-item">
+                        <div class="comment-content">
+                            <p class="comment-text">@comment.Note</p>
+                            <time class="comment-date" datetime="@comment.LastEditDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                @comment.LastEditDateTime.ToString("g")
+                            </time>
+                        </div>
+                        <div class="comment-actions">
+                            <button type="button" class="edit-comment-btn" data-comment-id="@comment.Id" data-return-url="@Model.ReturnUrl">Edit</button>
+                            <form method="post" action="delete-comment" style="display: inline;">
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                <button type="submit" onclick="return confirm('Delete this comment?')">&times;</button>
+                            </form>
+                        </div>
+                    </li>
+                }
+                <form method="post" action="add-comment" class="add-comment-form">
+                    <textarea name="note" placeholder="Add a comment..." required rows="3"></textarea>
+                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                    <input type="hidden" name="taskId" value="@Model.TaskId" />
+                    <button type="submit">Add Comment</button>
+                </form>
+            }
+            else
+            {
+                @foreach (var comment in Model.Comments)
+                {
+                    <li class="comment-item">
+                        <div class="comment-content">
+                            <p class="comment-text">@comment.Note</p>
+                            <time class="comment-date" datetime="@comment.LastEditDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                @comment.LastEditDateTime.ToString("g")
+                            </time>
+                        </div>
+                    </li>
+                }
             }
         </ul>
     }
     else
     {
-        <p>No comments available.</p>
+        <p class="no-comments-message">No comments yet.</p>
     }
-</div>
+</section>

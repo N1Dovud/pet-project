@@ -20,23 +20,13 @@
 
     <div>
         <h3>Comments</h3>
-        @if (Model?.TaskDetails?.Comments != null && Model.TaskDetails.Comments.Any())
+        @await Html.PartialAsync("Partials/Comment/_CommentList", new CommentViewModel
         {
-            <ul>
-                @foreach (var comment in Model.TaskDetails.Comments)
-                {
-                    <li>
-                        <strong>@comment.Id</strong>:
-                        <span>@comment.Note</span>
-                        <em>@comment.CreationDateTime.ToString("g")</em>
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No comments available.</p>
-        }
+            Comments = Model?.TaskDetails?.Comments ?? [],
+            IsOwner = Model?.IsOwner ?? false,
+            ReturnUrl = Model?.ReturnUrl ?? "",
+            TaskId = Model?.TaskDetails?.Id ?? 0,
+        })
     </div>
     @if (@Model?.IsOwner ?? false)
     {

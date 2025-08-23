@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Common;
 using WebApi.Helpers;
+using WebApi.Models.Helpers;
 using WebApi.Services.CommentServices;
 
 namespace WebApi.Controllers;
@@ -14,9 +15,9 @@ public class CommentController(ICommentService service) : ControllerBase
 {
 
     [HttpPost("add-comment")]
-    public async Task<IActionResult> AddComment([FromBody] string note, [FromBody] long taskId)
+    public async Task<IActionResult> AddComment(AddCommentModel model)
     {
-        if (!this.ModelState.IsValid)
+        if (!this.ModelState.IsValid || model == null)
         {
             return this.BadRequest("Wrong input");
         }
@@ -27,7 +28,7 @@ public class CommentController(ICommentService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        var result = await service.AddComment(id.Value, taskId, note);
+        var result = await service.AddComment(id.Value, model.TaskId, model.Note);
         if (result.Status != ResultStatus.Success)
         {
             return this.BadRequest(result.Message);
@@ -60,9 +61,9 @@ public class CommentController(ICommentService service) : ControllerBase
     }
 
     [HttpPost("edit-comment")]
-    public async Task<IActionResult> EditComment(long commentId, string note)
+    public async Task<IActionResult> EditComment(EditCommentModel model)
     {
-        if (!this.ModelState.IsValid)
+        if (!this.ModelState.IsValid || model == null)
         {
             return this.BadRequest("Wrong input");
         }
@@ -73,7 +74,7 @@ public class CommentController(ICommentService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        var result = await service.EditComment(id.Value, commentId, note);
+        var result = await service.EditComment(id.Value, model.CommentId, model.Note);
         if (result.Status != ResultStatus.Success)
         {
             return this.BadRequest(result.Message);
