@@ -25,12 +25,6 @@
                         </div>
                     </li>
                 }
-                <form method="post" action="add-comment" class="add-comment-form">
-                    <textarea name="note" placeholder="Add a comment..." required rows="3"></textarea>
-                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                    <input type="hidden" name="taskId" value="@Model.TaskId" />
-                    <button type="submit">Add Comment</button>
-                </form>
             }
             else
             {
@@ -51,5 +45,14 @@
     else
     {
         <p class="no-comments-message">No comments yet.</p>
+    }
+
+    @if (Model.IsOwner) {
+        <form method="post" action="add-comment" class="add-comment-form">
+            <textarea name="note" placeholder="Add a comment..." required rows="3"></textarea>
+            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+            <input type="hidden" name="taskId" value="@Model.TaskId" />
+            <button type="submit">Add Comment</button>
+        </form>
     }
 </section>

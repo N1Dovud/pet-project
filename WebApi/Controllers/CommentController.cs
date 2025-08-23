@@ -38,9 +38,9 @@ public class CommentController(ICommentService service) : ControllerBase
     }
 
     [HttpPost("delete-comment")]
-    public async Task<IActionResult> DeleteComment(long commentId)
+    public async Task<IActionResult> DeleteComment(DeleteCommentModel model)
     {
-        if (!this.ModelState.IsValid)
+        if (!this.ModelState.IsValid || model == null)
         {
             return this.BadRequest("Wrong input");
         }
@@ -51,7 +51,7 @@ public class CommentController(ICommentService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        var result = await service.DeleteComment(id.Value, commentId);
+        var result = await service.DeleteComment(id.Value, model.CommentId);
         if (result.Status != ResultStatus.Success)
         {
             return this.BadRequest(result.Message);
