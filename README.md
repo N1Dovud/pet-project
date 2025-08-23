@@ -44,9 +44,9 @@ Here are some hints for you:
 | EP05 | US20       | Add a tag to a task.                                                            | 5        |      +        |
 | EP05 | US21       | Remove a tag that is added to a task.                                           | 5        |      +        |
 | EP06 | US22       | View the comments on the task details page.                                     | 6        |      +        |
-| EP06 | US23       | Add a new comment to the task.                                                  | 6        |               |
-| EP06 | US24       | Delete a comment that is added to a task.                                       | 6        |               |
-| EP06 | US25       | Edit a new comment                                                              | 6        |               |
+| EP06 | US23       | Add a new comment to the task.                                                  | 6        |      +        |
+| EP06 | US24       | Delete a comment that is added to a task.                                       | 6        |      +        |
+| EP06 | US25       | Edit a new comment                                                              | 6        |      +        |
 | EP07 | US26       | Sign up                                                                         | 7        |      +        |
 | EP07 | US27       | Sign in                                                                         | 7        |      +        |
 | EP07 | US28       | Sign out                                                                        | 7        |      +        |
