@@ -1,8 +1,11 @@
 @model TasksByTagViewModel
 
 <div>
-    <h1>@Model.Tag.Name</h1>
-    @foreach (var task in (Model.TaskSummaries ?? Enumerable.Empty<TaskSummaryModel?>())
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="mb-0 me-2">Tasks tagged:</h1>
+        <span class="badge bg-primary fs-6">@Model?.Tag?.Name</span>
+    </div>
+    @foreach (var task in (Model?.TaskSummaries ?? Enumerable.Empty<TaskSummaryModel?>())
         .Where(t => t is not null)
         .Cast<TaskSummaryModel>())
     {
@@ -10,7 +13,7 @@
         {
             HighlightOverdues = true,
             IsOwner = true,
-            ReturnUrl = $"tag?TagId={Model.Tag.Id}&TagName={Model.Tag.Name}",
+            ReturnUrl = $"tag?TagId={Model?.Tag?.Id}&TagName={Model?.Tag?.Name}",
             TaskSummary = task,
         })
     }
