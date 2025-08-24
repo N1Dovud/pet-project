@@ -9,11 +9,10 @@
     <h5>@Model?.TaskDetails?.DueDateTime</h5>
     <h6>@Model?.TaskDetails?.TaskStatus</h6>
     <div>
-        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel
+        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskDetails?.Tags)
         {
             IsOwner = Model?.IsOwner ?? false,
             ReturnUrl = Model?.ReturnUrl ?? "",
-            Tags = Model?.TaskDetails?.Tags ?? [],
             TaskId = Model?.TaskDetails?.Id ?? 0,
         })
     </div>

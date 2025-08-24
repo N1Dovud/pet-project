@@ -7,6 +7,12 @@ namespace WebApi.Models.ListTasks;
 
 internal class TaskDetailsModel
 {
+    public TaskDetailsModel(IEnumerable<TagModel>? tags, IEnumerable<CommentModel>? comments)
+    {
+        this.Tags = (tags ?? Enumerable.Empty<TagModel>()).ToList().AsReadOnly();
+        this.Comments = (comments ?? Enumerable.Empty<CommentModel>()).ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     [Required]
@@ -22,7 +28,7 @@ internal class TaskDetailsModel
 
     public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
-    public IReadOnlyList<TagModel> Tags { get; } =[];
+    public IReadOnlyList<TagModel> Tags { get; }
 
-    public IReadOnlyList<CommentModel> Comments { get; } =[];
+    public IReadOnlyList<CommentModel> Comments { get; }
 }

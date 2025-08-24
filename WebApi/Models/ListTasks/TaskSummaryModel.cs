@@ -5,6 +5,11 @@ namespace WebApi.Models.ListTasks;
 
 internal class TaskSummaryModel
 {
+    public TaskSummaryModel(IEnumerable<TagModel>? tags)
+    {
+        this.Tags = (tags ?? Enumerable.Empty<TagModel>()).ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     public string Title { get; set; } = string.Empty;

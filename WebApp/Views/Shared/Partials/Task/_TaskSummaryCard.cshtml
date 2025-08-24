@@ -21,11 +21,10 @@
             <br />
         Status: @Model.TaskSummary.TaskStatus
             <br />
-        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel
+        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskSummary?.Tags)
         {
-            IsOwner = Model.IsOwner,
+            IsOwner = Model?.IsOwner ?? false,
             ReturnUrl = Model?.ReturnUrl ?? "",
-            Tags = Model?.TaskSummary?.Tags ?? [],
             TaskId = Model?.TaskSummary?.Id ?? 0,
         })
             <a href="task?taskId=@Model?.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)&isOwner=@Model?.IsOwner">View more</a>

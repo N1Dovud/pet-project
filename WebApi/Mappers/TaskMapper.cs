@@ -165,18 +165,17 @@ internal static class TaskMapper
     public static ListTaskInfoModel ToModel(this ListTaskInfo list)
     {
         ArgumentNullException.ThrowIfNull(list);
-        return new ListTaskInfoModel
+        return new ListTaskInfoModel(list.Tasks.Select(task => task.ToModel()))
         {
             ListId = list.ListId,
             Title = list.Title,
-            Tasks = list.Tasks.Select(task => task.ToModel()).ToList(),
         };
     }
 
     public static TaskSummaryModel ToModel(this TaskSummary? taskSummary)
     {
         ArgumentNullException.ThrowIfNull(taskSummary);
-        return new TaskSummaryModel
+        return new TaskSummaryModel(taskSummary.Tags.Select(tag => tag.ToModel()))
         {
             Id = taskSummary.Id,
             Title = taskSummary.Title,
@@ -184,7 +183,6 @@ internal static class TaskMapper
             CreationDateTime = taskSummary.CreationDateTime,
             DueDateTime = taskSummary.DueDateTime,
             TaskStatus = taskSummary.TaskStatus,
-            Tags = taskSummary.Tags.Select(tag => tag.ToModel()).ToList(),
         };
     }
 
@@ -201,15 +199,15 @@ internal static class TaskMapper
     public static TaskDetailsModel ToModel(this TaskDetails task)
     {
         ArgumentNullException.ThrowIfNull(task);
-        return new TaskDetailsModel
+        return new TaskDetailsModel(
+            task.Tags.Select(t => t.ToModel()),
+            task.Comments.Select(c => c.ToModel()))
         {
             Id = task.Id,
             Title = task.Title,
             Description = task.Description,
             CreationDateTime = task.CreationDateTime,
             DueDateTime = task.DueDateTime,
-            Tags = [.. task.Tags.Select(t => t.ToModel())],
-            Comments = [.. task.Comments.Select(c => c.ToModel())],
             TaskStatus = task.TaskStatus,
         };
     }
