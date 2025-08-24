@@ -1,55 +1,67 @@
 @model TaskCardModel;
-
 @if (Model?.TaskSummary != null)
 {
-    var rowClass = "task";
+    var rowClass = "task card mb-3";
     @if (Model.HighlightOverdues)
     {
         var isOverdue = Model.TaskSummary.DueDateTime < DateTime.Now
                         && Model.TaskSummary.TaskStatus != ToDoListTaskStatus.Completed;
         if (isOverdue)
         {
-            rowClass = "overdue";
+            rowClass = "overdue card mb-3 border-danger";
         }
     }
     <div class="@rowClass">
-        <strong>@Model.TaskSummary.Title</strong> - @Model.TaskSummary.Description
-            <br />
-        Created on: @Model.TaskSummary.CreationDateTime.ToString("g")
-            <br />
-        Due by: @Model.TaskSummary.DueDateTime.ToString("g")
-            <br />
-        Status: @Model.TaskSummary.TaskStatus
-            <br />
-        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskSummary?.Tags)
-        {
-            IsOwner = Model?.IsOwner ?? false,
-            ReturnUrl = Model?.ReturnUrl ?? "",
-            TaskId = Model?.TaskSummary?.Id ?? 0,
-        })
-            <a href="task?taskId=@Model?.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)&isOwner=@Model?.IsOwner">View more</a>
+        <div class="card-body">
+            <h5 class="card-title">@Model.TaskSummary.Title</h5>
+            <p class="card-text">@Model.TaskSummary.Description</p>
+
+            <div class="task-meta text-muted small mb-3">
+                <div><strong>Created:</strong> @Model.TaskSummary.CreationDateTime.ToString("g")</div>
+                <div><strong>Due:</strong> @Model.TaskSummary.DueDateTime.ToString("g")</div>
+                <div>
+                    <strong>Status:</strong>
+                    <span class="badge bg-@(Model.TaskSummary.TaskStatus == ToDoListTaskStatus.Completed ? "success" : "secondary")">
+                        @Model.TaskSummary.TaskStatus
+                    </span>
+                </div>
+            </div>
+
+            @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskSummary?.Tags)
+            {
+                IsOwner = Model?.IsOwner ?? false,
+                ReturnUrl = Model?.ReturnUrl ?? "",
+                TaskId = Model?.TaskSummary?.Id ?? 0,
+                })
+
+        <div class="task-actions d-flex flex-wrap gap-2 align-items-center mt-3">
+            <a class="btn btn-outline-primary btn-sm" href="task?taskId=@Model?.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)&isOwner=@Model?.IsOwner">View more</a>
+
             @if (Model?.IsOwner ?? false)
-            {
-                <a href="/edit-task?taskId=@Model?.TaskSummary.Id&returnUrl=@Model?.ReturnUrl">Edit</a>
-                <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
-                    <input type="hidden" name="taskId" value="@Model?.TaskSummary.Id" />
-                    <input type="hidden" name="returnUrl" value="@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            } else
-            {
-                <form asp-action="UpdateTaskStatus" asp-controller="ListTask" method="post">
-                    <input type="hidden" name="TaskId" value="@Model?.TaskSummary.Id" />
-                    <input type="hidden" name="returnUrl" value="@Model?.ReturnUrl" />
-                    <select name="TaskStatus" onchange="this.form.submit()">
-                        @foreach (ToDoListTaskStatus status in Enum.GetValues(typeof(ToDoListTaskStatus)))
-                        {
-                            <option value="@status" selected="@(Model?.TaskSummary?.TaskStatus == status)">
-                                @status
-                            </option>
-                        }
-                    </select>
-                </form>
-            }
+                {
+                    <a class="btn btn-outline-secondary btn-sm" href="/edit-task?taskId=@Model?.TaskSummary.Id&returnUrl=@Model?.ReturnUrl">Edit</a>
+                    <form class="d-inline" asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="taskId" value="@Model?.TaskSummary.Id" />
+                        <input type="hidden" name="returnUrl" value="@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                }
+                else
+                {
+                    <form class="d-inline" asp-action="UpdateTaskStatus" asp-controller="ListTask" method="post">
+                        <input type="hidden" name="TaskId" value="@Model?.TaskSummary.Id" />
+                        <input type="hidden" name="returnUrl" value="@Model?.ReturnUrl" />
+                        <select class="form-select form-select-sm" name="TaskStatus" onchange="this.form.submit()">
+                            @foreach (ToDoListTaskStatus status in Enum.GetValues(typeof(ToDoListTaskStatus)))
+                            {
+                                <option value="@status" selected="@(Model?.TaskSummary?.TaskStatus == status)">
+                                    @status
+                                </option>
+                            }
+                        </select>
+                    </form>
+                }
+            </div>
+        </div>
     </div>
 }
