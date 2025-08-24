@@ -22,5 +22,5 @@ internal class TaskSummary
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public IReadOnlyList<Tag> Tags { get; } =[];
+    public IReadOnlyList<Tag> Tags { get; }
 }

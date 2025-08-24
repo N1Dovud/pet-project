@@ -9,7 +9,7 @@ internal class TagListViewModel
         this.Tags = tags.ToList().AsReadOnly();
     }
 
-    public IReadOnlyList<TagModel> Tags { get; } =[];
+    public IReadOnlyList<TagModel> Tags { get; }
 
     public string? ReturnUrl { get; set; }
 

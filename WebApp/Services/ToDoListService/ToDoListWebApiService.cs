@@ -1,8 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using Azure;
-using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
 using WebApp.Business.ToDoLists;
 using WebApp.Common;
 using WebApp.Mappers;

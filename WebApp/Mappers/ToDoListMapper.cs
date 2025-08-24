@@ -5,12 +5,9 @@ namespace WebApp.Mappers;
 
 internal static class ToDoListMapper
 {
-    public static ToDoList? ToDomain(this ToDoListModel? list)
+    public static ToDoList ToDomain(this ToDoListModel list)
     {
-        if (list == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(list);
 
         return new ToDoList(list.Tasks.Select(t => t.ToDomain()))
         {
@@ -37,12 +34,9 @@ internal static class ToDoListMapper
         };
     }
 
-    public static ToDoListModel? ToDTO(this ToDoList list)
+    public static ToDoListModel ToDTO(this ToDoList list)
     {
-        if (list == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(list);
 
         return new ToDoListModel(list.Tasks.Select(t => t.ToModel()))
         {

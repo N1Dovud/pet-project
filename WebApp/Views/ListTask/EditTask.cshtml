@@ -9,25 +9,25 @@
         <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
 
         <div class="form-group">
-            <label asp-for="TaskDetails.Title">Task Title</label>
+            <label for="title" asp-for="TaskDetails.Title">Task Title</label>
             <input asp-for="TaskDetails.Title" class="form-control" />
             <span asp-validation-for="TaskDetails.Title" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="TaskDetails.Description">Description</label>
+            <label for="description" asp-for="TaskDetails.Description">Description</label>
             <textarea asp-for="TaskDetails.Description" class="form-control" rows="3"></textarea>
             <span asp-validation-for="TaskDetails.Description" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="TaskDetails.DueDateTime">Due Date</label>
+            <label for="due-date-time" asp-for="TaskDetails.DueDateTime">Due Date</label>
             <input asp-for="TaskDetails.DueDateTime" type="datetime-local" class="form-control" />
             <span asp-validation-for="TaskDetails.DueDateTime" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="TaskDetails.TaskStatus">Status</label>
+            <label for="task-status" asp-for="TaskDetails.TaskStatus">Status</label>
             <select asp-for="TaskDetails.TaskStatus" asp-items="Html.GetEnumSelectList<ToDoListTaskStatus>()" class="form-control"></select>
             <span asp-validation-for="TaskDetails.TaskStatus" class="text-danger"></span>
         </div>

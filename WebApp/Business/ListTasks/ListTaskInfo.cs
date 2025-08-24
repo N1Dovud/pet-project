@@ -1,5 +1,3 @@
-using WebApp.Models.ListTasks;
-
 namespace WebApp.Business.ListTasks;
 
 internal class ListTaskInfo
@@ -13,5 +11,5 @@ internal class ListTaskInfo
 
     public string Title { get; set; } = string.Empty;
 
-    public IReadOnlyList<TaskSummary> Tasks { get; } =[];
+    public IReadOnlyList<TaskSummary> Tasks { get; }
 }

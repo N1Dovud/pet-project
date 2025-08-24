@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using WebApi.Business.Comments;
 using WebApi.Business.Tags;
 using WebApi.Models.Enums;
@@ -25,7 +24,7 @@ internal class TaskDetails
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public IReadOnlyList<Tag> Tags { get; } =[];
+    public IReadOnlyList<Tag> Tags { get; }
 
-    public IReadOnlyList<Comment> Comments { get; } =[];
+    public IReadOnlyList<Comment> Comments { get; }
 }

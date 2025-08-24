@@ -16,5 +16,5 @@ internal class AssignedTasksModel
 
     public bool Descending { get; set; }
 
-    public IReadOnlyList<TaskSummaryModel?> Tasks { get; } =[];
+    public IReadOnlyList<TaskSummaryModel?> Tasks { get; }
 }

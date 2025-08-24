@@ -1,4 +1,3 @@
-using WebApp.Models.Comments;
 using WebApp.Models.ListTasks;
 using WebApp.Models.Tags;
 
@@ -11,7 +10,7 @@ internal class TasksByTagViewModel
         this.TaskSummaries = summaries.ToList().AsReadOnly();
     }
 
-    public IReadOnlyList<TaskSummaryModel?>? TaskSummaries { get; } =[];
+    public IReadOnlyList<TaskSummaryModel?>? TaskSummaries { get; }
 
     public TagModel? Tag { get; set; }
 }

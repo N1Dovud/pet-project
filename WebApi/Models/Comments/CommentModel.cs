@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using WebApi.Services.Database.Entities;
-
 namespace WebApi.Models.Comments;
 
 internal class CommentModel

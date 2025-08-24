@@ -128,7 +128,7 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
             return this.BadRequest();
         }
 
-        Result result = await taskService.AddTaskAsync(model?.TaskDetails.ToDomain(), model?.ListId);
+        Result result = await taskService.AddTaskAsync(model?.TaskDetails?.ToDomain(), model?.ListId);
 
         if (result.Status == ResultStatus.Success)
         {

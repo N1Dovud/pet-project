@@ -1,12 +1,13 @@
+using WebApp.Business.Tags;
 using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.ToDoLists;
 
 internal class ToDoListModel
 {
-    public ToDoListModel(IEnumerable<TaskDetailsModel> tasks)
+    public ToDoListModel(IEnumerable<TaskDetailsModel>? tasks)
     {
-        this.Tasks = tasks.ToList().AsReadOnly();
+        this.Tasks = (tasks ?? Enumerable.Empty<TaskDetailsModel>()).ToList().AsReadOnly();
     }
 
     public long? Id { get; set; }
@@ -15,7 +16,7 @@ internal class ToDoListModel
 
     required public string Description { get; set; }
 
-    public IReadOnlyList<TaskDetailsModel> Tasks { get; } =[];
+    public IReadOnlyList<TaskDetailsModel> Tasks { get; }
 
     public long OwnerId { get; set; }
 }

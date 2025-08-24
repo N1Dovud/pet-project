@@ -11,6 +11,6 @@ namespace WebApp.Models.ListTasks
 
         public string Title { get; set; } = string.Empty;
 
-        public IReadOnlyList<TaskSummaryModel> Tasks { get; } =[];
+        public IReadOnlyList<TaskSummaryModel> Tasks { get; }
     }
 }

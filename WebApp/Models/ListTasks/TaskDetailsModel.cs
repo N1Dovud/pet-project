@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using WebApp.Business.Comments;
 using WebApp.Models.Comments;
 using WebApp.Models.Enums;
 using WebApp.Models.Tags;
@@ -9,8 +10,8 @@ internal class TaskDetailsModel
 {
     public TaskDetailsModel(IEnumerable<TagModel> tags, IEnumerable<CommentModel> comments)
     {
-        this.Tags = tags.ToList().AsReadOnly();
-        this.Comments = comments.ToList().AsReadOnly();
+        this.Tags = (tags ?? Enumerable.Empty<TagModel>()).ToList().AsReadOnly();
+        this.Comments = (comments ?? Enumerable.Empty<CommentModel>()).ToList().AsReadOnly();
     }
 
     public long Id { get; set; }
@@ -28,7 +29,7 @@ internal class TaskDetailsModel
 
     public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
-    public IReadOnlyList<TagModel> Tags { get; } =[];
+    public IReadOnlyList<TagModel> Tags { get; }
 
-    public IReadOnlyList<CommentModel> Comments { get; } =[];
+    public IReadOnlyList<CommentModel> Comments { get; }
 }

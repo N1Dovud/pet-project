@@ -1,4 +1,3 @@
-using WebApp.Models.Comments;
 using WebApp.Models.Enums;
 using WebApp.Models.Tags;
 
@@ -23,5 +22,5 @@ internal class TaskSummaryModel
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public IReadOnlyList<TagModel> Tags { get; } =[];
+    public IReadOnlyList<TagModel> Tags { get; }
 }

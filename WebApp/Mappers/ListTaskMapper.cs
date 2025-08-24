@@ -9,15 +9,12 @@ namespace WebApp.Mappers;
 
 internal static class ListTaskMapper
 {
-    public static TaskDetails? ToDomain(this TaskDetailsModel model)
+    public static TaskDetails ToDomain(this TaskDetailsModel model)
     {
-        if (model == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(model);
 
         return new TaskDetails(
-            model.Tags.Select(t => t?.ToDomain()),
+            model.Tags.Select(t => t.ToDomain()),
             model.Comments.Select(c => c.ToDomain()))
         {
             Id = model.Id,
@@ -29,12 +26,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static Comment? ToDomain(this CommentModel model)
+    public static Comment ToDomain(this CommentModel model)
     {
-        if (model == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(model);
 
         return new Comment
         {
@@ -45,12 +39,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static Tag? ToDomain(this TagModel model)
+    public static Tag ToDomain(this TagModel model)
     {
-        if (model == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(model);
 
         return new Tag
         {
@@ -59,12 +50,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static TaskDetails? ToDomain(this TaskDetailsWebApiModel? taskDetails)
+    public static TaskDetails ToDomain(this TaskDetailsWebApiModel? taskDetails)
     {
-        if (taskDetails == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(taskDetails);
 
         return new TaskDetails(
             taskDetails.Tags.Select(t => t.ToDomain()),
@@ -79,12 +67,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static Comment? ToDomain(this CommentWebApiModel? comment)
+    public static Comment ToDomain(this CommentWebApiModel? comment)
     {
-        if (comment == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(comment);
 
         return new Comment
         {
@@ -131,12 +116,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static ListTaskInfoModel? ToModel(this ListTaskInfo? taskInfo)
+    public static ListTaskInfoModel ToModel(this ListTaskInfo taskInfo)
     {
-        if (taskInfo == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(taskInfo);
 
         return new ListTaskInfoModel(taskInfo.Tasks.Select(t => t.ToModel()) ?? [])
         {
@@ -145,12 +127,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static TaskSummaryModel? ToModel(this TaskSummary taskSummary)
+    public static TaskSummaryModel ToModel(this TaskSummary taskSummary)
     {
-        if (taskSummary == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(taskSummary);
 
         return new TaskSummaryModel(taskSummary.Tags.Select(t => t.ToModel()))
         {
@@ -163,12 +142,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static TagModel? ToModel(this Tag tag)
+    public static TagModel ToModel(this Tag tag)
     {
-        if (tag == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(tag);
 
         return new TagModel
         {
@@ -177,12 +153,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static TaskDetailsModel? ToModel(this TaskDetails taskDetails)
+    public static TaskDetailsModel ToModel(this TaskDetails taskDetails)
     {
-        if (taskDetails == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(taskDetails);
 
         return new TaskDetailsModel(
             taskDetails.Tags.Select(t => t.ToModel()),
@@ -197,12 +170,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static CommentModel? ToModel(this Comment comment)
+    public static CommentModel ToModel(this Comment comment)
     {
-        if (comment == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(comment);
 
         return new CommentModel
         {
@@ -233,12 +203,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static TagWebApiModel? ToWebApiModel(this Tag tag)
+    public static TagWebApiModel ToWebApiModel(this Tag tag)
     {
-        if (tag == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(tag);
 
         return new TagWebApiModel
         {
@@ -247,12 +214,9 @@ internal static class ListTaskMapper
         };
     }
 
-    public static CommentWebApiModel? ToWebApiModel(this Comment comment)
+    public static CommentWebApiModel ToWebApiModel(this Comment comment)
     {
-        if (comment == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(comment);
 
         return new CommentWebApiModel
         {

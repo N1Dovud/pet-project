@@ -15,7 +15,7 @@ public class ToDoList
 
     public string Description { get; set; } = string.Empty;
 
-    public IReadOnlyList<TaskDetails> Tasks { get; } =[];
+    public IReadOnlyList<TaskDetails> Tasks { get; }
 
     public long OwnerId { get; set; }
 }
