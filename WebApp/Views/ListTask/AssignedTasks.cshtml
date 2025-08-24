@@ -1,57 +1,84 @@
 @using WebApp.Models.Helpers.Enums
 @model AssignedTasksModel;
-
-
 @{
     ViewData["Title"] = "Assigned Tasks";
 }
 
-
 <div class="container">
-    <form method="get" asp-action="GetAssignedTasks">
-        <div class="filter">
-            <h3>Filter</h3>
-                <select name="filter" onchange="this.form.submit()" class="filter-select">
-                    @foreach (StatusFilter filter in Enum.GetValues(typeof(StatusFilter)))
-                    {
-                        <option value="@filter" selected="@(filter == Model.Filter)">
-                            @filter
-                        </option>
-                    }
-                </select>
-        </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" asp-action="GetAssignedTasks">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <div class="filter">
+                            <label class="form-label fw-bold">Filter</label>
+                            <select name="filter" onchange="this.form.submit()" class="filter-select form-select">
+                                @foreach (StatusFilter filter in Enum.GetValues(typeof(StatusFilter)))
+                                {
+                                    <option value="@filter" selected="@(filter == Model.Filter)">
+                                        @filter
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
 
-        <div class="sort">
-            <h3>Sort</h3>
-                <select name="sortBy" onchange="this.form.submit()" class="sort-select">
-                    <option value="" ></option>
-                    @foreach (SortField sortField in Enum.GetValues(typeof(SortField)))
-                    {
-                        <option value="@sortField" selected="@(sortField == Model.SortBy)">
-                            @sortField
-                        </option>
-                    }
-                </select>
-                <label for="reverse">Reverse</label>
-                <input id="reverse" type="checkbox" name="descending" checked="@(Model.Descending)" onchange="this.form.submit()" value="true" />
+                    <div class="col-md-4">
+                        <div class="sort">
+                            <label class="form-label fw-bold">Sort By</label>
+                            <select name="sortBy" onchange="this.form.submit()" class="sort-select form-select">
+                                <option value="">None</option>
+                                @foreach (SortField sortField in Enum.GetValues(typeof(SortField)))
+                                {
+                                    <option value="@sortField" selected="@(sortField == Model.SortBy)">
+                                        @sortField
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input id="reverse" type="checkbox" name="descending" checked="@(Model.Descending)"
+                                   onchange="this.form.submit()" value="true" class="form-check-input" />
+                            <label for="reverse" class="form-check-label fw-bold">Reverse Order</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
-    <h2>Assigned Tasks</h2>
-    @if (Model != null && Model.Tasks != null && Model.Tasks.Count > 0)
-    {
-        @foreach (var task in Model.Tasks)
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Assigned Tasks</h2>
+        <span class="badge bg-secondary">
+            @(Model?.Tasks?.Count ?? 0) tasks
+        </span>
+    </div>
+
+    <div class="tasks-container">
+        @if (Model != null && Model.Tasks != null && Model.Tasks.Count > 0)
         {
-            @await Html.PartialAsync("Partials/Task/_TaskSummaryCard", new TaskCardModel
+            @foreach (var task in Model.Tasks)
             {
-                TaskSummary = task,
+                @await Html.PartialAsync("Partials/Task/_TaskSummaryCard", new TaskCardModel
+                {
+                    TaskSummary = task,
                 IsOwner = false,
                 HighlightOverdues = false,
                 ReturnUrl = $"/assigned?filter={Model.Filter}&sortBy={Model.SortBy}&descending={Model.Descending}",
-            })
+                })
+                }
         }
-    }
-    else
-    {
-        <p>Seems like there are no tasks assigned to you!</p>
-    }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <div class="mb-3">
+                    <i class="fs-1">📋</i>
+                </div>
+                <p class="mb-0">No tasks assigned to you at the moment!</p>
+            </div>
+        }
+    </div>
 </div>

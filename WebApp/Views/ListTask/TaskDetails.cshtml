@@ -1,40 +1,91 @@
-@model TaskViewModel;
+@model TaskViewModel
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Main Task Info Card -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">@Model?.TaskDetails?.Title</h4>
+                        <small class="text-muted">Task ID: @Model?.TaskDetails?.Id</small>
+                    </div>
+                    <span class="badge bg-@(Model?.TaskDetails?.TaskStatus == ToDoListTaskStatus.Completed ? "success" : "secondary") fs-6">
+                        @Model?.TaskDetails?.TaskStatus
+                    </span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">@Model?.TaskDetails?.Description</p>
 
-<div>
-    <h1>@Model?.TaskDetails?.Id</h1>
-    <h2>@Model?.TaskDetails?.Title</h2>
-    <h3>@Model?.TaskDetails?.Description</h3>
-    <h4>@Model?.TaskDetails?.CreationDateTime</h4>
-    <h5>@Model?.TaskDetails?.DueDateTime</h5>
-    <h6>@Model?.TaskDetails?.TaskStatus</h6>
-    <div>
-        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskDetails?.Tags)
-        {
-            IsOwner = Model?.IsOwner ?? false,
-            ReturnUrl = Model?.ReturnUrl ?? "",
-            TaskId = Model?.TaskDetails?.Id ?? 0,
-        })
+                    <div class="row text-muted small mb-3">
+                        <div class="col-md-6">
+                            <strong>Created:</strong> @Model?.TaskDetails?.CreationDateTime?.ToString("g")
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Due:</strong> @Model?.TaskDetails?.DueDateTime?.ToString("g")
+                        </div>
+                    </div>
+
+                    @if (Model?.IsOwner ?? false)
+                    {
+                        <div class="d-flex gap-2 mb-3">
+                            <a href="/edit-task?taskId=@Model?.TaskDetails?.Id&returnUrl=@Model?.ReturnUrl"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="me-1">✏️</i> Edit Task
+                            </a>
+                            <form class="d-inline" asp-action="DeleteTask" method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this task?');">
+                                <input type="hidden" name="taskId" value="@Model?.TaskDetails?.Id" />
+                                <input type="hidden" name="returnUrl" value="@Uri.UnescapeDataString(Model?.ReturnUrl?.ToString() ?? string.Empty)" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="me-1">🗑️</i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Tags Section -->
+            @if (Model?.TaskDetails?.Tags?.Any() == true)
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tags</h5>
+                    </div>
+                    <div class="card-body">
+                        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskDetails?.Tags)
+                        {
+                            IsOwner = Model?.IsOwner ?? false,
+                                        ReturnUrl = Model?.ReturnUrl ?? "",
+                                        TaskId = Model?.TaskDetails?.Id ?? 0,
+                                        })
+                </div>
+            </div>
+                        }
+
+            <!-- Comments Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Comments</h5>
+                </div>
+                <div class="card-body p-0">
+                    @await Html.PartialAsync("Partials/Comment/_CommentList", new CommentViewModel
+                    {
+                        Comments = Model?.TaskDetails?.Comments ?? [],
+                                        IsOwner = Model?.IsOwner ?? false,
+                                        ReturnUrl = Model?.ReturnUrl ?? "",
+                                        TaskId = Model?.TaskDetails?.Id ?? 0,
+                                        })
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center">
+                <a href="@Model?.ReturnUrl" class="btn btn-outline-secondary">
+                    <i class="me-1">←</i> Go Back
+                </a>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <h3>Comments</h3>
-        @await Html.PartialAsync("Partials/Comment/_CommentList", new CommentViewModel
-        {
-            Comments = Model?.TaskDetails?.Comments ?? [],
-            IsOwner = Model?.IsOwner ?? false,
-            ReturnUrl = Model?.ReturnUrl ?? "",
-            TaskId = Model?.TaskDetails?.Id ?? 0,
-        })
-    </div>
-    @if (@Model?.IsOwner ?? false)
-    {
-        <a href="/edit-task?taskId=@Model?.TaskDetails?.Id&returnUrl=@Model?.ReturnUrl">Edit</a>
-        <form asp-action="DeleteTask" method="post" onsubmit="return confirm('Are you sure?');">
-            <input type="hidden" name="taskId" value="@Model?.TaskDetails?.Id" />
-                <input type="hidden" name="returnUrl" value="@Uri.UnescapeDataString(Model?.ReturnUrl?.ToString() ?? string.Empty)" />
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-    }
 </div>
-<a href="@Model?.ReturnUrl">Go back!</a>

@@ -1,24 +1,46 @@
-@model AddTaskViewModel;
+@model AddTaskViewModel
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Add New Task</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddTask" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-<h1>Here you can add a task!</h1>
+                        <div class="mb-3">
+                            <label asp-for="TaskDetails.Title" class="form-label"></label>
+                            <input asp-for="TaskDetails.Title" class="form-control" />
+                            <span asp-validation-for="TaskDetails.Title" class="text-danger small"></span>
+                        </div>
 
-<form asp-action="AddTask" method="post">
-    <div>
-        <label asp-for="TaskDetails.Title"></label>
-        <input asp-for="TaskDetails.Title" />
+                        <div class="mb-3">
+                            <label asp-for="TaskDetails.Description" class="form-label"></label>
+                            <textarea asp-for="TaskDetails.Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="TaskDetails.Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TaskDetails.DueDateTime" class="form-label"></label>
+                            <input asp-for="TaskDetails.DueDateTime" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="TaskDetails.DueDateTime" class="text-danger small"></span>
+                        </div>
+
+                        <input type="hidden" value="@Model.ListId" name="listId" />
+
+                        <div class="d-grid">
+                            <input type="submit" value="Add Task" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div>
-        <label asp-for="TaskDetails.Description"></label>
-        <input asp-for="TaskDetails.Description" />
-    </div>
-
-    <div>
-        <label asp-for="TaskDetails.DueDateTime"></label>
-        <input asp-for="TaskDetails.DueDateTime" />
-    </div>
-
-    <input type="hidden" value=@Model.ListId name="listId" />
-    <input type="submit" value="Submit" />
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,26 +1,51 @@
 @model ListTaskInfoModel;
-
 @{
     ViewData["Title"] = "List Info";
 }
 
-
 <div class="container">
-    <a href="/add-task?listId=@Model.ListId" class="btn btn-primary">Add a task</a>
-    <h1>@Model.Title</h1>
-    <p>List ID: @Model.ListId</p>
-    <h2>Tasks</h2>
-    @if (Model.Tasks != null && Model.Tasks.Count > 0)
-    {
-        @foreach (var task in Model.Tasks)
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <h1 class="mb-1">@Model.Title</h1>
+            <small class="text-muted">List ID: @Model.ListId</small>
+        </div>
+        <a href="/add-task?listId=@Model.ListId" class="btn btn-primary">
+            <i class="me-1">➕</i> Add Task
+        </a>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Tasks</h2>
+        <span class="badge bg-secondary">
+            @(Model.Tasks?.Count ?? 0) tasks
+        </span>
+    </div>
+
+    <div class="tasks-container">
+        @if (Model.Tasks != null && Model.Tasks.Count > 0)
         {
-            @await Html.PartialAsync("Partials/Task/_TaskSummaryCard", new TaskCardModel
+            @foreach (var task in Model.Tasks)
             {
-                HighlightOverdues = true,
+                @await Html.PartialAsync("Partials/Task/_TaskSummaryCard", new TaskCardModel
+                {
+                    HighlightOverdues = true,
                 IsOwner = true,
                 ReturnUrl = $"/tasks?listId={Model.ListId}",
                 TaskSummary = task,
-            })
+                })
+                }
         }
-    }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <div class="mb-3">
+                    <i class="fs-1">📝</i>
+                </div>
+                <p class="mb-3">No tasks in this list yet.</p>
+                <a href="/add-task?listId=@Model.ListId" class="btn btn-primary">
+                    Add Your First Task
+                </a>
+            </div>
+        }
+    </div>
 </div>

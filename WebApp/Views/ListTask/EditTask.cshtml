@@ -1,78 +1,105 @@
-@model TaskViewModel;
-<div>
-    <h1>Edit Task</h1>
+@model TaskViewModel
 
-    <form method="post" asp-action="EditTask" asp-controller="ListTask">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Edit Task</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="EditTask" asp-controller="ListTask">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-        <input type="hidden" asp-for="TaskDetails.Id" />
-        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                        <input type="hidden" asp-for="TaskDetails.Id" />
+                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
 
-        <div class="form-group">
-            <label for="title" asp-for="TaskDetails.Title">Task Title</label>
-            <input asp-for="TaskDetails.Title" class="form-control" />
-            <span asp-validation-for="TaskDetails.Title" class="text-danger"></span>
-        </div>
+                        <div class="mb-3">
+                            <label for="title" asp-for="TaskDetails.Title" class="form-label">Task Title</label>
+                            <input asp-for="TaskDetails.Title" class="form-control" />
+                            <span asp-validation-for="TaskDetails.Title" class="text-danger small"></span>
+                        </div>
 
-        <div class="form-group">
-            <label for="description" asp-for="TaskDetails.Description">Description</label>
-            <textarea asp-for="TaskDetails.Description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="TaskDetails.Description" class="text-danger"></span>
-        </div>
+                        <div class="mb-3">
+                            <label for="description" asp-for="TaskDetails.Description" class="form-label">Description</label>
+                            <textarea asp-for="TaskDetails.Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="TaskDetails.Description" class="text-danger small"></span>
+                        </div>
 
-        <div class="form-group">
-            <label for="due-date-time" asp-for="TaskDetails.DueDateTime">Due Date</label>
-            <input asp-for="TaskDetails.DueDateTime" type="datetime-local" class="form-control" />
-            <span asp-validation-for="TaskDetails.DueDateTime" class="text-danger"></span>
-        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="due-date-time" asp-for="TaskDetails.DueDateTime" class="form-label">Due Date</label>
+                                <input asp-for="TaskDetails.DueDateTime" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="TaskDetails.DueDateTime" class="text-danger small"></span>
+                            </div>
 
-        <div class="form-group">
-            <label for="task-status" asp-for="TaskDetails.TaskStatus">Status</label>
-            <select asp-for="TaskDetails.TaskStatus" asp-items="Html.GetEnumSelectList<ToDoListTaskStatus>()" class="form-control"></select>
-            <span asp-validation-for="TaskDetails.TaskStatus" class="text-danger"></span>
-        </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="task-status" asp-for="TaskDetails.TaskStatus" class="form-label">Status</label>
+                                <select asp-for="TaskDetails.TaskStatus" asp-items="Html.GetEnumSelectList<ToDoListTaskStatus>()" class="form-select"></select>
+                                <span asp-validation-for="TaskDetails.TaskStatus" class="text-danger small"></span>
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <p><strong>Created:</strong> @Model?.TaskDetails?.CreationDateTime.ToString("g")</p>
-        </div>
+                        <div class="mb-3">
+                            <div class="bg-light p-2 rounded">
+                                <small class="text-muted"><strong>Created:</strong> @Model?.TaskDetails?.CreationDateTime.ToString("g")</small>
+                            </div>
+                        </div>
 
-        <input type="submit" value="Update Task" class="btn btn-primary" />
-        <a href="@Model?.ReturnUrl" class="btn btn-secondary">Cancel</a>
-    </form>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Update Task</button>
+                            <a href="@Model?.ReturnUrl" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-    <!-- Display existing tags (read-only for now) -->
-    @if (Model?.TaskDetails?.Tags?.Any() == true)
-    {
-        <div class="mt-3">
-            <h5>Tags:</h5>
-            @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskDetails?.Tags ?? [])
+            <!-- Tags Section -->
+            @if (Model?.TaskDetails?.Tags?.Any() == true)
             {
-                IsOwner = Model?.IsOwner ?? false,
-                ReturnUrl = Model?.ReturnUrl ?? "",
-                TaskId = Model?.TaskDetails?.Id ?? 0,
-            })
-        </div>
-    }
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tags</h5>
+                    </div>
+                    <div class="card-body">
+                        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskDetails?.Tags ?? [])
+                        {
+                            IsOwner = Model?.IsOwner ?? false,
+                                        ReturnUrl = Model?.ReturnUrl ?? "",
+                                        TaskId = Model?.TaskDetails?.Id ?? 0,
+                                        })
+                </div>
+            </div>
+                        }
 
-    <!-- Display existing comments (read-only) -->
-    <div class="mt-4">
-        <h4>Comments</h4>
-        @if (Model?.TaskDetails?.Comments?.Any() == true)
-        {
-            <ul class="list-unstyled">
-                @foreach (var comment in Model.TaskDetails.Comments)
-                {
-                    <li class="border-bottom pb-2 mb-2">
-                        <div>@comment.Note</div>
-                        <small class="text-muted">@comment.CreationDateTime.ToString("g")</small>
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p class="text-muted">No comments available.</p>
-        }
+            <!-- Comments Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Comments</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model?.TaskDetails?.Comments?.Any() == true)
+                    {
+                        <div class="comments-list">
+                            @foreach (var comment in Model.TaskDetails.Comments)
+                            {
+                                <div class="comment-item border-bottom pb-3 mb-3">
+                                    <div class="comment-text mb-1">@comment.Note</div>
+                                    <small class="text-muted">@comment.CreationDateTime.ToString("g")</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-3">
+                            <div class="mb-2">💬</div>
+                            <p class="mb-0">No comments available.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
