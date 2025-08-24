@@ -1,8 +1,6 @@
-using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using WebApi.Business.ToDoLists;
 using WebApi.Common;
 using WebApi.Helpers;
 using WebApi.Mappers;
@@ -14,7 +12,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Route("api")]
 [Authorize]
-internal class ToDoListController(IToDoListService listService, ILogger<ToDoListController> logger): ControllerBase
+internal class ToDoListController(IToDoListService listService): ControllerBase
 {
     [HttpGet("lists")]
     public async Task<IActionResult> GetLists()

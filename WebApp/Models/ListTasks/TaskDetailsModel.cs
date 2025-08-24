@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using WebApp.Business.Comments;
 using WebApp.Models.Comments;
 using WebApp.Models.Enums;
 using WebApp.Models.Tags;

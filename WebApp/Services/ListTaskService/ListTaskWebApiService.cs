@@ -135,7 +135,7 @@ internal class ListTaskWebApiService : IListTaskWebApiService
 
         var json = await response.Content.ReadAsStringAsync();
         var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
-        return [.. tasks?.Select(t => t.ToDomain()) ??[]];
+        return [.. tasks?.Select(t => t.ToDomain()) ?? []];
     }
 
     public async Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending)

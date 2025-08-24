@@ -7,7 +7,7 @@ using WebApi.Services.Database;
 
 namespace WebApi.Services.ListServices;
 
-internal class ToDoListService(ToDoListDbContext context, ILogger<ToDoListService> logger): IToDoListService
+internal class ToDoListService(ToDoListDbContext context): IToDoListService
 {
     public async Task<Result> AddToDoListAsync(ToDoList? list)
     {
@@ -58,19 +58,19 @@ internal class ToDoListService(ToDoListDbContext context, ILogger<ToDoListServic
             var domainLists = lists.Select(l => l.ToDomain()).ToList();
             return ResultWithData<List<ToDoList?>?>.Success(domainLists);
         }
-        catch (SqlException ex)
+        catch (SqlException)
         {
             // Database connectivity issues
             // Log the exception
             return ResultWithData<List<ToDoList?>?>.Error("Database connection failed");
         }
-        catch (InvalidOperationException ex)
+        catch (InvalidOperationException)
         {
             // EF context issues (disposed context, etc.)
             // Log the exception
             return ResultWithData<List<ToDoList?>?>.Error("Database operation failed");
         }
-        catch (TaskCanceledException ex)
+        catch (TaskCanceledException)
         {
             // Query timeout or cancellation
             // Log the exception

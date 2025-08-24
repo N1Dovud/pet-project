@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common;
 using WebApi.Helpers;
 using WebApi.Models.Helpers;
 using WebApi.Services.CommentServices;
@@ -15,7 +14,7 @@ internal class CommentController(ICommentService service): ControllerBase
     [HttpPost("add-comment")]
     public async Task<IActionResult> AddComment(AddCommentModel model)
     {
-        if (!this.ModelState.IsValid || model == null)
+        if (!this.ModelState.IsValid || model == null || model.Note == null)
         {
             return this.BadRequest("Wrong input");
         }
@@ -51,7 +50,7 @@ internal class CommentController(ICommentService service): ControllerBase
     [HttpPost("edit-comment")]
     public async Task<IActionResult> EditComment(EditCommentModel model)
     {
-        if (!this.ModelState.IsValid || model == null)
+        if (!this.ModelState.IsValid || model == null || model.Note == null)
         {
             return this.BadRequest("Wrong input");
         }

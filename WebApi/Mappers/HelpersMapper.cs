@@ -21,5 +21,4 @@ internal static class HelpersMapper
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
     }
-
 }
