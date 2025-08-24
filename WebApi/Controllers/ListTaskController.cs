@@ -133,7 +133,7 @@ internal class ListTaskController(IListTaskService service): ControllerBase
         return this.Ok(work?.Data?.Select(t => t.ToModel()));
     }
 
-    [HttpPost("status-update")]
+    [HttpPut("status-update")]
     public async Task<IActionResult> EditTaskStatus(EditTaskStatusModel model)
     {
         var id = this.GetUserId();

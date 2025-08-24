@@ -29,10 +29,10 @@ internal class CommentController(ICommentService service): ControllerBase
         return this.ToHttpResponse(result);
     }
 
-    [HttpPost("delete-comment")]
-    public async Task<IActionResult> DeleteComment(DeleteCommentModel model)
+    [HttpDelete("delete-comment")]
+    public async Task<IActionResult> DeleteComment(long commentId)
     {
-        if (!this.ModelState.IsValid || model == null)
+        if (!this.ModelState.IsValid)
         {
             return this.BadRequest("Wrong input");
         }
@@ -43,11 +43,11 @@ internal class CommentController(ICommentService service): ControllerBase
             return this.Unauthorized();
         }
 
-        var result = await service.DeleteComment(id.Value, model.CommentId);
+        var result = await service.DeleteComment(id.Value, commentId);
         return this.ToHttpResponse(result);
     }
 
-    [HttpPost("edit-comment")]
+    [HttpPut("edit-comment")]
     public async Task<IActionResult> EditComment(EditCommentModel model)
     {
         if (!this.ModelState.IsValid || model == null || model.Note == null)

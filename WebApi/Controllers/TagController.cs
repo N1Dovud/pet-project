@@ -67,10 +67,10 @@ internal class TagController(ITagService tagService): ControllerBase
         return this.ToHttpResponse(result);
     }
 
-    [HttpPost("delete-tag")]
-    public async Task<IActionResult> DeleteTag(DeleteTagModel model)
+    [HttpDelete("delete-tag")]
+    public async Task<IActionResult> DeleteTag(long taskId, long tagId)
     {
-        if (!this.ModelState.IsValid || model == null)
+        if (!this.ModelState.IsValid)
         {
             return this.BadRequest();
         }
@@ -81,7 +81,7 @@ internal class TagController(ITagService tagService): ControllerBase
             return this.Unauthorized();
         }
 
-        var result = await tagService.DeleteTag(id.Value, model.TagId, model.TaskId);
+        var result = await tagService.DeleteTag(id.Value, tagId, taskId);
         return this.ToHttpResponse(result);
     }
 }
