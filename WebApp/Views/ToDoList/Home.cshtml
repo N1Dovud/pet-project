@@ -1,47 +1,60 @@
 @using WebApp.Models.ToDoLists
 @model List<ToDoListModel>
 
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="search-form" method="get" asp-action="SearchTasks" asp-controller="ListTask">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label for="search-type" class="form-label">Search By</label>
+                                <select id="search-type" name="searchType" class="search-select form-select">
+                                    @foreach (SearchFields searchField in Enum.GetValues(typeof(SearchFields)))
+                                    {
+                                        <option value="@searchField" selected="@(searchField == SearchFields.Title)">
+                                            @searchField
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-7">
+                                <label for="query-value" class="form-label">Search Query</label>
+                                <input id="query-value" type="text" name="queryValue" class="search-input form-control" placeholder="Search tasks..." />
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" id="submit-btn" class="submit-button btn btn-outline-primary w-100" style="display: none;">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<form class="search-form" method="get" asp-action="SearchTasks" asp-controller="ListTask">
-    <label for="search-type">Search By</label>
-    <select id="search-type" name="searchType" class="search-select">
-        @foreach (SearchFields searchField in Enum.GetValues(typeof(SearchFields)))
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Your Lists</h2>
+        <a href="@Url.Action("AddList", "ToDoList")" class="btn btn-primary">Create New List</a>
+    </div>
+
+    <div class="lists-container">
+        @if (Model?.Any() == true)
         {
-            <option value="@searchField" selected="@(searchField == SearchFields.Title)">
-                @searchField
-            </option>
+            @foreach (var list in Model.Where(l => l != null))
+            {
+                @await Html.PartialAsync("Partials/ToDoList/_ToDoListCard", list)
+            }
         }
-    </select>
-
-    <input id="query-value" type="text" name="queryValue" class="search-input" placeholder="Search tasks..." />
-    <button type="submit" id="submit-btn" class="submit-button" style="display: none;">Search</button>
-</form>
-<a href="@Url.Action("AddList", "ToDoList")" class="btn btn-primary mb-3">Create New List</a>
-<div>
-	@foreach (var list in @Model?.Where(l => l != null) ?? [])
-	{
-		@await Html.PartialAsync("Partials/ToDoList/_ToDoListCard", list)
-	}
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <div class="mb-3">
+                    <i class="fs-1">📋</i>
+                </div>
+                <p class="mb-3">No lists found. Create your first list to get started!</p>
+                <a href="@Url.Action("AddList", "ToDoList")" class="btn btn-primary">Create Your First List</a>
+            </div>
+        }
+    </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchTypeSelect = document.getElementById("search-type");
-        const queryInput = document.getElementById("query-value");
-        const submitBtn = document.getElementById("submit-btn");
-        function updateInputType() {
-            const selectedValue = searchTypeSelect.value;
-            if (selectedValue === "DueDate" || selectedValue === "CreationDate") {
-                queryInput.type = "date";
-                submitBtn.style.display = "inline-block";
-            }
-            else {
-                queryInput.type = "text";
-                submitBtn.style.display = "none";
-            }
-        }
-
-        updateInputType();
-        searchTypeSelect.addEventListener("change", updateInputType);
-    });
-</script>
