@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.target.classList.contains("add-tag-placeholder")) {
 
             container.innerHTML = `
-                <form method="post" action="add-tag">
-                    <input type="text" id="new-tag-input" name="tagName" placeholder="Enter tag" required />
+                <form method="post" action="add-tag" class="d-flex gap-1">
+                    <input type="text" id="new-tag-input" name="tagName" class="form-control form-control-sm" placeholder="Enter tag" required />
                     <input type="hidden" name="returnUrl" value="${returnUrl}" />
                     <input type="hidden" name="taskId" value="${taskId}" />
-                    <button type="submit" class="save-tag-btn">Add</button>
-                    <button type="button" class="cancel-tag-btn">✖</button>
+                    <button type="submit" class="save-tag-btn btn btn-success btn-sm">Add</button>
+                    <button type="button" class="cancel-tag-btn btn btn-outline-secondary btn-sm">✖</button>
                 </form>
                 `;
         } else if (e.target.classList.contains("cancel-tag-btn")) {
@@ -43,7 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     function resetUI(container) {
-        container.innerHTML = `<div class="add-tag-placeholder add-tag">➕ Add Tag</div>`;
+        container.innerHTML = `<div class="add-tag-placeholder add-tag btn btn-outline-secondary btn-sm d-flex align-items-center">
+            <span class="me-1">➕</span> Add Tag
+        </div>`;
     }
 
     document.addEventListener("click", function (e) {
@@ -61,15 +63,17 @@ document.addEventListener("DOMContentLoaded", function () {
             // Replace the entire <p> with the form
             commentText.outerHTML = `
             <form method="post" action="edit-comment" class="edit-comment-form">
-                <textarea name="note" required rows="3">${originalText}</textarea>
+                <div class="mb-2">
+                    <textarea name="note" class="form-control" required rows="3">${originalText}</textarea>
+                </div>
                 <input type="hidden" name="commentId" value="${commentId}" />
                 <input type="hidden" name="returnUrl" value="${returnUrl}" />
                 <input type="hidden" name="taskId" value="${taskId}" />
-                <div class="edit-actions">
-                    <button type="submit">Save</button>
-                    <button type="button" class="cancel-edit-btn">Cancel</button>
+                <div class="edit-actions d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    <button type="button" class="cancel-edit-btn btn btn-outline-secondary btn-sm">Cancel</button>
                 </div>
-            </form>
+             </form>
         `;
 
             // Hide comment actions
@@ -84,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Handle cancel
             form.querySelector('.cancel-edit-btn').addEventListener('click', function () {
                 // Replace form back with <p> tag
-                form.outerHTML = `<p class="comment-text">${originalText}</p>`;
+                form.outerHTML = `<p class="comment-text card-text mb-2">${originalText}</p>`;
                 // Show comment actions again
                 commentActions.style.display = 'flex';
             });
