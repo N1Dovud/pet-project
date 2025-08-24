@@ -1,24 +1,22 @@
 @model TagListViewModel
-
-
-<div class="tags">
+<div class="tags d-flex flex-wrap gap-2 mb-3">
     @foreach (var tag in Model.Tags)
     {
         @await Html.PartialAsync("Partials/Tag/_TaskTagCard", new TagViewModel
         {
-           DisplayTag = true,
-           FiltersTasks = false,
-           HasDeleteButton = Model.IsOwner,
-           ReturnUrl = Model.ReturnUrl,
-           Tag = tag,
-           TaskId = Model.TaskId,
+            DisplayTag = true,
+        FiltersTasks = false,
+        HasDeleteButton = Model.IsOwner,
+        ReturnUrl = Model.ReturnUrl,
+        Tag = tag,
+        TaskId = Model.TaskId,
         })
-    }
+        }
     @if (Model.IsOwner)
     {
         <div class="add-tag-container" data-task-id="@Model.TaskId" data-return-url="@Model.ReturnUrl">
-            <div class="add-tag-placeholder add-tag">
-                ➕ Add Tag
+            <div class="add-tag-placeholder add-tag btn btn-outline-secondary btn-sm d-flex align-items-center">
+                <span class="me-1">➕</span> Add Tag
             </div>
         </div>
     }

@@ -1,12 +1,11 @@
 @model TagViewModel;
-
-<div class="tag">
+<div class="tag d-flex align-items-center">
     @if (Model.FiltersTasks)
     {
         <form class="tag-filter-form" method="get" asp-action="GetTasksByTag" asp-controller="Tag">
             <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
             <input type="hidden" name="TagName" value="@Model?.Tag?.Name" />
-            <input type="submit" value="@Model?.Tag?.Name" />
+            <input type="submit" class="btn btn-link p-0 text-decoration-none" value="@Model?.Tag?.Name" />
         </form>
     }
     @if (Model.DisplayTag)
@@ -15,11 +14,11 @@
     }
     @if (Model?.HasDeleteButton ?? false)
     {
-        <form class="tag-delete-form" method="post" asp-action="DeleteTag" asp-controller="Tag">
+        <form class="tag-delete-form d-inline ms-1" method="post" asp-action="DeleteTag" asp-controller="Tag">
             <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
             <input type="hidden" name="taskId" value="@Model?.TaskId" />
             <input type="hidden" name="returnUrl" value="@Model?.ReturnUrl" />
-            <input type="submit" value="&times;" />
+            <input type="submit" class="btn btn-sm btn-outline-danger p-1 lh-1" value="&times;" />
         </form>
     }
 </div>
