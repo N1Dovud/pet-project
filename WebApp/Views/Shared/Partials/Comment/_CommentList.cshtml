@@ -1,28 +1,29 @@
 @model CommentViewModel
-
 <section class="comments-section">
     @if (Model.Comments != null && Model.Comments.Any())
     {
-        <ul class="comments-list">
+        <ul class="comments-list list-unstyled">
             @if (Model.IsOwner)
             {
                 @foreach (var comment in Model.Comments)
                 {
-                    <li class="comment-item">
-                        <div class="comment-content">
-                            <p class="comment-text">@comment.Note</p>
-                            <time class="comment-date" datetime="@comment.LastEditDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">
-                                @comment.LastEditDateTime.ToString("g")
-                            </time>
-                        </div>
-                        <div class="comment-actions">
-                            <button type="button" class="edit-comment-btn" data-task-id="@Model.TaskId" data-comment-id="@comment.Id" data-return-url="@Model.ReturnUrl">Edit</button>
-                            <form method="post" class="delete-comment-form" action="delete-comment" style="display: inline;">
-                                <input type="hidden" name="commentId" value="@comment.Id" />
-                                <input type="hidden" name="taskId" value="@Model.TaskId" />
-                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                                <button type="submit" onclick="return confirm('Delete this comment?')">&times;</button>
-                            </form>
+                    <li class="comment-item card mb-3">
+                        <div class="card-body">
+                            <div class="comment-content">
+                                <p class="comment-text card-text mb-2">@comment.Note</p>
+                                <time class="comment-date text-muted small" datetime="@comment.LastEditDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                    @comment.LastEditDateTime.ToString("g")
+                                </time>
+                            </div>
+                            <div class="comment-actions mt-2">
+                                <button type="button" class="edit-comment-btn btn btn-outline-primary btn-sm me-2" data-task-id="@Model.TaskId" data-comment-id="@comment.Id" data-return-url="@Model.ReturnUrl">Edit</button>
+                                <form method="post" class="delete-comment-form d-inline" action="delete-comment">
+                                    <input type="hidden" name="commentId" value="@comment.Id" />
+                                    <input type="hidden" name="taskId" value="@Model.TaskId" />
+                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete this comment?')">&times;</button>
+                                </form>
+                            </div>
                         </div>
                     </li>
                 }
@@ -31,12 +32,14 @@
             {
                 @foreach (var comment in Model.Comments)
                 {
-                    <li class="comment-item">
-                        <div class="comment-content">
-                            <p class="comment-text">@comment.Note</p>
-                            <time class="comment-date" datetime="@comment.LastEditDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">
-                                @comment.LastEditDateTime.ToString("g")
-                            </time>
+                    <li class="comment-item card mb-3">
+                        <div class="card-body">
+                            <div class="comment-content">
+                                <p class="comment-text card-text mb-2">@comment.Note</p>
+                                <time class="comment-date text-muted small" datetime="@comment.LastEditDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                    @comment.LastEditDateTime.ToString("g")
+                                </time>
+                            </div>
                         </div>
                     </li>
                 }
@@ -45,15 +48,17 @@
     }
     else
     {
-        <p class="no-comments-message">No comments yet.</p>
+        <p class="no-comments-message text-muted text-center py-4">No comments yet.</p>
     }
-
-    @if (Model.IsOwner) {
-        <form method="post" action="add-comment" class="add-comment-form">
-            <textarea name="note" placeholder="Add a comment..." required rows="3"></textarea>
+    @if (Model.IsOwner)
+    {
+        <form method="post" action="add-comment" class="add-comment-form mt-4">
+            <div class="mb-3">
+                <textarea name="note" class="form-control" placeholder="Add a comment..." required rows="3"></textarea>
+            </div>
             <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
             <input type="hidden" name="taskId" value="@Model.TaskId" />
-            <button type="submit">Add Comment</button>
+            <button type="submit" class="btn btn-primary">Add Comment</button>
         </form>
     }
 </section>
