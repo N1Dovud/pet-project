@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Common;
+using WebApp.Helpers;
 using WebApp.Mappers;
 using WebApp.Models.Helpers;
 using WebApp.Models.Tags;
@@ -18,7 +19,7 @@ internal class TagController(ITagWebApiService tagservice): Controller
         var work = await tagservice.GetAllTags();
         if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest(work?.Result?.Message);
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
         return this.View(work?.Data?.Select(t => t?.ToModel()).ToList());
@@ -35,7 +36,7 @@ internal class TagController(ITagWebApiService tagservice): Controller
         var work = await tagservice.GetTasksByTag(tagId);
         if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest(work?.Result?.Message);
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
         return this.View("TasksByTag", new TasksByTagViewModel(work?.Data?.Select(t => t?.ToModel()) ?? [])
@@ -56,10 +57,10 @@ internal class TagController(ITagWebApiService tagservice): Controller
             return this.BadRequest("went wrong");
         }
 
-        var work = await tagservice.AddTag(taskId, tagName);
-        if (work?.Status != ResultStatus.Success)
+        var result = await tagservice.AddTag(taskId, tagName);
+        if (result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest(work?.Message);
+            return this.ToHttpResponse(result ?? Result.Error());
         }
 
         return this.Redirect(returnUrl);
@@ -73,10 +74,10 @@ internal class TagController(ITagWebApiService tagservice): Controller
             return this.BadRequest("went wrong");
         }
 
-        var work = await tagservice.DeleteTag(taskId, tagId);
-        if (work?.Status != ResultStatus.Success)
+        var result = await tagservice.DeleteTag(taskId, tagId);
+        if (result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest(work?.Message);
+            return this.ToHttpResponse(result ?? Result.Error());
         }
 
         return this.Redirect(returnUrl);

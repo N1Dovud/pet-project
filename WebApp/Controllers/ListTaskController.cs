@@ -1,8 +1,10 @@
 using System.Globalization;
+using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Business.ListTasks;
 using WebApp.Common;
+using WebApp.Helpers;
 using WebApp.Mappers;
 using WebApp.Models.Helpers;
 using WebApp.Models.Helpers.Enums;
@@ -16,21 +18,21 @@ namespace WebApp.Controllers;
 internal class ListTaskController(IListTaskWebApiService taskService): Controller
 {
     [HttpGet("tasks")]
-    public IActionResult GetListInfo([FromQuery] long listId)
+    public async Task<IActionResult> GetListInfo([FromQuery] long listId)
     {
         if (listId <= 0)
         {
             return this.BadRequest("Invalid list ID");
         }
 
-        var listInfo = taskService.GetListInfoAsync(listId).Result;
+        var work = await taskService.GetListInfoAsync(listId);
 
-        if (listInfo == null)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest();
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View("ListInfo", listInfo.ToModel());
+        return this.View("ListInfo", work?.Data?.ToModel());
     }
 
     [HttpGet("edit-task")]
@@ -41,16 +43,16 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
             return this.BadRequest("Invalid task ID");
         }
 
-        var taskDetails = taskService.GetTaskDetailsAsync(taskId).Result;
-        if (taskDetails == null)
+        var work = taskService.GetTaskDetailsAsync(taskId).Result;
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.NotFound();
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
         return this.View("EditTask", new TaskViewModel
         {
             ReturnUrl = returnUrl,
-            TaskDetails = taskDetails.ToModel(),
+            TaskDetails = work?.Data?.ToModel(),
         });
     }
 
@@ -63,12 +65,12 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
         }
 
         var result = await taskService.EditTaskAsync(model?.TaskDetails?.ToDomain());
-        if (result.Status == ResultStatus.Success)
+        if (result.Status != ResultStatus.Success)
         {
-            return this.Redirect(model?.ReturnUrl ?? "/");
+            return this.ToHttpResponse(result);
         }
 
-        return this.BadRequest("Something went off");
+        return this.Redirect(model?.ReturnUrl ?? "/");
     }
 
     [HttpGet("task")]
@@ -84,17 +86,17 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
             return this.BadRequest("Invalid task ID");
         }
 
-        var taskDetails = await taskService.GetTaskDetailsAsync(taskId);
+        var work = await taskService.GetTaskDetailsAsync(taskId);
 
-        if (taskDetails == null)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest();
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
         return this.View("TaskDetails", new TaskViewModel
         {
             ReturnUrl = returnUrl,
-            TaskDetails = taskDetails.ToModel(),
+            TaskDetails = work?.Data?.ToModel(),
             IsOwner = isOwner,
         });
     }
@@ -130,12 +132,12 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
 
         Result result = await taskService.AddTaskAsync(model?.TaskDetails?.ToDomain(), model?.ListId);
 
-        if (result.Status == ResultStatus.Success)
+        if (result.Status != ResultStatus.Success)
         {
-            return this.RedirectToAction("GetListInfo", new { model?.ListId });
+            return this.ToHttpResponse(result);
         }
 
-        return this.BadRequest();
+        return this.RedirectToAction("GetListInfo", new { model?.ListId });
     }
 
     [HttpPost("delete-task")]
@@ -152,21 +154,24 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
         }
 
         var result = await taskService.DeleteTaskAsync(taskId);
-        if (result.Status == ResultStatus.Success)
+        if (result.Status != ResultStatus.Success)
         {
-            return this.Redirect(returnUrl ?? "/");
+            return this.ToHttpResponse(result);
         }
 
-        this.TempData["Error"] = result.Message ?? "Failed to delete task";
-        return this.RedirectToAction("Home", "ToDoList");
+        return this.Redirect(returnUrl ?? "/");
     }
 
     [HttpGet("overdue")]
     public async Task<IActionResult> GetOverdueTasks()
     {
-        var tasks = await taskService.GetOverdueTasksAsync();
+        var work = await taskService.GetOverdueTasksAsync();
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
+        }
 
-        return this.View("OverdueTasks", tasks?.Select(t => t?.ToModel()).ToList());
+        return this.View("OverdueTasks", work?.Data?.Select(t => t?.ToModel()).ToList());
     }
 
     [HttpGet("assigned")]
@@ -177,8 +182,13 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
             return this.BadRequest("Invalid filter or sort parameters");
         }
 
-        var tasks = await taskService.GetAssignedTasksAsync(filter, sortBy, descending);
-        return this.View("AssignedTasks", new AssignedTasksModel(tasks?.Select(t => t?.ToModel()) ?? [])
+        var work = await taskService.GetAssignedTasksAsync(filter, sortBy, descending);
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
+        }
+
+        return this.View("AssignedTasks", new AssignedTasksModel(work?.Data?.Select(t => t?.ToModel()) ?? [])
         {
             Filter = filter,
             SortBy = sortBy,
@@ -196,12 +206,12 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
 
         var result = await taskService.EditTaskStatusAsync(model.ToDomain());
 
-        if (result.Status == ResultStatus.Success)
+        if (result.Status != ResultStatus.Success)
         {
-            return this.Redirect(returnUrl ?? "/");
+            return this.ToHttpResponse(result);
         }
 
-        return this.BadRequest(result.Message);
+        return this.Redirect(returnUrl ?? "/");
     }
 
     [HttpGet("task-search")]
@@ -212,7 +222,7 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
             return this.BadRequest("Invalid search parameters");
         }
 
-        ResultWithData<List<TaskSummary?>?> result;
+        ResultWithData<List<TaskSummary?>?> work;
         DateTime date;
         if (searchType != SearchFields.Title)
         {
@@ -221,19 +231,19 @@ internal class ListTaskController(IListTaskWebApiService taskService): Controlle
                 return this.BadRequest("Invalid date provided");
             }
 
-            result = await taskService.SearchTasksAsync(searchType, date);
+            work = await taskService.SearchTasksAsync(searchType, date);
         }
         else
         {
-            result = await taskService.SearchTasksAsync(searchType, queryValue);
+            work = await taskService.SearchTasksAsync(searchType, queryValue);
         }
 
-        if (result.Result?.Status != ResultStatus.Success)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest(result.Result?.Message);
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View("TaskSearchResults", new TaskSearchModel(result.Data?.Select(t => t?.ToModel()) ?? [])
+        return this.View("TaskSearchResults", new TaskSearchModel(work.Data?.Select(t => t?.ToModel()) ?? [])
         {
             ReturnUrl = $"/task-search?searchType={searchType}&queryValue={queryValue}",
         });

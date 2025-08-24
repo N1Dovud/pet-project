@@ -5,7 +5,7 @@ namespace WebApp.Services.ToDoListService;
 
 internal interface IToDoListWebApiService
 {
-    Task<List<ToDoList?>?> GetToDoListsAsync();
+    Task<ResultWithData<List<ToDoList?>?>> GetToDoListsAsync();
 
     Task<Result> AddToDoListAsync(ToDoList? list);
 
@@ -13,5 +13,5 @@ internal interface IToDoListWebApiService
 
     Task<Result> UpdateToDoListAsync(ToDoList? list);
 
-    Task<ToDoList?> GetToDoListAsync(long listId);
+    Task<ResultWithData<ToDoList?>> GetToDoListAsync(long listId);
 }

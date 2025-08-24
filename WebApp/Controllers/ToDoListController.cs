@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Business.ToDoLists;
 using WebApp.Common;
+using WebApp.Helpers;
 using WebApp.Mappers;
 using WebApp.Models.ToDoLists;
 using WebApp.Services.ToDoListService;
@@ -15,13 +16,13 @@ internal class ToDoListController(IToDoListWebApiService service): Controller
     [Route("home")]
     public async Task<IActionResult> Home()
     {
-        List<ToDoList?>? lists = await service.GetToDoListsAsync();
-        if (lists == null)
+        var work = await service.GetToDoListsAsync();
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.RedirectToAction("Index", "Auth");
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View(lists.Select(l => l?.ToDTO()).ToList());
+        return this.View(work?.Data?.Select(l => l?.ToDTO()).ToList());
     }
 
     [HttpGet("add-list")]
@@ -44,18 +45,12 @@ internal class ToDoListController(IToDoListWebApiService service): Controller
         }
 
         Result result = await service.AddToDoListAsync(list.ToDomain());
-        if (result.Status == ResultStatus.Success)
+        if (result?.Status != ResultStatus.Success)
         {
-            return this.RedirectToAction("Home", "ToDoList");
+            return this.ToHttpResponse(result ?? Result.Error());
         }
 
-        if (result.Status == ResultStatus.Unauthorized)
-        {
-            return this.RedirectToAction("SignIn", "Auth");
-        }
-
-        this.ViewBag.Error = result.Message ?? "Failed to create list";
-        return this.View(list);
+        return this.RedirectToAction("Home", "ToDoList");
     }
 
     [HttpPost("delete-list")]
@@ -72,18 +67,11 @@ internal class ToDoListController(IToDoListWebApiService service): Controller
         }
 
         var result = await service.DeleteToDoListAsync(id);
-        if (result.Status == ResultStatus.Unauthorized)
+        if (result?.Status != ResultStatus.Success)
         {
-            this.TempData["Error"] = result.Message ?? "Sign in please";
-            return this.RedirectToAction("SignIn", "Auth");
+            return this.ToHttpResponse(result ?? Result.Error());
         }
 
-        if (result.Status == ResultStatus.Success)
-        {
-            return this.RedirectToAction("Home", "ToDoList");
-        }
-
-        this.TempData["Error"] = result.Message ?? "Failed to delete list";
         return this.RedirectToAction("Home", "ToDoList");
     }
 
@@ -101,31 +89,24 @@ internal class ToDoListController(IToDoListWebApiService service): Controller
         }
 
         Result result = await service.UpdateToDoListAsync(list.ToDomain());
-        if (result.Status == ResultStatus.Success)
+        if (result?.Status != ResultStatus.Success)
         {
-            return this.RedirectToAction("Home", "ToDoList");
+            return this.ToHttpResponse(result ?? Result.Error());
         }
 
-        if (result.Status == ResultStatus.Unauthorized)
-        {
-            return this.RedirectToAction("SignIn", "Auth");
-        }
-
-        this.ViewBag.Error = result.Message ?? "Failed to update list";
-        return this.View(list);
+        return this.RedirectToAction("Home", "ToDoList");
     }
 
     [HttpGet("update-list")]
     public async Task<IActionResult> UpdateList(long id)
     {
-        var list = await service.GetToDoListAsync(id);
+        var work = await service.GetToDoListAsync(id);
 
-        if (list == null)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            this.TempData["Error"] = "List not found";
-            return this.RedirectToAction("Home", "ToDoList");
+            return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View(list.ToModel());
+        return this.View(work?.Data?.ToModel());
     }
 }

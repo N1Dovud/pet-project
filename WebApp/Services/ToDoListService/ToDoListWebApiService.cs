@@ -1,7 +1,9 @@
 using System.Net;
 using System.Text.Json;
+using WebApp.Business.ListTasks;
 using WebApp.Business.ToDoLists;
 using WebApp.Common;
+using WebApp.Helpers;
 using WebApp.Mappers;
 using WebApp.Models.ToDoLists;
 
@@ -34,17 +36,7 @@ public class ToDoListWebApiService : IToDoListWebApiService
         var route = "list";
         var uri = new Uri(this.baseUrl + route);
         var response = await this.httpClient.PostAsJsonAsync(uri, list.ToWebApiModel(), this.options);
-        if (response.StatusCode == HttpStatusCode.Created)
-        {
-            return Result.Success("List created successfully");
-        }
-
-        return response.StatusCode switch
-        {
-            HttpStatusCode.BadRequest => Result.Error("Bad request"),
-            HttpStatusCode.Unauthorized => Result.Error("Unauthorized"),
-            _ => Result.Error($"Failed to create list. Status code: {response.StatusCode}"),
-        };
+        return await HttpResponseMapper.MapHttpResponseToResult(response);
     }
 
     public async Task<Result> UpdateToDoListAsync(ToDoList? list)
@@ -57,17 +49,7 @@ public class ToDoListWebApiService : IToDoListWebApiService
         var route = "list";
         var uri = new Uri(this.baseUrl + route);
         var response = await this.httpClient.PutAsJsonAsync(uri, list.ToWebApiModel(), this.options);
-        if (response.StatusCode == HttpStatusCode.OK)
-        {
-            return Result.Success("List updated successfully");
-        }
-
-        return response.StatusCode switch
-        {
-            HttpStatusCode.BadRequest => Result.Error("Bad request"),
-            HttpStatusCode.Unauthorized => Result.Unauthorized("Unauthorized"),
-            _ => Result.Error($"Failed to update a list. Status code: {response.StatusCode}"),
-        };
+        return await HttpResponseMapper.MapHttpResponseToResult(response);
     }
 
     public async Task<Result> DeleteToDoListAsync(long listId)
@@ -76,62 +58,36 @@ public class ToDoListWebApiService : IToDoListWebApiService
         var uri = new Uri($"{this.baseUrl}{route}?listId={listId}");
         var response = await this.httpClient.DeleteAsync(uri);
 
-        return response.StatusCode switch
-        {
-            HttpStatusCode.OK or HttpStatusCode.NoContent =>
-                Result.Success("Deleted"),
-
-            HttpStatusCode.NotFound =>
-                Result.Error("Item does not exist"),
-
-            HttpStatusCode.Forbidden =>
-                Result.Error("You are not the owner of the list"),
-
-            HttpStatusCode.Unauthorized =>
-                Result.Unauthorized("Please sign in"),
-
-            _ =>
-                Result.Error("Probably server error")
-        };
+        return await HttpResponseMapper.MapHttpResponseToResult(response);
     }
 
-    public async Task<List<ToDoList?>?> GetToDoListsAsync()
+    public async Task<ResultWithData<List<ToDoList?>?>> GetToDoListsAsync()
     {
         var route = "lists";
         var uri = new Uri(this.baseUrl + route);
         var response = await this.httpClient.GetAsync(uri);
         if (!response.IsSuccessStatusCode)
         {
-            return null;
+            return await HttpResponseMapper.MapHttpResponseToResult<List<ToDoList?>?>(response);
         }
 
         var json = await response.Content.ReadAsStringAsync();
         var lists = JsonSerializer.Deserialize<List<ToDoListWebApiModel>>(json, this.options);
-        if (lists == null)
-        {
-            return null;
-        }
-
-        return [.. lists.Select(l => l.ToDomain())];
+        return ResultWithData<List<ToDoList?>?>.Success([.. lists?.Select(l => l?.ToDomain()) ?? []]);
     }
 
-    public async Task<ToDoList?> GetToDoListAsync(long listId)
+    public async Task<ResultWithData<ToDoList?>> GetToDoListAsync(long listId)
     {
         var route = "list";
         var uri = new Uri($"{this.baseUrl}{route}?listId={listId}");
         var response = await this.httpClient.GetAsync(uri);
         if (!response.IsSuccessStatusCode)
         {
-            return null;
+            return await HttpResponseMapper.MapHttpResponseToResult<ToDoList?>(response);
         }
 
         var json = await response.Content.ReadAsStringAsync();
         var list = JsonSerializer.Deserialize<ToDoListWebApiModel>(json, this.options);
-        if (list == null)
-        {
-            return null;
-        }
-
-        return list.ToDomain();
+        return ResultWithData<ToDoList?>.Success(list?.ToDomain());
     }
 }

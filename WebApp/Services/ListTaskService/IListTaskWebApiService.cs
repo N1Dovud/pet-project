@@ -7,19 +7,19 @@ namespace WebApp.Services.ListTaskService;
 
 internal interface IListTaskWebApiService
 {
-    Task<ListTaskInfo?> GetListInfoAsync(long listId);
+    Task<ResultWithData<ListTaskInfo?>> GetListInfoAsync(long listId);
 
     Task<Result> EditTaskAsync(TaskDetails? task);
 
-    Task<TaskDetails?> GetTaskDetailsAsync(long taskId);
+    Task<ResultWithData<TaskDetails?>> GetTaskDetailsAsync(long taskId);
 
     Task<Result> AddTaskAsync(TaskDetails? task, long? listId);
 
     Task<Result> DeleteTaskAsync(long taskId);
 
-    Task<List<TaskSummary?>?> GetOverdueTasksAsync();
+    Task<ResultWithData<List<TaskSummary?>?>> GetOverdueTasksAsync();
 
-    Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending);
+    Task<ResultWithData<List<TaskSummary?>?>> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending);
 
     Task<Result> EditTaskStatusAsync(EditTaskStatus? model);
 

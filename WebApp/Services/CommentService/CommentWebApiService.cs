@@ -1,5 +1,6 @@
 using System.Text.Json;
 using WebApp.Common;
+using WebApp.Helpers;
 
 namespace WebApp.Services.CommentService;
 
@@ -30,32 +31,16 @@ internal class CommentWebApiService : ICommentWebApiService
         };
         var result = await this.httpClient.PostAsJsonAsync(url, obj, this.options);
 
-        if (result.StatusCode != System.Net.HttpStatusCode.OK)
-        {
-            var errorMessage = await result.Content.ReadAsStringAsync();
-            return Result.Error("Could not add comment" + result.StatusCode + errorMessage);
-        }
-
-        return Result.Success();
+        return await HttpResponseMapper.MapHttpResponseToResult(result);
     }
 
     public async Task<Result> DeleteComment(long commentId)
     {
         var route = "delete-comment";
-        var url = new Uri($"{this.baseUrl}{route}");
-        var obj = new
-        {
-            commentId,
-        };
-        var result = await this.httpClient.PostAsJsonAsync(url, obj, this.options);
+        var url = new Uri($"{this.baseUrl}{route}?commendId={commentId}");
+        var result = await this.httpClient.DeleteAsync(url);
 
-        if (result.StatusCode != System.Net.HttpStatusCode.OK)
-        {
-            var errorMessage = await result.Content.ReadAsStringAsync();
-            return Result.Error("Could not delete comment" + result.StatusCode + errorMessage);
-        }
-
-        return Result.Success();
+        return await HttpResponseMapper.MapHttpResponseToResult(result);
     }
 
     public async Task<Result> EditComment(long commentId, string note)
@@ -67,14 +52,8 @@ internal class CommentWebApiService : ICommentWebApiService
             commentId,
             note,
         };
-        var result = await this.httpClient.PostAsJsonAsync(url, obj, this.options);
+        var result = await this.httpClient.PutAsJsonAsync(url, obj, this.options);
 
-        if (result.StatusCode != System.Net.HttpStatusCode.OK)
-        {
-            var errorMessage = await result.Content.ReadAsStringAsync();
-            return Result.Error("Could not edit comment" + result.StatusCode + errorMessage);
-        }
-
-        return Result.Success();
+        return await HttpResponseMapper.MapHttpResponseToResult(result);
     }
 }

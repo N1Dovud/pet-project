@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Common;
+using WebApp.Helpers;
 using WebApp.Models.Helpers;
 using WebApp.Services.CommentService;
 
@@ -21,7 +22,7 @@ internal class CommentController(ICommentWebApiService service): Controller
         var result = await service.AddComment(model.TaskId, model.Note);
         if (result.Status != ResultStatus.Success)
         {
-            return this.BadRequest(result.Message);
+            return this.ToHttpResponse(result);
         }
 
         return this.RedirectToAction("GetTaskDetails", "ListTask", new
@@ -43,7 +44,7 @@ internal class CommentController(ICommentWebApiService service): Controller
         var result = await service.DeleteComment(commentId);
         if (result.Status != ResultStatus.Success)
         {
-            return this.BadRequest(result.Message);
+            return this.ToHttpResponse(result);
         }
 
         return this.RedirectToAction("GetTaskDetails", "ListTask", new
@@ -65,7 +66,7 @@ internal class CommentController(ICommentWebApiService service): Controller
         var result = await service.EditComment(commentId, note);
         if (result.Status != ResultStatus.Success)
         {
-            return this.BadRequest(result.Message);
+            return this.ToHttpResponse(result);
         }
 
         return this.RedirectToAction("GetTaskDetails", "ListTask", new
