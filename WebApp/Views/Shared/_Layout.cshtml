@@ -3,29 +3,36 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - WebApp</title>
+	<title>@ViewData["Title"] - ToDoList</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-	<header>
-		<nav>
-			@if (User.Identity?.IsAuthenticated == true)
-			{
-                <a asp-action="GetOverdueTasks" asp-controller="ListTask">Overdue tasks</a>
-                <a asp-action="GetAssignedTasks" asp-controller="ListTask">Assigned tasks</a>
-                <a href="/">Home</a>
-                <a asp-action="GetTags" asp-controller="Tag">Tags</a>
-				<form asp-action="Logout" asp-controller="Auth">
-					<button type="submit" class="btn btn-danger">Sign out</button>
-				</form>
-			} else
-			{
-				<a asp-action="SignIn" asp-controller="Auth">Sign in</a>
-				<a asp-action="SignUp" asp-controller="Auth">Sign up</a>
-			}
-		</nav>
+    <header class="bg-white border-bottom">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="navbar-nav me-auto">
+                        <a class="nav-link" asp-action="GetOverdueTasks" asp-controller="ListTask">Overdue tasks</a>
+                        <a class="nav-link" asp-action="GetAssignedTasks" asp-controller="ListTask">Assigned tasks</a>
+                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" asp-action="GetTags" asp-controller="Tag">Tags</a>
+                    </div>
+                    <form class="d-flex" asp-action="Logout" asp-controller="Auth">
+                        <button type="submit" class="btn btn-danger btn-sm">Sign out</button>
+                    </form>
+                }
+                else
+                {
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-link" asp-action="SignIn" asp-controller="Auth">Sign in</a>
+                        <a class="nav-link" asp-action="SignUp" asp-controller="Auth">Sign up</a>
+                    </div>
+                }
+            </div>
+        </nav>
     </header>
     <div class="container">
 		@if (ViewBag.Error != null)
@@ -40,12 +47,6 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
