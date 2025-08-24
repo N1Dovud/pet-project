@@ -1,10 +1,16 @@
-using WebApp.Models.ListTasks;
-
-public class ListTaskInfoModel
+namespace WebApp.Models.ListTasks
 {
-    public long ListId { get; set; }
+    internal class ListTaskInfoModel
+    {
+        public ListTaskInfoModel(IEnumerable<TaskSummaryModel> tasks)
+        {
+            this.Tasks = tasks.ToList().AsReadOnly();
+        }
 
-    public string Title { get; set; } = string.Empty;
+        public long ListId { get; set; }
 
-    public List<TaskSummaryModel> Tasks { get; set; } = [];
+        public string Title { get; set; } = string.Empty;
+
+        public IReadOnlyList<TaskSummaryModel> Tasks { get; } =[];
+    }
 }

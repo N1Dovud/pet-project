@@ -1,9 +1,8 @@
-using WebApp.Business.ToDoLists;
 using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.Helpers;
 
-public class TaskCardModel
+internal class TaskCardModel
 {
     public TaskSummaryModel? TaskSummary { get; set; }
 

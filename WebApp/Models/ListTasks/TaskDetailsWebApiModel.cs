@@ -5,8 +5,14 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.ListTasks;
 
-public class TaskDetailsWebApiModel
+internal class TaskDetailsWebApiModel
 {
+    public TaskDetailsWebApiModel(IEnumerable<TagWebApiModel> tags, IEnumerable<CommentWebApiModel> comments)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+        this.Comments = comments.ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     [Required]
@@ -22,7 +28,7 @@ public class TaskDetailsWebApiModel
 
     public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
-    public List<TagWebApiModel> Tags { get; set; } = [];
+    public IReadOnlyList<TagWebApiModel> Tags { get; set; } =[];
 
-    public List<CommentWebApiModel> Comments { get; set; } = [];
+    public IReadOnlyList<CommentWebApiModel> Comments { get; set; } =[];
 }

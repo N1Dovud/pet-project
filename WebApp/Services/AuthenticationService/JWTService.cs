@@ -7,7 +7,7 @@ using WebApp.Models.Users;
 
 namespace WebApp.Services.AuthenticationService;
 
-public class JWTService(IConfiguration configuration) : IJWTService
+internal class JwtService(IConfiguration configuration): IJwtService
 {
     public void ClearJwtToken(HttpContext context)
     {

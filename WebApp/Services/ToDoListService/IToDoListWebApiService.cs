@@ -1,10 +1,9 @@
 using WebApp.Business.ToDoLists;
 using WebApp.Common;
-using WebApp.Models;
 
-namespace WebApp.Services.DatabaseService;
+namespace WebApp.Services.ToDoListService;
 
-public interface IToDoListWebApiService
+internal interface IToDoListWebApiService
 {
     Task<List<ToDoList?>?> GetToDoListsAsync();
 

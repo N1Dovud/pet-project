@@ -1,13 +1,18 @@
+using System.Collections.ObjectModel;
 using WebApi.Business.Comments;
 using WebApi.Business.Tags;
-using WebApi.Models.Comments;
 using WebApi.Models.Enums;
-using WebApi.Models.Tags;
 
 namespace WebApi.Business.ListTasks;
 
-public class TaskDetails
+internal class TaskDetails
 {
+    public TaskDetails(IEnumerable<Tag> tags, IEnumerable<Comment> comments)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+        this.Comments = comments.ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -20,7 +25,7 @@ public class TaskDetails
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public List<Tag> Tags { get; set; } = [];
+    public IReadOnlyList<Tag> Tags { get; } =[];
 
-    public List<Comment> Comments { get; set; } = [];
+    public IReadOnlyList<Comment> Comments { get; } =[];
 }

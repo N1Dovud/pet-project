@@ -13,7 +13,7 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-public class ListTaskController(IListTaskWebApiService taskService) : Controller
+internal class ListTaskController(IListTaskWebApiService taskService): Controller
 {
     [HttpGet("tasks")]
     public IActionResult GetListInfo([FromQuery] long listId)
@@ -114,8 +114,8 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
 
         var model = new AddTaskViewModel
         {
-            listId = listId,
-            taskDetails = new TaskDetailsModel(),
+            ListId = listId,
+            TaskDetails = new TaskDetailsModel([], []),
         };
         return this.View("AddTask", model);
     }
@@ -128,11 +128,11 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest();
         }
 
-        Result result = await taskService.AddTaskAsync(model?.taskDetails.ToDomain(), model?.listId);
+        Result result = await taskService.AddTaskAsync(model?.TaskDetails.ToDomain(), model?.ListId);
 
         if (result.Status == ResultStatus.Success)
         {
-            return this.RedirectToAction("GetListInfo", new { model?.listId });
+            return this.RedirectToAction("GetListInfo", new { model?.ListId });
         }
 
         return this.BadRequest();
@@ -166,7 +166,7 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
     {
         var tasks = await taskService.GetOverdueTasksAsync();
 
-        return this.View("OverdueTasks", tasks.Select(t => t.ToModel()).ToList());
+        return this.View("OverdueTasks", tasks?.Select(t => t?.ToModel()).ToList());
     }
 
     [HttpGet("assigned")]
@@ -178,12 +178,11 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
         }
 
         var tasks = await taskService.GetAssignedTasksAsync(filter, sortBy, descending);
-        return this.View("AssignedTasks", new AssignedTasksModel
+        return this.View("AssignedTasks", new AssignedTasksModel(tasks?.Select(t => t?.ToModel()) ?? [])
         {
             Filter = filter,
             SortBy = sortBy,
             Descending = descending,
-            Tasks = tasks.Select(t => t.ToModel()).ToList(),
         });
     }
 
@@ -234,8 +233,8 @@ public class ListTaskController(IListTaskWebApiService taskService) : Controller
             return this.BadRequest(result.Result?.Message);
         }
 
-        return this.View("TaskSearchResults", new TaskSearchModel {
-            Tasks = result.Data?.Select(t => t.ToModel()).ToList(),
+        return this.View("TaskSearchResults", new TaskSearchModel(result.Data?.Select(t => t?.ToModel()) ?? [])
+        {
             ReturnUrl = $"/task-search?searchType={searchType}&queryValue={queryValue}",
         });
     }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models.Helpers.Enums;
 
-public enum SortField
+internal enum SortField
 {
     Name,
 

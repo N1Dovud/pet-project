@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.Models.Helpers;
+namespace WebApi.Models.Helpers;
 
-public enum SortField
+internal enum SortField
 {
     Name,
 

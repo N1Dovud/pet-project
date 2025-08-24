@@ -1,6 +1,6 @@
 namespace WebApi.Models.Helpers;
 
-public class DeleteCommentModel
+internal class DeleteCommentModel
 {
     public long CommentId { get; set; }
 }

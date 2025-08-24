@@ -1,13 +1,12 @@
 using System.Text.Json;
-using System.Threading.Tasks;
 using WebApp.Common;
 
 namespace WebApp.Services.CommentService;
 
-public class CommentWebApiService : ICommentWebApiService
+internal class CommentWebApiService : ICommentWebApiService
 {
     private readonly HttpClient httpClient;
-    private readonly string baseUrl;
+    private readonly string? baseUrl;
     private readonly JsonSerializerOptions options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -15,6 +14,7 @@ public class CommentWebApiService : ICommentWebApiService
 
     public CommentWebApiService(IHttpClientFactory factory, IConfiguration configuration)
     {
+        ArgumentNullException.ThrowIfNull(factory);
         this.httpClient = factory.CreateClient("ApiWithJwt");
         this.baseUrl = configuration["WebApiAddress"];
     }

@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebApi.Services.CommentServices;
 using WebApi.Services.Database;
 using WebApi.Services.ListServices;
-using WebApi.Services.TagsServices;
+using WebApi.Services.TagServices;
 using WebApi.Services.TaskServices;
 
 var builder = WebApplication.CreateBuilder(args);

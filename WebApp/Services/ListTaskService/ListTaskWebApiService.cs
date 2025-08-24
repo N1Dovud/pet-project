@@ -1,21 +1,18 @@
-using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
 using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.Helpers.Enums;
 using WebApp.Models.ListTasks;
-using WebApp.Models.ToDoLists;
 
 namespace WebApp.Services.ListTaskService;
 
-public class ListTaskWebApiService : IListTaskWebApiService
+internal class ListTaskWebApiService : IListTaskWebApiService
 {
     private readonly HttpClient httpClient;
-    private readonly string baseUrl;
+    private readonly string? baseUrl;
     private readonly JsonSerializerOptions options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -23,6 +20,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
 
     public ListTaskWebApiService(IHttpClientFactory factory, IConfiguration configuration)
     {
+        ArgumentNullException.ThrowIfNull(factory);
         this.httpClient = factory.CreateClient("ApiWithJwt");
         this.baseUrl = configuration["WebApiAddress"];
     }
@@ -121,7 +119,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
         var json = await response.Content.ReadAsStringAsync();
         Console.WriteLine(json);
         var taskDetails = JsonSerializer.Deserialize<TaskDetailsWebApiModel>(json, this.options);
-        Console.WriteLine("here is the task Details: " + taskDetails.Tags.Count);
+        Console.WriteLine("here is the task Details: " + taskDetails?.Tags.Count);
         return taskDetails?.ToDomain();
     }
 
@@ -137,7 +135,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
 
         var json = await response.Content.ReadAsStringAsync();
         var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
-        return [.. tasks.Select(t => t.ToDomain())];
+        return [.. tasks?.Select(t => t.ToDomain()) ??[]];
     }
 
     public async Task<List<TaskSummary?>?> GetAssignedTasksAsync(StatusFilter filter, SortField? sortBy, bool descending)
@@ -152,7 +150,7 @@ public class ListTaskWebApiService : IListTaskWebApiService
 
         var json = await response.Content.ReadAsStringAsync();
         var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel>>(json, this.options);
-        return [.. tasks.Select(t => t.ToDomain())];
+        return [.. tasks?.Select(t => t.ToDomain()) ?? []];
     }
 
     public async Task<Result> EditTaskStatusAsync(EditTaskStatus? model)

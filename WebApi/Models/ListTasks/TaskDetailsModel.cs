@@ -1,12 +1,11 @@
-using WebApi.Models.Enums;
-using WebApi.Business.Comments;
-using WebApi.Models.Tags;
-using WebApi.Models.Comments;
 using System.ComponentModel.DataAnnotations;
+using WebApi.Models.Comments;
+using WebApi.Models.Enums;
+using WebApi.Models.Tags;
 
 namespace WebApi.Models.ListTasks;
 
-public class TaskDetailsModel
+internal class TaskDetailsModel
 {
     public long Id { get; set; }
 
@@ -23,7 +22,7 @@ public class TaskDetailsModel
 
     public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
-    public List<TagModel> Tags { get; set; } = [];
+    public IReadOnlyList<TagModel> Tags { get; } =[];
 
-    public List<CommentModel> Comments { get; set; } = [];
+    public IReadOnlyList<CommentModel> Comments { get; } =[];
 }

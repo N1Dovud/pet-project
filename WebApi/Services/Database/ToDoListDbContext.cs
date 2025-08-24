@@ -3,7 +3,7 @@ using WebApi.Services.Database.Entities;
 
 namespace WebApi.Services.Database;
 
-public class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : DbContext(options)
+internal class ToDoListDbContext(DbContextOptions<ToDoListDbContext> options): DbContext(options)
 {
     public DbSet<ToDoListEntity> ToDoLists { get; set; }
 

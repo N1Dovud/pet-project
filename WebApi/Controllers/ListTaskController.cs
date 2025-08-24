@@ -7,14 +7,13 @@ using WebApi.Mappers;
 using WebApi.Models.Helpers;
 using WebApi.Models.ListTasks;
 using WebApi.Services.TaskServices;
-using WebApp.Models.Helpers;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Authorize]
 [Route("api")]
-public class ListTaskController(IListTaskService service) : ControllerBase
+internal class ListTaskController(IListTaskService service): ControllerBase
 {
     [HttpGet("tasks")]
     public async Task<IActionResult> GetTasks(long listId)
@@ -25,14 +24,14 @@ public class ListTaskController(IListTaskService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        ListTaskInfo? listTaskInfo = await service.GetAllTasksAsync(id.Value, listId);
+        var work = await service.GetAllTasksAsync(id.Value, listId);
 
-        if (listTaskInfo == null)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest();
+            return this.ToHttpResponse(work?.Result!);
         }
 
-        return this.Ok(listTaskInfo.ToModel());
+        return this.Ok(work?.Data?.ToModel());
     }
 
     [HttpPost("task")]
@@ -89,8 +88,13 @@ public class ListTaskController(IListTaskService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        var task = await service.GetTaskAsync(id.Value, taskId);
-        return this.Ok(task.ToModel());
+        var work = await service.GetTaskAsync(id.Value, taskId);
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.ToHttpResponse(work?.Result!);
+        }
+
+        return this.Ok(work?.Data?.ToModel());
     }
 
     [HttpGet("overdue")]
@@ -102,8 +106,13 @@ public class ListTaskController(IListTaskService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        var tasks = await service.GetOverdueTasks(id.Value);
-        return this.Ok(tasks?.Select(t => t.ToModel()));
+        var work = await service.GetOverdueTasks(id.Value);
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.ToHttpResponse(work?.Result!);
+        }
+
+        return this.Ok(work?.Data?.Select(t => t.ToModel()));
     }
 
     [HttpGet("assigned")]
@@ -115,8 +124,13 @@ public class ListTaskController(IListTaskService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        var tasks = await service.GetAssignedTasks(id.Value, filter, sortBy, descending);
-        return this.Ok(tasks?.Select(t => t.ToModel()));
+        var work = await service.GetAssignedTasks(id.Value, filter, sortBy, descending);
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.ToHttpResponse(work?.Result!);
+        }
+
+        return this.Ok(work?.Data?.Select(t => t.ToModel()));
     }
 
     [HttpPost("status-update")]
@@ -133,7 +147,7 @@ public class ListTaskController(IListTaskService service) : ControllerBase
             return this.BadRequest();
         }
 
-        var result = await service.EditTaskStatusAsync(id.Value, model.ToDomain());
+        var result = await service.EditTaskStatusAsync(id.Value, model.ToDomain()!);
 
         return this.ToHttpResponse(result);
     }
@@ -153,7 +167,7 @@ public class ListTaskController(IListTaskService service) : ControllerBase
             return this.Unauthorized();
         }
 
-        ResultWithData<List<TaskSummary?>?> result;
+        ResultWithData<List<TaskSummary?>?> work;
         DateTime date;
         if (searchType != SearchFields.Title)
         {
@@ -162,18 +176,18 @@ public class ListTaskController(IListTaskService service) : ControllerBase
                 return this.BadRequest("Invalid date provided");
             }
 
-            result = await service.SearchTasksAsync(id.Value, searchType, date);
+            work = await service.SearchTasksAsync(id.Value, searchType, date);
         }
         else
         {
-            result = await service.SearchTasksAsync(id.Value, searchType, queryValue);
+            work = await service.SearchTasksAsync(id.Value, searchType, queryValue);
         }
 
-        if (result.Result?.Status != ResultStatus.Success)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest(result.Result?.Message);
+            return this.ToHttpResponse(work?.Result!);
         }
 
-        return this.Ok(result.Data?.Select(t => t.ToModel()).ToList());
+        return this.Ok(work.Data?.Select(t => t.ToModel()).ToList());
     }
 }

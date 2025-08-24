@@ -1,17 +1,16 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using WebApp.Helpers;
-using WebApp.Services.Database;
-using WebApp.Services.DatabaseService;
-using WebApp.Services.AuthenticationService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using WebApp.Helpers;
 using WebApp.Models.Users;
-using WebApp.Services.ListTaskService;
-using WebApp.Services.ToDoListService;
-using WebApp.Services.TagService;
+using WebApp.Services.AuthenticationService;
 using WebApp.Services.CommentService;
+using WebApp.Services.DatabaseService;
+using WebApp.Services.ListTaskService;
+using WebApp.Services.TagService;
+using WebApp.Services.ToDoListService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,14 +66,14 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Lockout.MaxFailedAccessAttempts = 7;
 }).AddEntityFrameworkStores<UserDbContext>();
 builder.Services.AddScoped<UserManager<User>>();
-builder.Services.AddScoped<IJWTService, JWTService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    _ = app.UseExceptionHandler("/Home/Error");
 }
 
 app.UseStaticFiles();

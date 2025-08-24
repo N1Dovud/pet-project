@@ -2,7 +2,7 @@ using System.Net.Http.Headers;
 
 namespace WebApp.Helpers;
 
-public class JwtDelegatingHandler : DelegatingHandler
+internal class JwtDelegatingHandler : DelegatingHandler
 {
     private readonly IHttpContextAccessor accessor;
 
@@ -13,7 +13,8 @@ public class JwtDelegatingHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var token = accessor.HttpContext?.Request.Cookies["jwt"];
+        ArgumentNullException.ThrowIfNull(request);
+        var token = this.accessor.HttpContext?.Request.Cookies["jwt"];
         if (!string.IsNullOrEmpty(token))
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

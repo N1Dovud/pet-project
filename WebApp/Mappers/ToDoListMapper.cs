@@ -1,11 +1,26 @@
-using System.Collections.Generic;
 using WebApp.Business.ToDoLists;
 using WebApp.Models.ToDoLists;
-using WebApp.Mappers;
+
 namespace WebApp.Mappers;
 
-public static class ToDoListMapper
+internal static class ToDoListMapper
 {
+    public static ToDoList? ToDomain(this ToDoListModel? list)
+    {
+        if (list == null)
+        {
+            return null;
+        }
+
+        return new ToDoList(list.Tasks.Select(t => t.ToDomain()))
+        {
+            Id = list.Id,
+            Title = list.Title,
+            Description = list.Description,
+            OwnerId = list.OwnerId,
+        };
+    }
+
     public static ToDoList? ToDomain(this ToDoListWebApiModel list)
     {
         if (list == null)
@@ -13,7 +28,7 @@ public static class ToDoListMapper
             return null;
         }
 
-        return new ToDoList
+        return new ToDoList([])
         {
             Id = list.Id,
             Title = list.Title,
@@ -29,12 +44,11 @@ public static class ToDoListMapper
             return null;
         }
 
-        return new ToDoListModel
+        return new ToDoListModel(list.Tasks.Select(t => t.ToModel()))
         {
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = [.. list.Tasks.Select(t => t.ToModel())],
             OwnerId = list.OwnerId,
         };
     }
@@ -55,23 +69,6 @@ public static class ToDoListMapper
         };
     }
 
-    public static ToDoList? ToDomain(this ToDoListModel? list)
-    {
-        if (list == null)
-        {
-            return null;
-        }
-
-        return new ToDoList
-        {
-            Id = list.Id,
-            Title = list.Title,
-            Description = list.Description,
-            Tasks = [.. list.Tasks.Select(t => t.ToDomain())],
-            OwnerId = list.OwnerId,
-        };
-    }
-
     public static ToDoListModel? ToModel(this ToDoList? list)
     {
         if (list == null)
@@ -79,12 +76,11 @@ public static class ToDoListMapper
             return null;
         }
 
-        return new ToDoListModel
+        return new ToDoListModel(list.Tasks.Select(t => t.ToModel()))
         {
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
-            Tasks = [.. list.Tasks.Select(t => t.ToModel())],
             OwnerId = list.OwnerId,
         };
     }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebApi.Services.Database.Entities;
 
 [Table("todo_list")]
-public class ToDoListEntity
+internal class ToDoListEntity
 {
     [Key]
     [Column("id")]
@@ -19,7 +19,7 @@ public class ToDoListEntity
     [Column("description")]
     public string Description { get; set; } = string.Empty;
 
-    public List<ToDoListTaskEntity> Tasks { get; set; } = [];
+    public List<ToDoListTaskEntity> Tasks { get; set; } =[];
 
     [Required]
     [Column("owner_id")]

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using WebApp.Business.Comments;
 using WebApp.Business.ListTasks;
 using WebApp.Business.Tags;
@@ -8,216 +7,8 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Mappers;
 
-public static class ListTaskMapper
+internal static class ListTaskMapper
 {
-    public static ListTaskInfo? ToDomain(this ListTaskInfoWebApiModel? taskInfo)
-    {
-        if (taskInfo == null)
-        {
-            return null;
-        }
-
-        return new ListTaskInfo
-        {
-            ListId = taskInfo.ListId,
-            Title = taskInfo.Title,
-            Tasks = taskInfo.Tasks.Select(t => t.ToDomain()).ToList(),
-        };
-    }
-
-    public static TaskSummary ToDomain(this TaskSummaryWebApiModel taskSummary)
-    {
-        return new TaskSummary
-        {
-            Id = taskSummary.Id,
-            Title = taskSummary.Title,
-            Description = taskSummary.Description,
-            CreationDateTime = taskSummary.CreationDateTime,
-            DueDateTime = taskSummary.DueDateTime,
-            TaskStatus = taskSummary.TaskStatus,
-            Tags = taskSummary.Tags.Select(t => t.ToDomain()).ToList(),
-        };
-    }
-
-    public static Tag ToDomain(this TagWebApiModel tag)
-    {
-        return new Tag
-        {
-            Id = tag.Id,
-            Name = tag.Name,
-        };
-    }
-
-    public static ListTaskInfoModel? ToModel(this ListTaskInfo? taskInfo)
-    {
-        if (taskInfo == null)
-        {
-            return null;
-        }
-
-        return new ListTaskInfoModel
-        {
-            ListId = taskInfo.ListId,
-            Title = taskInfo.Title,
-            Tasks = [.. taskInfo.Tasks.Select(t => t.ToModel())],
-        };
-    }
-
-    public static TaskSummaryModel? ToModel(this TaskSummary taskSummary)
-    {
-        if (taskSummary == null)
-        {
-            return null;
-        }
-
-        return new TaskSummaryModel
-        {
-            Id = taskSummary.Id,
-            Title = taskSummary.Title,
-            Description = taskSummary.Description,
-            CreationDateTime = taskSummary.CreationDateTime,
-            DueDateTime = taskSummary.DueDateTime,
-            TaskStatus = taskSummary.TaskStatus,
-            Tags = [.. taskSummary.Tags.Select(t => t.ToModel())],
-        };
-    }
-
-    public static TagModel? ToModel(this Tag tag)
-    {
-        if (tag == null)
-        {
-            return null;
-        }
-
-        return new TagModel
-        {
-            Id = tag.Id,
-            Name = tag.Name,
-        };
-    }
-
-    public static TaskDetailsWebApiModel? ToWebApiModel(this TaskDetails task)
-    {
-        if (task == null)
-        {
-            return null;
-        }
-
-        return new TaskDetailsWebApiModel
-        {
-            Id = task.Id,
-            Title = task.Title,
-            Description = task.Description,
-            DueDateTime = task.DueDateTime,
-            CreationDateTime = task.CreationDateTime,
-            TaskStatus = task.TaskStatus,
-            Comments = [.. task.Comments.Select(c => c.ToWebApiModel())],
-            Tags = [.. task.Tags.Select(t => t.ToWebApiModel())],
-        };
-    }
-
-    public static TagWebApiModel? ToWebApiModel(this Tag tag)
-    {
-        if (tag == null)
-        {
-            return null;
-        }
-
-        return new TagWebApiModel
-        {
-            Id = tag.Id,
-            Name = tag.Name,
-        };
-    }
-
-    public static CommentWebApiModel? ToWebApiModel(this Comment comment)
-    {
-        if (comment == null)
-        {
-            return null;
-        }
-
-        return new CommentWebApiModel
-        {
-            Id = comment.Id,
-            Note = comment.Note,
-            CreationDateTime = comment.CreationDateTime,
-            LastEditDateTime = comment.LastEditDateTime,
-        };
-    }
-
-    public static TaskDetails? ToDomain(this TaskDetailsWebApiModel? taskDetails)
-    {
-        if (taskDetails == null)
-        {
-            return null;
-        }
-
-        return new TaskDetails
-        {
-            Id = taskDetails.Id,
-            Title = taskDetails.Title,
-            Description = taskDetails.Description,
-            DueDateTime = taskDetails.DueDateTime,
-            CreationDateTime = taskDetails.CreationDateTime,
-            TaskStatus = taskDetails.TaskStatus,
-            Comments = [.. taskDetails.Comments.Select(c => c.ToDomain())],
-            Tags = [.. taskDetails.Tags.Select(t => t.ToDomain())],
-        };
-    }
-
-    public static Comment ToDomain(this CommentWebApiModel? comment)
-    {
-        if (comment == null)
-        {
-            return null;
-        }
-
-        return new Comment
-        {
-            Id = comment.Id,
-            Note = comment.Note,
-            CreationDateTime = comment.CreationDateTime,
-            LastEditDateTime = comment.LastEditDateTime,
-        };
-    }
-
-    public static TaskDetailsModel? ToModel(this TaskDetails taskDetails)
-    {
-        if (taskDetails == null)
-        {
-            return null;
-        }
-
-        return new TaskDetailsModel
-        {
-            Id = taskDetails.Id,
-            Title = taskDetails.Title,
-            Description = taskDetails.Description,
-            CreationDateTime = taskDetails.CreationDateTime,
-            DueDateTime = taskDetails.DueDateTime,
-            TaskStatus = taskDetails.TaskStatus,
-            Tags = [..taskDetails.Tags.Select(t => t.ToModel())],
-            Comments = [..taskDetails.Comments.Select(c => c.ToModel())],
-        };
-    }
-
-    public static CommentModel? ToModel(this Comment comment)
-    {
-        if (comment == null)
-        {
-            return null;
-        }
-
-        return new CommentModel
-        {
-            Id = comment.Id,
-            Note = comment.Note,
-            CreationDateTime = comment.CreationDateTime,
-            LastEditDateTime = comment.LastEditDateTime,
-        };
-    }
-
     public static TaskDetails? ToDomain(this TaskDetailsModel model)
     {
         if (model == null)
@@ -225,7 +16,9 @@ public static class ListTaskMapper
             return null;
         }
 
-        return new TaskDetails
+        return new TaskDetails(
+            model.Tags.Select(t => t?.ToDomain()),
+            model.Comments.Select(c => c.ToDomain()))
         {
             Id = model.Id,
             Description = model.Description,
@@ -233,8 +26,6 @@ public static class ListTaskMapper
             CreationDateTime = model.CreationDateTime,
             DueDateTime = model.DueDateTime,
             TaskStatus = model.TaskStatus,
-            Comments = [.. model.Comments.Select(c => c.ToDomain())],
-            Tags = [.. model.Tags.Select(t => t.ToDomain())],
         };
     }
 
@@ -265,6 +56,210 @@ public static class ListTaskMapper
         {
             Id = model.Id,
             Name = model.Name,
+        };
+    }
+
+    public static TaskDetails? ToDomain(this TaskDetailsWebApiModel? taskDetails)
+    {
+        if (taskDetails == null)
+        {
+            return null;
+        }
+
+        return new TaskDetails(
+            taskDetails.Tags.Select(t => t.ToDomain()),
+            taskDetails.Comments.Select(c => c.ToDomain()))
+        {
+            Id = taskDetails.Id,
+            Title = taskDetails.Title,
+            Description = taskDetails.Description,
+            DueDateTime = taskDetails.DueDateTime,
+            CreationDateTime = taskDetails.CreationDateTime,
+            TaskStatus = taskDetails.TaskStatus,
+        };
+    }
+
+    public static Comment? ToDomain(this CommentWebApiModel? comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+
+        return new Comment
+        {
+            Id = comment.Id,
+            Note = comment.Note,
+            CreationDateTime = comment.CreationDateTime,
+            LastEditDateTime = comment.LastEditDateTime,
+        };
+    }
+
+    public static ListTaskInfo? ToDomain(this ListTaskInfoWebApiModel? taskInfo)
+    {
+        if (taskInfo == null)
+        {
+            return null;
+        }
+
+        return new ListTaskInfo(taskInfo.Tasks.Select(t => t.ToDomain()))
+        {
+            ListId = taskInfo.ListId,
+            Title = taskInfo.Title,
+        };
+    }
+
+    public static TaskSummary ToDomain(this TaskSummaryWebApiModel taskSummary)
+    {
+        return new TaskSummary(taskSummary.Tags.Select(t => t.ToDomain()))
+        {
+            Id = taskSummary.Id,
+            Title = taskSummary.Title,
+            Description = taskSummary.Description,
+            CreationDateTime = taskSummary.CreationDateTime,
+            DueDateTime = taskSummary.DueDateTime,
+            TaskStatus = taskSummary.TaskStatus,
+        };
+    }
+
+    public static Tag ToDomain(this TagWebApiModel tag)
+    {
+        return new Tag
+        {
+            Id = tag.Id,
+            Name = tag.Name,
+        };
+    }
+
+    public static ListTaskInfoModel? ToModel(this ListTaskInfo? taskInfo)
+    {
+        if (taskInfo == null)
+        {
+            return null;
+        }
+
+        return new ListTaskInfoModel(taskInfo.Tasks.Select(t => t.ToModel()) ?? [])
+        {
+            ListId = taskInfo.ListId,
+            Title = taskInfo.Title,
+        };
+    }
+
+    public static TaskSummaryModel? ToModel(this TaskSummary taskSummary)
+    {
+        if (taskSummary == null)
+        {
+            return null;
+        }
+
+        return new TaskSummaryModel(taskSummary.Tags.Select(t => t.ToModel()))
+        {
+            Id = taskSummary.Id,
+            Title = taskSummary.Title,
+            Description = taskSummary.Description,
+            CreationDateTime = taskSummary.CreationDateTime,
+            DueDateTime = taskSummary.DueDateTime,
+            TaskStatus = taskSummary.TaskStatus,
+        };
+    }
+
+    public static TagModel? ToModel(this Tag tag)
+    {
+        if (tag == null)
+        {
+            return null;
+        }
+
+        return new TagModel
+        {
+            Id = tag.Id,
+            Name = tag.Name,
+        };
+    }
+
+    public static TaskDetailsModel? ToModel(this TaskDetails taskDetails)
+    {
+        if (taskDetails == null)
+        {
+            return null;
+        }
+
+        return new TaskDetailsModel(
+            taskDetails.Tags.Select(t => t.ToModel()),
+            taskDetails.Comments.Select(c => c.ToModel()))
+        {
+            Id = taskDetails.Id,
+            Title = taskDetails.Title,
+            Description = taskDetails.Description,
+            CreationDateTime = taskDetails.CreationDateTime,
+            DueDateTime = taskDetails.DueDateTime,
+            TaskStatus = taskDetails.TaskStatus,
+        };
+    }
+
+    public static CommentModel? ToModel(this Comment comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+
+        return new CommentModel
+        {
+            Id = comment.Id,
+            Note = comment.Note,
+            CreationDateTime = comment.CreationDateTime,
+            LastEditDateTime = comment.LastEditDateTime,
+        };
+    }
+
+    public static TaskDetailsWebApiModel? ToWebApiModel(this TaskDetails task)
+    {
+        if (task == null)
+        {
+            return null;
+        }
+
+        return new TaskDetailsWebApiModel(
+            task.Tags.Select(t => t.ToWebApiModel()) ?? [],
+            task.Comments.Select(c => c.ToWebApiModel()) ?? [])
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            DueDateTime = task.DueDateTime,
+            CreationDateTime = task.CreationDateTime,
+            TaskStatus = task.TaskStatus,
+        };
+    }
+
+    public static TagWebApiModel? ToWebApiModel(this Tag tag)
+    {
+        if (tag == null)
+        {
+            return null;
+        }
+
+        return new TagWebApiModel
+        {
+            Id = tag.Id,
+            Name = tag.Name,
+        };
+    }
+
+    public static CommentWebApiModel? ToWebApiModel(this Comment comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+
+        return new CommentWebApiModel
+        {
+            Id = comment.Id,
+            Note = comment.Note,
+            CreationDateTime = comment.CreationDateTime,
+            LastEditDateTime = comment.LastEditDateTime,
         };
     }
 }

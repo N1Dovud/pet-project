@@ -2,11 +2,16 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.Helpers;
 
-public class TagListViewModel
+internal class TagListViewModel
 {
-    public List<TagModel> Tags { get; set; }
+    public TagListViewModel(IEnumerable<TagModel> tags)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+    }
 
-    public string ReturnUrl { get; set; }
+    public IReadOnlyList<TagModel> Tags { get; } =[];
+
+    public string? ReturnUrl { get; set; }
 
     public long TaskId { get; set; }
 

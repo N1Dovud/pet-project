@@ -1,6 +1,6 @@
 namespace WebApi.Models.Helpers;
 
-public class DeleteTagModel
+internal class DeleteTagModel
 {
     public long TaskId { get; set; }
 

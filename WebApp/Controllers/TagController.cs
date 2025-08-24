@@ -13,7 +13,7 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-public class TagController(ITagWebApiService tagservice) : Controller
+internal class TagController(ITagWebApiService tagservice): Controller
 {
     [HttpGet("tags")]
     public async Task<IActionResult> GetTags()
@@ -41,9 +41,8 @@ public class TagController(ITagWebApiService tagservice) : Controller
             return this.BadRequest(work?.Result?.Message);
         }
 
-        return this.View("TasksByTag", new TasksByTagViewModel
+        return this.View("TasksByTag", new TasksByTagViewModel(work?.Data?.Select(t => t?.ToModel()) ?? [])
         {
-            TaskSummaries = work?.Data?.Select(t => t?.ToModel()).ToList(),
             Tag = new TagModel
             {
                 Id = tagId,

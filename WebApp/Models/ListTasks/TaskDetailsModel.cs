@@ -1,14 +1,18 @@
-using WebApp.Models.Enums;
-using WebApp.Business.Comments;
-using WebApp.Models.Tags;
-using WebApp.Models.Comments;
 using System.ComponentModel.DataAnnotations;
+using WebApp.Models.Comments;
 using WebApp.Models.Enums;
+using WebApp.Models.Tags;
 
 namespace WebApp.Models.ListTasks;
 
-public class TaskDetailsModel
+internal class TaskDetailsModel
 {
+    public TaskDetailsModel(IEnumerable<TagModel> tags, IEnumerable<CommentModel> comments)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+        this.Comments = comments.ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     [Required]
@@ -24,7 +28,7 @@ public class TaskDetailsModel
 
     public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
-    public List<TagModel> Tags { get; set; } = [];
+    public IReadOnlyList<TagModel> Tags { get; } =[];
 
-    public List<CommentModel> Comments { get; set; } = [];
+    public IReadOnlyList<CommentModel> Comments { get; } =[];
 }

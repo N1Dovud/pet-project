@@ -1,6 +1,6 @@
 namespace WebApi.Common;
 
-public class ResultWithData<T>
+internal class ResultWithData<T>
 {
     public Result? Result { get; set; }
 
@@ -42,7 +42,7 @@ public class ResultWithData<T>
         };
     }
 
-    public static ResultWithData<T> Unautherized(string? message = null)
+    public static ResultWithData<T> Unauthorized(string? message = null)
     {
         return new ResultWithData<T>
         {

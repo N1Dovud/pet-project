@@ -1,12 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Business.ToDoLists;
 using WebApi.Common;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
 
 namespace WebApi.Services.CommentServices;
 
-public class CommentService(ToDoListDbContext context) : ICommentService
+internal class CommentService(ToDoListDbContext context): ICommentService
 {
     public async Task<Result> AddComment(long userId, long taskId, string note)
     {

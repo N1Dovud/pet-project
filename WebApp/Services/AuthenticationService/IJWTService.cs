@@ -2,7 +2,7 @@ using WebApp.Models.Users;
 
 namespace WebApp.Services.AuthenticationService;
 
-public interface IJWTService
+internal interface IJwtService
 {
     string GenerateToken(User user);
 

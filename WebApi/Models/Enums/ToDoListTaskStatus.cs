@@ -1,6 +1,6 @@
 namespace WebApi.Models.Enums;
 
-public enum ToDoListTaskStatus
+internal enum ToDoListTaskStatus
 {
     NotStarted,
     InProgress,

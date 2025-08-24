@@ -4,7 +4,7 @@ using WebApi.Services.Database.Entities;
 
 namespace WebApi.Models.Comments;
 
-public class CommentModel
+internal class CommentModel
 {
     public long Id { get; set; }
 

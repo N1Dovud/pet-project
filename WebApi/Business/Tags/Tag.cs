@@ -1,9 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace WebApi.Business.Tags;
 
-public class Tag
+internal class Tag
 {
     public long Id { get; set; }
 

@@ -8,10 +8,10 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Services.TagService;
 
-public class TagWebApiService : ITagWebApiService
+internal class TagWebApiService : ITagWebApiService
 {
     private readonly HttpClient httpClient;
-    private readonly string baseUrl;
+    private readonly string? baseUrl;
     private readonly JsonSerializerOptions options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -19,6 +19,7 @@ public class TagWebApiService : ITagWebApiService
 
     public TagWebApiService(IHttpClientFactory factory, IConfiguration configuration)
     {
+        ArgumentNullException.ThrowIfNull(factory);
         this.httpClient = factory.CreateClient("ApiWithJwt");
         this.baseUrl = configuration["WebApiAddress"];
     }
@@ -80,7 +81,7 @@ public class TagWebApiService : ITagWebApiService
         var tags = JsonSerializer.Deserialize<List<TagWebApiModel?>?>(json, this.options);
 
         return ResultWithData<List<Tag?>?>.Success(
-            [.. tags?.Select(t => t.ToDomain()) ?? Enumerable.Empty<Tag?>()],
+            [.. tags?.Select(t => t?.ToDomain()) ?? Enumerable.Empty<Tag?>()],
             "successfully obtained");
     }
 
@@ -88,7 +89,7 @@ public class TagWebApiService : ITagWebApiService
     {
         var route = "tag";
         var url = new Uri(this.baseUrl + route + "?tagId=" + tagId);
-        var result = await httpClient.GetAsync(url);
+        var result = await this.httpClient.GetAsync(url);
 
         if (!result.IsSuccessStatusCode)
         {
@@ -100,7 +101,7 @@ public class TagWebApiService : ITagWebApiService
         var tasks = JsonSerializer.Deserialize<List<TaskSummaryWebApiModel?>?>(json, this.options);
 
         return ResultWithData<List<TaskSummary?>?>.Success(
-            [.. tasks?.Select(t => t.ToDomain()) ?? Enumerable.Empty<TaskSummary?>()],
+            [.. tasks?.Select(t => t?.ToDomain()) ?? Enumerable.Empty<TaskSummary?>()],
             "successfully obtained");
     }
 }

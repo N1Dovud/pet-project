@@ -42,7 +42,7 @@ public class ResultWithData<T>
         };
     }
 
-    public static ResultWithData<T> Unautherized(string? message = null)
+    public static ResultWithData<T> Unauthorized(string? message = null)
     {
         return new ResultWithData<T>
         {

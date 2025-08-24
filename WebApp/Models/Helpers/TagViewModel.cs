@@ -2,7 +2,7 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.Helpers;
 
-public class TagViewModel
+internal class TagViewModel
 {
     public TagModel? Tag { get; set; }
 
@@ -14,5 +14,5 @@ public class TagViewModel
 
     public long TaskId { get; set; }
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 }

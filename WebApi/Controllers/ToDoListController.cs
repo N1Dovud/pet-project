@@ -14,45 +14,48 @@ namespace WebApi.Controllers;
 [ApiController]
 [Route("api")]
 [Authorize]
-public class ToDoListController(IToDoListService listService, ILogger<ToDoListController> logger) : ControllerBase
+internal class ToDoListController(IToDoListService listService, ILogger<ToDoListController> logger): ControllerBase
 {
     [HttpGet("lists")]
-    public async Task<ActionResult<List<ToDoListModel>>> GetLists()
+    public async Task<IActionResult> GetLists()
     {
         var id = this.GetUserId();
         if (id == null)
         {
-            logger.LogWarning("Authentication failed for userId: {UserId}", id);
             return this.Unauthorized();
         }
 
-        List<ToDoList> lists = await listService.GetAllToDoListsAsync(id.Value);
-        var listModels = lists.Select(l => l.ToModel()).ToList();
+        var work = await listService.GetAllToDoListsAsync(id.Value);
+        if (work?.Result?.Status != ResultStatus.Success)
+        {
+            return this.ToHttpResponse(work?.Result!);
+        }
+
+        var listModels = work?.Data?.Select(l => l?.ToModel()).ToList();
         return this.Ok(listModels);
     }
 
     [HttpGet("list")]
-    public async Task<ActionResult<List<ToDoListModel>>> GetList(long listId)
+    public async Task<IActionResult> GetList(long listId)
     {
         var id = this.GetUserId();
         if (id == null)
         {
-            logger.LogWarning("Authentication failed for userId: {UserId}", id);
             return this.Unauthorized();
         }
 
-        ToDoList? list = await listService.GetToDoListAsync(id.Value, listId);
+        var work = await listService.GetToDoListAsync(id.Value, listId);
 
-        if (list == null)
+        if (work?.Result?.Status != ResultStatus.Success)
         {
-            return this.BadRequest();
+            return this.ToHttpResponse(work?.Result!);
         }
 
-        return this.Ok(list.ToModel());
+        return this.Ok(work?.Data?.ToModel());
     }
 
     [HttpPost("list")]
-    public async Task<ActionResult> AddList([FromBody] ToDoListModel list)
+    public async Task<IActionResult> AddList([FromBody] ToDoListModel list)
     {
         if (list == null)
         {
@@ -67,13 +70,7 @@ public class ToDoListController(IToDoListService listService, ILogger<ToDoListCo
 
         list.OwnerId = id.Value;
         Result result = await listService.AddToDoListAsync(list.ToDomain());
-
-        if (result.Status == ResultStatus.Success)
-        {
-            return this.StatusCode(201);
-        }
-
-        return this.BadRequest();
+        return this.ToHttpResponse(result);
     }
 
     [HttpDelete("list")]

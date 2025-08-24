@@ -1,21 +1,16 @@
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Business.Helpers;
 using WebApi.Business.ListTasks;
-using WebApi.Business.ToDoLists;
 using WebApi.Common;
 using WebApi.Mappers;
 using WebApi.Models.Enums;
 using WebApi.Models.Helpers;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
-using WebApp.Models.Helpers;
 
 namespace WebApi.Services.TaskServices;
 
-public class ListTaskService(ToDoListDbContext context) : IListTaskService
+internal class ListTaskService(ToDoListDbContext context): IListTaskService
 {
     public async Task<Result> AddTaskAsync(TaskDetails task, long userId, long listId)
     {
@@ -107,7 +102,7 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         return Result.Forbidden("You cannot edit this task");
     }
 
-    public async Task<ListTaskInfo?> GetAllTasksAsync(long userId, long listId)
+    public async Task<ResultWithData<ListTaskInfo?>> GetAllTasksAsync(long userId, long listId)
     {
         ToDoListEntity? list = await context.ToDoLists
             .Include(l => l.Tasks)
@@ -115,18 +110,18 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
             .FirstOrDefaultAsync(l => l.Id == listId);
         if (list == null)
         {
-            return null;
+            return ResultWithData<ListTaskInfo?>.NotFound("list not found");
         }
 
         if (list.OwnerId != userId)
         {
-            return null;
+            return ResultWithData<ListTaskInfo?>.Forbidden("list not yours");
         }
 
-        return list.ToListTask();
+        return ResultWithData<ListTaskInfo?>.Success(list.ToListTask());
     }
 
-    public async Task<List<TaskSummary?>?> GetAssignedTasks(long userId, StatusFilter filter, SortField? sortBy, bool descending)
+    public async Task<ResultWithData<List<TaskSummary?>?>> GetAssignedTasks(long userId, StatusFilter filter, SortField? sortBy, bool descending)
     {
         var domainFilter = filter.ToDomain();
         var query = context.Tasks
@@ -149,10 +144,10 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
         }
 
         var tasks = await query.ToListAsync();
-        return [.. tasks.Select(t => t.ToDomain())];
+        return ResultWithData<List<TaskSummary?>?>.Success([.. tasks.Select(t => t.ToDomain())]);
     }
 
-    public async Task<List<TaskSummary?>?> GetOverdueTasks(long userId)
+    public async Task<ResultWithData<List<TaskSummary?>?>> GetOverdueTasks(long userId)
     {
         var tasks = await context.Tasks
             .Include(t => t.Tags.OrderBy(t => t.Name))
@@ -161,10 +156,10 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
             .Where(t => t.DueDateTime < DateTime.Now)
             .ToListAsync();
 
-        return [.. tasks.Select(t => t.ToDomain())];
+        return ResultWithData<List<TaskSummary?>?>.Success([.. tasks.Select(t => t.ToDomain())]);
     }
 
-    public async Task<TaskDetails?> GetTaskAsync(long userId, long taskId)
+    public async Task<ResultWithData<TaskDetails?>> GetTaskAsync(long userId, long taskId)
     {
         var task = await context.Tasks
             .Include(t => t.Tags.OrderBy(t => t.Name))
@@ -172,15 +167,15 @@ public class ListTaskService(ToDoListDbContext context) : IListTaskService
             .SingleOrDefaultAsync(t => t.Id == taskId);
         if (task == null)
         {
-            return null;
+            return ResultWithData<TaskDetails?>.NotFound("task not found");
         }
 
         if (task.ToDoList?.OwnerId == userId || task.Assignee == userId)
         {
-            return task.ToTaskDetails();
+            return ResultWithData<TaskDetails?>.Success(task.ToTaskDetails());
         }
 
-        return null;
+        return ResultWithData<TaskDetails?>.Forbidden("you don't have permission");
     }
 
     public async Task<ResultWithData<List<TaskSummary?>?>> SearchTasksAsync(long userId, SearchFields searchType, DateTime queryValue)

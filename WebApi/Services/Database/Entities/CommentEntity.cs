@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebApi.Services.Database.Entities;
 
 [Table("comment")]
-public class CommentEntity
+internal class CommentEntity
 {
     [Key]
     [Column("id")]

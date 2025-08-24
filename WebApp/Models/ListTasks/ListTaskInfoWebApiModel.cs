@@ -1,10 +1,11 @@
-using WebApp.Models.ListTasks;
-
-public class ListTaskInfoWebApiModel
+namespace WebApp.Models.ListTasks
 {
-    public long ListId { get; set; }
+    internal class ListTaskInfoWebApiModel
+    {
+        public long ListId { get; set; }
 
-    public string Title { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
 
-    public List<TaskSummaryWebApiModel> Tasks { get; set; } = [];
+        public IReadOnlyList<TaskSummaryWebApiModel> Tasks { get; } =[];
+    }
 }

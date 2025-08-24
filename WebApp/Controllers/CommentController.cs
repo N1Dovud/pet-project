@@ -8,12 +8,12 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-public class CommentController(ICommentWebApiService service) : Controller
+internal class CommentController(ICommentWebApiService service): Controller
 {
     [HttpPost("add-comment")]
     public async Task<IActionResult> AddComment(AddCommentModel model)
     {
-        if (!this.ModelState.IsValid)
+        if (!this.ModelState.IsValid || model.Note == null || model == null)
         {
             return this.BadRequest("Wrong input");
         }

@@ -2,7 +2,7 @@ using WebApi.Models.Enums;
 
 namespace WebApi.Business.Helpers;
 
-public class EditTaskStatus
+internal class EditTaskStatus
 {
     public long TaskId { get; set; }
 

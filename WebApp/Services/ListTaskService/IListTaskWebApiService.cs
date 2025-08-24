@@ -2,11 +2,10 @@ using WebApp.Business.Helpers;
 using WebApp.Business.ListTasks;
 using WebApp.Common;
 using WebApp.Models.Helpers.Enums;
-using WebApp.Models.ListTasks;
 
 namespace WebApp.Services.ListTaskService;
 
-public interface IListTaskWebApiService
+internal interface IListTaskWebApiService
 {
     Task<ListTaskInfo?> GetListInfoAsync(long listId);
 

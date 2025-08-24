@@ -5,7 +5,7 @@ using WebApi.Models.Enums;
 namespace WebApi.Services.Database.Entities;
 
 [Table("todo_task")]
-public class ToDoListTaskEntity
+internal class ToDoListTaskEntity
 {
     [Key]
     [Column("id")]
@@ -35,7 +35,7 @@ public class ToDoListTaskEntity
     [Column("assignee")]
     public long Assignee { get; set; }
 
-    public List<TagEntity> Tags { get; set; } = [];
+    public List<TagEntity> Tags { get; set; } =[];
 
     [Required]
     [ForeignKey("ToDoListEntity")]
@@ -46,5 +46,5 @@ public class ToDoListTaskEntity
     [Required]
     public ToDoListEntity? ToDoList { get; set; }
 
-    public List<CommentEntity> Comments { get; set; } = [];
+    public List<CommentEntity> Comments { get; set; } =[];
 }

@@ -1,19 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common;
+using WebApp.Common;
 
-namespace WebApi.Helpers;
+namespace WebApp.Helpers;
 
 internal static class HttpResponseHelper
 {
-    public static IActionResult ToHttpResponse(this ControllerBase controller, Result result)
+    public static IActionResult ToHttpResponse(this Controller controller, Result result)
     {
-        ArgumentNullException.ThrowIfNull(controller);
-
-        if (result == null)
-        {
-            return controller.BadRequest();
-        }
-
         return result.Status switch
         {
             ResultStatus.Success => result.Message is null
@@ -32,5 +25,12 @@ internal static class HttpResponseHelper
 
             _ => controller.StatusCode(500, new { error = result.Message ?? "Unexpected error" })
         };
+    }
+
+    public static IActionResult StatusWithOptionalMessage(this Controller controller, int statusCode, string? message)
+    {
+        return string.IsNullOrWhiteSpace(message)
+            ? controller.StatusCode(statusCode)
+            : controller.StatusCode(statusCode, message);
     }
 }

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.Auth;
@@ -6,7 +5,7 @@ using WebApp.Models.Users;
 using WebApp.Services.AuthenticationService;
 
 namespace WebApp.Controllers;
-public class AuthController(UserManager<User> userManager, IJWTService jwtService) : Controller
+internal class AuthController(UserManager<User> userManager, IJwtService jwtService): Controller
 {
     [Route("")]
     public IActionResult Index()
@@ -27,7 +26,7 @@ public class AuthController(UserManager<User> userManager, IJWTService jwtServic
             return this.RedirectToAction("Home", "ToDoList");
         }
 
-        return this.View();
+        return this.View("SignUp");
     }
 
     [HttpPost("/sign-up")]
@@ -88,7 +87,7 @@ public class AuthController(UserManager<User> userManager, IJWTService jwtServic
             return this.RedirectToAction("Home", "ToDoList");
         }
 
-        return this.View();
+        return this.View("SignIn");
     }
 
     [HttpPost("/sign-in")]

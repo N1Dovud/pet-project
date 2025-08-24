@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApp.Models.Comments;
 
-public class CommentModel
+internal class CommentModel
 {
     public long Id { get; set; }
 

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models.Users;
 
-namespace WebApp.Services.Database;
+namespace WebApp.Services.DatabaseService;
 
-public class UserDbContext(DbContextOptions options) : IdentityUserContext<User, long>(options)
+internal class UserDbContext(DbContextOptions options): IdentityUserContext<User, long>(options)
 {
 }

@@ -1,11 +1,10 @@
-using WebApp.Business.ListTasks;
 using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.Helpers;
 
-public class AddTaskViewModel
+internal class AddTaskViewModel
 {
-    public long listId { get; set; }
+    public long ListId { get; set; }
 
-    public TaskDetailsModel taskDetails { get; set; }
+    public TaskDetailsModel? TaskDetails { get; set; }
 }

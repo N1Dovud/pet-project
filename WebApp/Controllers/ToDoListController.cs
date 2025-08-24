@@ -1,18 +1,16 @@
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Business.ToDoLists;
 using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.ToDoLists;
-using WebApp.Services.DatabaseService;
+using WebApp.Services.ToDoListService;
 
 namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-public class ToDoListController(IToDoListWebApiService service) : Controller
+internal class ToDoListController(IToDoListWebApiService service): Controller
 {
     [Route("home")]
     public async Task<IActionResult> Home()

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Models.Users;
 
-public class User : IdentityUser<long>
+internal class User : IdentityUser<long>
 {
     [Required]
     public string FirstName { get; set; } = default!;

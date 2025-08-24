@@ -1,12 +1,17 @@
-using WebApp.Business.ListTasks;
+using WebApp.Models.Comments;
 using WebApp.Models.ListTasks;
 using WebApp.Models.Tags;
 
 namespace WebApp.Models.Helpers;
 
-public class TasksByTagViewModel
+internal class TasksByTagViewModel
 {
-    public List<TaskSummaryModel?>? TaskSummaries { get; set; }
+    public TasksByTagViewModel(IEnumerable<TaskSummaryModel?> summaries)
+    {
+        this.TaskSummaries = summaries.ToList().AsReadOnly();
+    }
 
-    public TagModel Tag { get; set; }
+    public IReadOnlyList<TaskSummaryModel?>? TaskSummaries { get; } =[];
+
+    public TagModel? Tag { get; set; }
 }

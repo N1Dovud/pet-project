@@ -1,6 +1,6 @@
 namespace WebApp.Models.Comments;
 
-public class CommentWebApiModel
+internal class CommentWebApiModel
 {
     public long Id { get; set; }
 

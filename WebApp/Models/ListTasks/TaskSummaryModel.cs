@@ -1,13 +1,16 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+using WebApp.Models.Comments;
 using WebApp.Models.Enums;
 using WebApp.Models.Tags;
-using WebApp.Models.Enums;
 
 namespace WebApp.Models.ListTasks;
 
-public class TaskSummaryModel
+internal class TaskSummaryModel
 {
+    public TaskSummaryModel(IEnumerable<TagModel> tags)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -20,5 +23,5 @@ public class TaskSummaryModel
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public List<TagModel> Tags { get; set; } = [];
+    public IReadOnlyList<TagModel> Tags { get; } =[];
 }

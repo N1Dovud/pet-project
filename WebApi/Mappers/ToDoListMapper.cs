@@ -5,7 +5,7 @@ using WebApi.Services.Database.Entities;
 
 namespace WebApi.Mappers;
 
-public static class ToDoListMapper
+internal static class ToDoListMapper
 {
     public static ToDoList? ToDomain(this ToDoListEntity entity)
     {

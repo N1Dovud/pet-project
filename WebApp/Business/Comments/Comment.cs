@@ -1,4 +1,3 @@
-
 namespace WebApp.Business.Comments;
 
 public class Comment

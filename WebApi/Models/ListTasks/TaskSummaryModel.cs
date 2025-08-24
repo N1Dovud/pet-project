@@ -1,11 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using WebApi.Models.Enums;
 using WebApi.Models.Tags;
 
 namespace WebApi.Models.ListTasks;
 
-public class TaskSummaryModel
+internal class TaskSummaryModel
 {
     public long Id { get; set; }
 
@@ -19,5 +17,5 @@ public class TaskSummaryModel
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public List<TagModel> Tags { get; set; } = [];
+    public IReadOnlyList<TagModel> Tags { get; } =[];
 }

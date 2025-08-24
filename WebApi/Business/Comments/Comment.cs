@@ -1,10 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using WebApi.Services.Database.Entities;
-
 namespace WebApi.Business.Comments;
 
-public class Comment
+internal class Comment
 {
     public long Id { get; set; }
 

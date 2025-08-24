@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApi.Models.Tags;
 
-public class TagModel
+internal class TagModel
 {
     public long Id { get; set; }
 

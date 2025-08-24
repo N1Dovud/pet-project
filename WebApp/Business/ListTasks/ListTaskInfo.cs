@@ -2,11 +2,16 @@ using WebApp.Models.ListTasks;
 
 namespace WebApp.Business.ListTasks;
 
-public class ListTaskInfo
+internal class ListTaskInfo
 {
+    public ListTaskInfo(IEnumerable<TaskSummary> summaries)
+    {
+        this.Tasks = summaries.ToList().AsReadOnly();
+    }
+
     public long ListId { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
-    public List<TaskSummary> Tasks { get; set; } = [];
+    public IReadOnlyList<TaskSummary> Tasks { get; } =[];
 }

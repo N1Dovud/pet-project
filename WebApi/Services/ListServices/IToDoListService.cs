@@ -3,9 +3,9 @@ using WebApi.Common;
 
 namespace WebApi.Services.ListServices;
 
-public interface IToDoListService
+internal interface IToDoListService
 {
-    Task<List<ToDoList>> GetAllToDoListsAsync(long userId);
+    Task<ResultWithData<List<ToDoList?>?>> GetAllToDoListsAsync(long userId);
 
     Task<Result> AddToDoListAsync(ToDoList? list);
 
@@ -13,5 +13,5 @@ public interface IToDoListService
 
     Task<Result> UpdateToDoListAsync(ToDoList? list, long userId);
 
-    Task<ToDoList?> GetToDoListAsync(long userId, long listId);
+    Task<ResultWithData<ToDoList?>> GetToDoListAsync(long userId, long listId);
 }

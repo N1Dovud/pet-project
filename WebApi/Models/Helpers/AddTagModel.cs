@@ -1,8 +1,8 @@
 namespace WebApi.Models.Helpers;
 
-public class AddTagModel
+internal class AddTagModel
 {
-    public required string TagName { get; set; }
+    required public string TagName { get; set; }
 
     public long TaskId { get; set; }
 }

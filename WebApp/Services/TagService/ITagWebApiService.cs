@@ -1,12 +1,10 @@
-using System.Threading.Tasks;
 using WebApp.Business.ListTasks;
 using WebApp.Business.Tags;
 using WebApp.Common;
-using WebApp.Models.ListTasks;
 
 namespace WebApp.Services.TagService;
 
-public interface ITagWebApiService
+internal interface ITagWebApiService
 {
     Task<ResultWithData<List<Tag?>?>> GetAllTags();
 

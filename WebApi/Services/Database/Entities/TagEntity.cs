@@ -6,7 +6,7 @@ namespace WebApi.Services.Database.Entities;
 
 [Table("tag")]
 [Index(nameof(Name), IsUnique = true)]
-public class TagEntity
+internal class TagEntity
 {
     [Key]
     [Column("id")]
@@ -16,5 +16,5 @@ public class TagEntity
     [Column("name")]
     public string Name { get; set; } = string.Empty;
 
-    public List<ToDoListTaskEntity> Tasks { get; set; } = [];
+    public List<ToDoListTaskEntity> Tasks { get; set; } =[];
 }

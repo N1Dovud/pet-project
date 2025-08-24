@@ -10,10 +10,11 @@ namespace WebApi.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+            _ = migrationBuilder.DropTable(
                 name: "todo_list_permission");
 
-            migrationBuilder.AddColumn<long>(
+            _ = migrationBuilder.AddColumn<long>(
                 name: "owner_id",
                 table: "todo_list",
                 type: "bigint",
@@ -24,11 +25,12 @@ namespace WebApi.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+            _ = migrationBuilder.DropColumn(
                 name: "owner_id",
                 table: "todo_list");
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "todo_list_permission",
                 columns: table => new
                 {
@@ -36,12 +38,12 @@ namespace WebApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     todo_list_id = table.Column<long>(type: "bigint", nullable: false),
                     access_level = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_todo_list_permission", x => x.id);
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_todo_list_permission", x => x.id);
+                    _ = table.ForeignKey(
                         name: "FK_todo_list_permission_todo_list_todo_list_id",
                         column: x => x.todo_list_id,
                         principalTable: "todo_list",
@@ -49,7 +51,7 @@ namespace WebApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_todo_list_permission_todo_list_id",
                 table: "todo_list_permission",
                 column: "todo_list_id");

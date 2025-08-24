@@ -2,11 +2,11 @@ using WebApp.Models.Comments;
 
 namespace WebApp.Models.Helpers;
 
-public class CommentViewModel
+internal class CommentViewModel
 {
-    public List<CommentModel> Comments { get; set; } = new List<CommentModel>();
+    public IReadOnlyList<CommentModel> Comments { get; set; } =[];
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
     public long TaskId { get; set; }
 

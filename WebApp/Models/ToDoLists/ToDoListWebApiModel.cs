@@ -1,12 +1,12 @@
 namespace WebApp.Models.ToDoLists;
 
-public class ToDoListWebApiModel
+internal class ToDoListWebApiModel
 {
     public long? Id { get; set; }
 
-    public required string Title { get; set; }
+    required public string Title { get; set; }
 
-    public required string Description { get; set; }
+    required public string Description { get; set; }
 
     public long OwnerId { get; set; }
 }

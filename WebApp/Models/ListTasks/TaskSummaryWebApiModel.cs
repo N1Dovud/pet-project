@@ -1,10 +1,16 @@
-using WebApp.Models.Tags;
+using WebApp.Models.Comments;
 using WebApp.Models.Enums;
+using WebApp.Models.Tags;
 
 namespace WebApp.Models.ListTasks;
 
-public class TaskSummaryWebApiModel
+internal class TaskSummaryWebApiModel
 {
+    public TaskSummaryWebApiModel(IEnumerable<TagWebApiModel> tags)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -17,5 +23,5 @@ public class TaskSummaryWebApiModel
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public List<TagWebApiModel> Tags { get; set; } = [];
+    public IReadOnlyList<TagWebApiModel> Tags { get; } =[];
 }

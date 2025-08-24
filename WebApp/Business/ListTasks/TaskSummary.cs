@@ -3,8 +3,13 @@ using WebApp.Models.Enums;
 
 namespace WebApp.Business.ListTasks;
 
-public class TaskSummary
+internal class TaskSummary
 {
+    public TaskSummary(IEnumerable<Tag> tags)
+    {
+        this.Tags = tags.ToList().AsReadOnly();
+    }
+
     public long Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -17,5 +22,5 @@ public class TaskSummary
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public List<Tag> Tags { get; set; } = [];
+    public IReadOnlyList<Tag> Tags { get; } =[];
 }

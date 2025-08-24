@@ -5,20 +5,20 @@
 
 <form asp-action="AddTask" method="post">
     <div>
-        <label asp-for="taskDetails.Title"></label>
-        <input asp-for="taskDetails.Title" />
+        <label asp-for="TaskDetails.Title"></label>
+        <input asp-for="TaskDetails.Title" />
     </div>
 
     <div>
-        <label asp-for="taskDetails.Description"></label>
-        <input asp-for="taskDetails.Description" />
+        <label asp-for="TaskDetails.Description"></label>
+        <input asp-for="TaskDetails.Description" />
     </div>
 
     <div>
-        <label asp-for="taskDetails.DueDateTime"></label>
-        <input asp-for="taskDetails.DueDateTime" />
+        <label asp-for="TaskDetails.DueDateTime"></label>
+        <input asp-for="TaskDetails.DueDateTime" />
     </div>
 
-    <input type="hidden" value=@Model.listId name="listId" />
+    <input type="hidden" value=@Model.ListId name="listId" />
     <input type="submit" value="Submit" />
 </form>

@@ -3,9 +3,9 @@ using WebApp.Models.Helpers;
 
 namespace WebApp.Mappers;
 
-public static class TaskHelperMapper
+internal static class TaskHelperMapper
 {
-    public static EditTaskStatus? ToDomain(this EditTaskStatusModel model)
+    internal static EditTaskStatus? ToDomain(this EditTaskStatusModel model)
     {
         if (model == null)
         {
@@ -19,7 +19,7 @@ public static class TaskHelperMapper
         };
     }
 
-    public static EditTaskStatusWebApiModel? ToApiModel(this EditTaskStatus model)
+    internal static EditTaskStatusWebApiModel? ToApiModel(this EditTaskStatus model)
     {
         if (model == null)
         {

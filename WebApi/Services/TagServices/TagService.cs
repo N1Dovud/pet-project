@@ -6,9 +6,9 @@ using WebApi.Mappers;
 using WebApi.Services.Database;
 using WebApi.Services.Database.Entities;
 
-namespace WebApi.Services.TagsServices;
+namespace WebApi.Services.TagServices;
 
-public class TagService(ToDoListDbContext context) : ITagService
+internal class TagService(ToDoListDbContext context): ITagService
 {
     public async Task<Result> AddTag(long userId, string tagName, long taskId)
     {
@@ -54,10 +54,10 @@ public class TagService(ToDoListDbContext context) : ITagService
 
         if (rowCount == 0)
         {
-            return Result.Error("something went wrong");
+            return Result.Error("db problem");
         }
 
-        return Result.Success("did it bro!");
+        return Result.Success();
     }
 
     public async Task<Result> DeleteTag(long userId, long tagId, long taskId)

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Helpers;
 
-public static class Authenticate
+internal static class Authenticate
 {
     public static long? GetUserId(this ControllerBase controller)
     {

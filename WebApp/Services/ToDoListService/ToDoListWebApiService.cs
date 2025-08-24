@@ -7,14 +7,13 @@ using WebApp.Business.ToDoLists;
 using WebApp.Common;
 using WebApp.Mappers;
 using WebApp.Models.ToDoLists;
-using WebApp.Services.DatabaseService;
 
 namespace WebApp.Services.ToDoListService;
 
 public class ToDoListWebApiService : IToDoListWebApiService
 {
     private readonly HttpClient httpClient;
-    private readonly string baseUrl;
+    private readonly string? baseUrl;
     private readonly JsonSerializerOptions options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -22,6 +21,8 @@ public class ToDoListWebApiService : IToDoListWebApiService
 
     public ToDoListWebApiService(IHttpClientFactory factory, IConfiguration configuration)
     {
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(configuration);
         this.httpClient = factory.CreateClient("ApiWithJwt");
         this.baseUrl = configuration["WebApiAddress"];
     }
@@ -104,12 +105,7 @@ public class ToDoListWebApiService : IToDoListWebApiService
         var response = await this.httpClient.GetAsync(uri);
         if (!response.IsSuccessStatusCode)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                return null;
-            }
-
-            throw new Exception($"Failed to fetch lists from {uri}. Status code: {response.StatusCode}");
+            return null;
         }
 
         var json = await response.Content.ReadAsStringAsync();
