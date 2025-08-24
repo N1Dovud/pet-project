@@ -1,17 +1,39 @@
 @using WebApp.Models.ToDoLists
 @model ToDoListModel
 
-<form method="post" asp-action="AddList" asp-controller="ToDoList">
-	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	<label asp-for="Title">List Title</label>
-	<input asp-for="Title" />
-	<span asp-validation-for="Title" class="text-danger"></span>
-	<label asp-for="Description">Description</label>
-	<input asp-for="Description" />
-	<span asp-validation-for="Description" class="text-danger"></span>
-	<input type="submit" value="Create list" class="btn btn-submit" />
-</form>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Create New List</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="AddList" asp-controller="ToDoList">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">List Title</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <input type="submit" value="Create List" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
-	<partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
