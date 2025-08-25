@@ -37,7 +37,7 @@ internal class CommentWebApiService : ICommentWebApiService
     public async Task<Result> DeleteComment(long commentId)
     {
         var route = "delete-comment";
-        var url = new Uri($"{this.baseUrl}{route}?commendId={commentId}");
+        var url = new Uri($"{this.baseUrl}{route}?commentId={commentId}");
         var result = await this.httpClient.DeleteAsync(url);
 
         return await HttpResponseMapper.MapHttpResponseToResult(result);
