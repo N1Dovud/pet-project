@@ -117,7 +117,7 @@ public class ListTaskController(IListTaskWebApiService taskService): Controller
         var model = new AddTaskViewModel
         {
             ListId = listId,
-            TaskDetails = new TaskDetailsModel([], []),
+            TaskDetails = new TaskDetailsModel(),
         };
         return this.View("AddTask", model);
     }
@@ -188,11 +188,12 @@ public class ListTaskController(IListTaskWebApiService taskService): Controller
             return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View("AssignedTasks", new AssignedTasksModel(work?.Data?.Select(t => t?.ToModel()) ?? [])
+        return this.View("AssignedTasks", new AssignedTasksModel
         {
             Filter = filter,
             SortBy = sortBy,
             Descending = descending,
+            Tasks = [.. work?.Data?.Select(t => t?.ToModel()) ?? []],
         });
     }
 
@@ -243,9 +244,10 @@ public class ListTaskController(IListTaskWebApiService taskService): Controller
             return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View("TaskSearchResults", new TaskSearchModel(work.Data?.Select(t => t?.ToModel()) ?? [])
+        return this.View("TaskSearchResults", new TaskSearchModel
         {
             ReturnUrl = $"/task-search?searchType={searchType}&queryValue={queryValue}",
+            Tasks = work.Data?.Select(t => t?.ToModel()).ToList() ?? [],
         });
     }
 }

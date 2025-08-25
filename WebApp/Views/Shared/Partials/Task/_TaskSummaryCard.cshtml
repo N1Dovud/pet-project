@@ -27,12 +27,13 @@
                 </div>
             </div>
 
-            @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskSummary?.Tags)
+            @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel()
             {
                 IsOwner = Model?.IsOwner ?? false,
                 ReturnUrl = Model?.ReturnUrl ?? "",
                 TaskId = Model?.TaskSummary?.Id ?? 0,
-                })
+                Tags = Model?.TaskSummary?.Tags ?? [],
+            })
 
         <div class="task-actions d-flex flex-wrap gap-2 align-items-center mt-3">
             <a class="btn btn-outline-primary btn-sm" href="task?taskId=@Model?.TaskSummary.Id&returnUrl=@Uri.EscapeDataString(Model?.ReturnUrl ?? string.Empty)&isOwner=@Model?.IsOwner">View more</a>

@@ -39,13 +39,14 @@ public class TagController(ITagWebApiService tagservice): Controller
             return this.ToHttpResponse(work?.Result ?? Result.Error());
         }
 
-        return this.View("TasksByTag", new TasksByTagViewModel(work?.Data?.Select(t => t?.ToModel()) ?? [])
+        return this.View("TasksByTag", new TasksByTagViewModel
         {
             Tag = new TagModel
             {
                 Id = tagId,
                 Name = tagName,
             },
+            TaskSummaries = work?.Data?.Select(t => t?.ToModel()).ToList() ?? [],
         });
     }
 

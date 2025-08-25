@@ -54,12 +54,13 @@
                         <h5 class="mb-0">Tags</h5>
                     </div>
                     <div class="card-body">
-                        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel(Model?.TaskDetails?.Tags)
+                        @await Html.PartialAsync("Partials/Tag/_TagList", new TagListViewModel
                         {
                             IsOwner = Model?.IsOwner ?? false,
-                                        ReturnUrl = Model?.ReturnUrl ?? "",
-                                        TaskId = Model?.TaskDetails?.Id ?? 0,
-                                        })
+                            ReturnUrl = Model?.ReturnUrl ?? "",
+                            TaskId = Model?.TaskDetails?.Id ?? 0,
+                            Tags = Model?.TaskDetails?.Tags ?? [],
+                        })
                 </div>
             </div>
                         }

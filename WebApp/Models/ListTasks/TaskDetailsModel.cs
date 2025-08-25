@@ -10,15 +10,15 @@ public class TaskDetailsModel
     public long Id { get; set; }
 
     [Required]
-    public string Title { get; set; } = default!;
+    public string? Title { get; set; }
 
     [Required]
-    public string Description { get; set; } = default!;
+    public string? Description { get; set; }
 
     public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
     [Required]
-    public DateTime DueDateTime { get; set; }
+    public DateTime DueDateTime { get; set; } = DateTime.Now;
 
     public ToDoListTaskStatus TaskStatus { get; set; } = ToDoListTaskStatus.NotStarted;
 
