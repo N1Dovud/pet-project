@@ -3,14 +3,9 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.Helpers;
 
-internal class TasksByTagViewModel
+public class TasksByTagViewModel
 {
-    public TasksByTagViewModel(IEnumerable<TaskSummaryModel?> summaries)
-    {
-        this.TaskSummaries = summaries.ToList().AsReadOnly();
-    }
-
-    public IReadOnlyList<TaskSummaryModel?>? TaskSummaries { get; }
+    public List<TaskSummaryModel?> TaskSummaries { get; set; } = [];
 
     public TagModel? Tag { get; set; }
 }

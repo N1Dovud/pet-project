@@ -9,12 +9,13 @@ internal static class ToDoListMapper
     {
         ArgumentNullException.ThrowIfNull(list);
 
-        return new ToDoList(list.Tasks.Select(t => t.ToDomain()))
+        return new ToDoList
         {
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
             OwnerId = list.OwnerId,
+            Tasks = [.. list.Tasks.Select(t => t.ToDomain())],
         };
     }
 
@@ -25,7 +26,7 @@ internal static class ToDoListMapper
             return null;
         }
 
-        return new ToDoList([])
+        return new ToDoList
         {
             Id = list.Id,
             Title = list.Title,
@@ -38,12 +39,13 @@ internal static class ToDoListMapper
     {
         ArgumentNullException.ThrowIfNull(list);
 
-        return new ToDoListModel(list.Tasks.Select(t => t.ToModel()))
+        return new ToDoListModel
         {
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
             OwnerId = list.OwnerId,
+            Tasks = [.. list.Tasks.Select(t => t.ToModel())],
         };
     }
 
@@ -70,12 +72,13 @@ internal static class ToDoListMapper
             return null;
         }
 
-        return new ToDoListModel(list.Tasks.Select(t => t.ToModel()))
+        return new ToDoListModel
         {
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
             OwnerId = list.OwnerId,
+            Tasks = [.. list.Tasks.Select(t => t.ToModel())],
         };
     }
 }

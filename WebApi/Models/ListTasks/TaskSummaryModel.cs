@@ -3,13 +3,8 @@ using WebApi.Models.Tags;
 
 namespace WebApi.Models.ListTasks;
 
-internal class TaskSummaryModel
+public class TaskSummaryModel
 {
-    public TaskSummaryModel(IEnumerable<TagModel>? tags)
-    {
-        this.Tags = (tags ?? Enumerable.Empty<TagModel>()).ToList().AsReadOnly();
-    }
-
     public long Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -22,5 +17,5 @@ internal class TaskSummaryModel
 
     public ToDoListTaskStatus TaskStatus { get; set; }
 
-    public IReadOnlyList<TagModel> Tags { get; } =[];
+    public List<TagModel> Tags { get; set; } =[];
 }

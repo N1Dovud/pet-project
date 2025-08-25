@@ -2,7 +2,7 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.Helpers;
 
-internal class TagViewModel
+public class TagViewModel
 {
     public TagModel? Tag { get; set; }
 

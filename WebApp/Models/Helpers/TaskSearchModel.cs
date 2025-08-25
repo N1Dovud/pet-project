@@ -2,14 +2,9 @@ using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.Helpers;
 
-internal class TaskSearchModel
+public class TaskSearchModel
 {
-    public TaskSearchModel(IEnumerable<TaskSummaryModel?> tasks)
-    {
-        this.Tasks = tasks.ToList().AsReadOnly();
-    }
-
-    public IReadOnlyList<TaskSummaryModel?>? Tasks { get; }
+    public List<TaskSummaryModel?> Tasks { get; set; } = [];
 
     public string? ReturnUrl { get; set; }
 }

@@ -2,14 +2,9 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.Helpers;
 
-internal class TagListViewModel
+public class TagListViewModel
 {
-    public TagListViewModel(IEnumerable<TagModel>? tags)
-    {
-        this.Tags = (tags ?? Enumerable.Empty<TagModel>()).ToList().AsReadOnly();
-    }
-
-    public IReadOnlyList<TagModel> Tags { get; }
+    public List<TagModel> Tags { get; set; } = [];
 
     public string? ReturnUrl { get; set; }
 

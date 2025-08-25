@@ -4,18 +4,13 @@ namespace WebApp.Models.ToDoLists;
 
 public class ToDoListModel
 {
-    public ToDoListModel(IEnumerable<TaskDetailsModel>? tasks)
-    {
-        this.Tasks = (tasks ?? Enumerable.Empty<TaskDetailsModel>()).ToList().AsReadOnly();
-    }
-
     public long? Id { get; set; }
 
     required public string Title { get; set; }
 
     required public string Description { get; set; }
 
-    public IReadOnlyList<TaskDetailsModel> Tasks { get; }
+    public List<TaskDetailsModel> Tasks { get; set; } = [];
 
     public long OwnerId { get; set; }
 }

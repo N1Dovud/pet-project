@@ -118,6 +118,7 @@ internal class ListTaskService(ToDoListDbContext context): IListTaskService
             return ResultWithData<ListTaskInfo?>.Forbidden("list not yours");
         }
 
+        Console.WriteLine("number of tasks!!!" + list.Tasks.Count);
         return ResultWithData<ListTaskInfo?>.Success(list.ToListTask());
     }
 

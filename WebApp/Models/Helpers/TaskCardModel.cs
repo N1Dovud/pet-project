@@ -2,7 +2,7 @@ using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.Helpers;
 
-internal class TaskCardModel
+public class TaskCardModel
 {
     public TaskSummaryModel? TaskSummary { get; set; }
 

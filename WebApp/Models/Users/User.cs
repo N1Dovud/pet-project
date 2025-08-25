@@ -13,4 +13,7 @@ public class User : IdentityUser<long>
 
     [Required]
     public override string? UserName { get; set; } = default!;
+
+    [Required]
+    public override string? Email { get; set; } = default!;
 }

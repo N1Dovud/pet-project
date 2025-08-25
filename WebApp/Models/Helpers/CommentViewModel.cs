@@ -2,9 +2,9 @@ using WebApp.Models.Comments;
 
 namespace WebApp.Models.Helpers;
 
-internal class CommentViewModel
+public class CommentViewModel
 {
-    public IReadOnlyList<CommentModel> Comments { get; set; } =[];
+    public List<CommentModel> Comments { get; set; } = [];
 
     public string? ReturnUrl { get; set; }
 

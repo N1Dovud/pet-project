@@ -13,15 +13,15 @@ internal static class ListTaskMapper
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        return new TaskDetails(
-            model.Tags.Select(t => t.ToDomain()),
-            model.Comments.Select(c => c.ToDomain()))
+        return new TaskDetails
         {
             Id = model.Id,
             Description = model.Description,
             Title = model.Title,
             CreationDateTime = model.CreationDateTime,
             DueDateTime = model.DueDateTime,
+            Tags = [.. model.Tags.Select(t => t.ToDomain())],
+            Comments = [.. model.Comments.Select(c => c.ToDomain())],
             TaskStatus = model.TaskStatus,
         };
     }
@@ -54,9 +54,7 @@ internal static class ListTaskMapper
     {
         ArgumentNullException.ThrowIfNull(taskDetails);
 
-        return new TaskDetails(
-            taskDetails.Tags.Select(t => t.ToDomain()),
-            taskDetails.Comments.Select(c => c.ToDomain()))
+        return new TaskDetails
         {
             Id = taskDetails.Id,
             Title = taskDetails.Title,
@@ -64,6 +62,8 @@ internal static class ListTaskMapper
             DueDateTime = taskDetails.DueDateTime,
             CreationDateTime = taskDetails.CreationDateTime,
             TaskStatus = taskDetails.TaskStatus,
+            Tags = [.. taskDetails.Tags.Select(t => t.ToDomain())],
+            Comments = [.. taskDetails.Comments.Select(c => c.ToDomain())],
         };
     }
 
@@ -87,16 +87,17 @@ internal static class ListTaskMapper
             return null;
         }
 
-        return new ListTaskInfo(taskInfo.Tasks.Select(t => t.ToDomain()))
+        return new ListTaskInfo
         {
             ListId = taskInfo.ListId,
             Title = taskInfo.Title,
+            Tasks = [.. taskInfo.Tasks.Select(t => t.ToDomain())],
         };
     }
 
     public static TaskSummary ToDomain(this TaskSummaryWebApiModel taskSummary)
     {
-        return new TaskSummary(taskSummary.Tags.Select(t => t.ToDomain()))
+        return new TaskSummary
         {
             Id = taskSummary.Id,
             Title = taskSummary.Title,
@@ -104,6 +105,7 @@ internal static class ListTaskMapper
             CreationDateTime = taskSummary.CreationDateTime,
             DueDateTime = taskSummary.DueDateTime,
             TaskStatus = taskSummary.TaskStatus,
+            Tags = [.. taskSummary.Tags.Select(t => t.ToDomain())],
         };
     }
 
@@ -120,10 +122,11 @@ internal static class ListTaskMapper
     {
         ArgumentNullException.ThrowIfNull(taskInfo);
 
-        return new ListTaskInfoModel(taskInfo.Tasks.Select(t => t.ToModel()) ?? [])
+        return new ListTaskInfoModel
         {
             ListId = taskInfo.ListId,
             Title = taskInfo.Title,
+            Tasks = [.. taskInfo.Tasks.Select(t => t.ToModel())],
         };
     }
 
@@ -131,7 +134,7 @@ internal static class ListTaskMapper
     {
         ArgumentNullException.ThrowIfNull(taskSummary);
 
-        return new TaskSummaryModel(taskSummary.Tags.Select(t => t.ToModel()))
+        return new TaskSummaryModel
         {
             Id = taskSummary.Id,
             Title = taskSummary.Title,
@@ -139,6 +142,7 @@ internal static class ListTaskMapper
             CreationDateTime = taskSummary.CreationDateTime,
             DueDateTime = taskSummary.DueDateTime,
             TaskStatus = taskSummary.TaskStatus,
+            Tags = [.. taskSummary.Tags.Select(t => t.ToModel())],
         };
     }
 
@@ -157,9 +161,7 @@ internal static class ListTaskMapper
     {
         ArgumentNullException.ThrowIfNull(taskDetails);
 
-        return new TaskDetailsModel(
-            taskDetails.Tags.Select(t => t.ToModel()),
-            taskDetails.Comments.Select(c => c.ToModel()))
+        return new TaskDetailsModel
         {
             Id = taskDetails.Id,
             Title = taskDetails.Title,
@@ -167,6 +169,8 @@ internal static class ListTaskMapper
             CreationDateTime = taskDetails.CreationDateTime,
             DueDateTime = taskDetails.DueDateTime,
             TaskStatus = taskDetails.TaskStatus,
+            Tags = [.. taskDetails.Tags.Select(t => t.ToModel())],
+            Comments = [.. taskDetails.Comments.Select(c => c.ToModel())],
         };
     }
 
@@ -190,9 +194,7 @@ internal static class ListTaskMapper
             return null;
         }
 
-        return new TaskDetailsWebApiModel(
-            task.Tags.Select(t => t.ToWebApiModel()) ?? [],
-            task.Comments.Select(c => c.ToWebApiModel()) ?? [])
+        return new TaskDetailsWebApiModel
         {
             Id = task.Id,
             Title = task.Title,
@@ -200,6 +202,8 @@ internal static class ListTaskMapper
             DueDateTime = task.DueDateTime,
             CreationDateTime = task.CreationDateTime,
             TaskStatus = task.TaskStatus,
+            Comments = [.. task.Comments.Select(c => c.ToWebApiModel())],
+            Tags = [.. task.Tags.Select(t => t.ToWebApiModel())],
         };
     }
 
