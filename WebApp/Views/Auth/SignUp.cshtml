@@ -1,25 +1,57 @@
 @using WebApp.Models.Auth
 @model SignUpViewModel
 
-<form method="post" asp-action="SignUp" asp-controller="Auth">
-	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	<label asp-for="FirstName">First Name</label>
-	<input asp-for="FirstName"/>
-	<span asp-validation-for="FirstName" class="text-danger"></span>
-	<label asp-for="LastName">Last Name</label>
-	<input asp-for="LastName"/>
-	<span asp-validation-for="LastName" class="text-danger"></span>
-	<label asp-for="Username">Username</label>
-	<input asp-for="Username" />
-	<span asp-validation-for="Username" class="text-danger"></span>
-	<label asp-for="Password">Password</label>
-	<input asp-for="Password" type="password"/>
-	<span asp-validation-for="Password" class="text-danger"></span>
-	<label asp-for="ConfirmPassword">Confirm password</label>
-	<input asp-for="ConfirmPassword" type="password"/>
-	<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-	<input type="submit" value="Sign Up" class="btn btn-submit" />
-</form>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Sign Up</h3>
+
+                <form method="post" asp-action="SignUp" asp-controller="Auth">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label">Username</label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <input type="submit" value="Sign Up" class="btn btn-primary w-100" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />

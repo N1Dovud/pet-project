@@ -1,11 +1,28 @@
 @using WebApp.Models.Auth
 @model SignInViewModel
 
-<form method="post" asp-action="SignIn" asp-controller="Auth">
-	<label asp-for="Username">Username</label>
-	<input asp-for="Username" required/>
-	<label asp-for="Password">Password</label>
-	<input asp-for="Password" type="password" required />
-	<div asp-validation-summary="All" class="text-danger"></div>
-	<input type="submit" value="Sign In" class="btn btn-submit" />
-</form>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Sign In</h3>
+
+                <form method="post" asp-action="SignIn" asp-controller="Auth">
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label">Username</label>
+                        <input asp-for="Username" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" required />
+                    </div>
+
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                    <input type="submit" value="Sign In" class="btn btn-primary w-100" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

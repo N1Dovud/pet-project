@@ -14,6 +14,9 @@ public class SignUpViewModel
     public string Username { get; set; } = default!;
 
     [Required]
+    public string Email { get; set; } = default!;
+
+    [Required]
     [DataType(DataType.Password)]
     public string Password { get; set; } = default!;
 
