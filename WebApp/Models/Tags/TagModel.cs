@@ -1,6 +1,6 @@
 namespace WebApp.Models.Tags;
 
-internal class TagModel
+public class TagModel
 {
     public long Id { get; set; }
 

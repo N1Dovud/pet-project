@@ -9,7 +9,7 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-internal class CommentController(ICommentWebApiService service): Controller
+public class CommentController(ICommentWebApiService service): Controller
 {
     [HttpPost("add-comment")]
     public async Task<IActionResult> AddComment(AddCommentModel model)

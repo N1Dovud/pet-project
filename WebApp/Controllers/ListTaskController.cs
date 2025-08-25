@@ -15,7 +15,7 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-internal class ListTaskController(IListTaskWebApiService taskService): Controller
+public class ListTaskController(IListTaskWebApiService taskService): Controller
 {
     [HttpGet("tasks")]
     public async Task<IActionResult> GetListInfo([FromQuery] long listId)

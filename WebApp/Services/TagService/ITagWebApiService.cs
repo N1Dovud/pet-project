@@ -4,7 +4,7 @@ using WebApp.Common;
 
 namespace WebApp.Services.TagService;
 
-internal interface ITagWebApiService
+public interface ITagWebApiService
 {
     Task<ResultWithData<List<Tag?>?>> GetAllTags();
 

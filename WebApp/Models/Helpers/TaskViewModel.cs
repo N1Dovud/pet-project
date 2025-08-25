@@ -2,7 +2,7 @@ using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.Helpers;
 
-internal class TaskViewModel
+public class TaskViewModel
 {
     public string? ReturnUrl { get; set; }
 

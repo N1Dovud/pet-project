@@ -11,7 +11,7 @@ namespace WebApp.Controllers;
 
 [Controller]
 [Authorize]
-internal class ToDoListController(IToDoListWebApiService service): Controller
+public class ToDoListController(IToDoListWebApiService service): Controller
 {
     [Route("home")]
     public async Task<IActionResult> Home()
@@ -100,6 +100,11 @@ internal class ToDoListController(IToDoListWebApiService service): Controller
     [HttpGet("update-list")]
     public async Task<IActionResult> UpdateList(long id)
     {
+        if (!this.ModelState.IsValid && id == 0)
+        {
+            return this.BadRequest("Provide the id!");
+        }
+
         var work = await service.GetToDoListAsync(id);
 
         if (work?.Result?.Status != ResultStatus.Success)

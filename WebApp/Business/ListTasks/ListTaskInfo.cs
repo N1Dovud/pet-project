@@ -1,6 +1,6 @@
 namespace WebApp.Business.ListTasks;
 
-internal class ListTaskInfo
+public class ListTaskInfo
 {
     public ListTaskInfo(IEnumerable<TaskSummary> summaries)
     {

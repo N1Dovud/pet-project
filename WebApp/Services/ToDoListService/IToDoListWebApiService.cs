@@ -3,7 +3,7 @@ using WebApp.Common;
 
 namespace WebApp.Services.ToDoListService;
 
-internal interface IToDoListWebApiService
+public interface IToDoListWebApiService
 {
     Task<ResultWithData<List<ToDoList?>?>> GetToDoListsAsync();
 

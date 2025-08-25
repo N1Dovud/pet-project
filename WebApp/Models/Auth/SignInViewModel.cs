@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models.Auth;
 
-internal class SignInViewModel
+public class SignInViewModel
 {
     [Required]
     public string Username { get; set; } = default!;

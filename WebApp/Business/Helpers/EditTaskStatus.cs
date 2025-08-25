@@ -2,7 +2,7 @@ using WebApp.Models.Enums;
 
 namespace WebApp.Business.Helpers;
 
-internal class EditTaskStatus
+public class EditTaskStatus
 {
     public int TaskId { get; set; }
 

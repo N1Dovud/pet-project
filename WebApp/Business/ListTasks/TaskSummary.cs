@@ -3,7 +3,7 @@ using WebApp.Models.Enums;
 
 namespace WebApp.Business.ListTasks;
 
-internal class TaskSummary
+public class TaskSummary
 {
     public TaskSummary(IEnumerable<Tag> tags)
     {

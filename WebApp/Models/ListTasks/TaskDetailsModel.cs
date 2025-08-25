@@ -5,7 +5,7 @@ using WebApp.Models.Tags;
 
 namespace WebApp.Models.ListTasks;
 
-internal class TaskDetailsModel
+public class TaskDetailsModel
 {
     public TaskDetailsModel(IEnumerable<TagModel> tags, IEnumerable<CommentModel> comments)
     {

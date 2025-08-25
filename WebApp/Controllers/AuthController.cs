@@ -5,7 +5,7 @@ using WebApp.Models.Users;
 using WebApp.Services.AuthenticationService;
 
 namespace WebApp.Controllers;
-internal class AuthController(UserManager<User> userManager, IJwtService jwtService): Controller
+public class AuthController(UserManager<User> userManager, IJwtService jwtService): Controller
 {
     [Route("")]
     public IActionResult Index()

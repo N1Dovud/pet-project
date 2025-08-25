@@ -2,7 +2,7 @@ using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.ToDoLists;
 
-internal class ToDoListModel
+public class ToDoListModel
 {
     public ToDoListModel(IEnumerable<TaskDetailsModel>? tasks)
     {

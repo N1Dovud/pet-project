@@ -2,7 +2,7 @@ using WebApp.Models.ListTasks;
 
 namespace WebApp.Models.Helpers;
 
-internal class AddTaskViewModel
+public class AddTaskViewModel
 {
     public long ListId { get; set; }
 

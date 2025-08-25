@@ -5,7 +5,7 @@ using WebApp.Models.Helpers.Enums;
 
 namespace WebApp.Services.ListTaskService;
 
-internal interface IListTaskWebApiService
+public interface IListTaskWebApiService
 {
     Task<ResultWithData<ListTaskInfo?>> GetListInfoAsync(long listId);
 

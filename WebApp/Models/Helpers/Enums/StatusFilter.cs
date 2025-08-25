@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models.Helpers.Enums;
 
-internal enum StatusFilter
+public enum StatusFilter
 {
     [Display(Name = "Not Started")]
     NotStarted,
