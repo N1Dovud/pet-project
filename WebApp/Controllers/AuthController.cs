@@ -42,6 +42,7 @@ public class AuthController(UserManager<User> userManager, IJwtService jwtServic
             FirstName = model.FirstName,
             LastName = model.LastName,
             UserName = model.Username,
+            Email = model.Email,
         };
 
         var result = await userManager.CreateAsync(user, model.Password);
