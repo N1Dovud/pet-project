@@ -3,7 +3,7 @@ using WebApi.Common;
 
 namespace WebApi.Services.ListServices;
 
-internal interface IToDoListService
+public interface IToDoListService
 {
     Task<ResultWithData<List<ToDoList?>?>> GetAllToDoListsAsync(long userId);
 

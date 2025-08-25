@@ -5,7 +5,7 @@ using WebApi.Common;
 
 namespace WebApi.Services.TagServices;
 
-internal interface ITagService
+public interface ITagService
 {
     Task<ResultWithData<List<Tag?>?>> GetAllTags(long userId);
 

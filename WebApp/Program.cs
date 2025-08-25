@@ -71,6 +71,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.Logger.LogInformation("Application starting...");
 if (!app.Environment.IsDevelopment())
 {
     _ = app.UseExceptionHandler("/Home/Error");
@@ -87,5 +88,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action}");
 app.MapControllers();
-
+Console.Write("This should be working!!!!");
 await app.RunAsync();

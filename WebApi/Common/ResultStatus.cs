@@ -1,6 +1,6 @@
 namespace WebApi.Common;
 
-internal enum ResultStatus
+public enum ResultStatus
 {
     Success,
     NotFound,

@@ -4,7 +4,7 @@ using WebApi.Models.Enums;
 
 namespace WebApi.Business.ListTasks;
 
-internal class TaskDetails
+public class TaskDetails
 {
     public TaskDetails(IEnumerable<Tag> tags, IEnumerable<Comment> comments)
     {

@@ -1,6 +1,6 @@
 namespace WebApi.Common;
 
-internal class Result
+public class Result
 {
     private Result(ResultStatus status, string? message)
     {

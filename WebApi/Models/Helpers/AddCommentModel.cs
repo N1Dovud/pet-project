@@ -1,6 +1,6 @@
 namespace WebApi.Models.Helpers;
 
-internal class AddCommentModel
+public class AddCommentModel
 {
     public string? Note { get; set; }
 

@@ -1,6 +1,6 @@
 namespace WebApi.Common;
 
-internal class ResultWithData<T>
+public class ResultWithData<T>
 {
     public Result? Result { get; set; }
 

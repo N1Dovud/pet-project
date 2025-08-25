@@ -1,6 +1,6 @@
 namespace WebApi.Business.Comments;
 
-internal class Comment
+public class Comment
 {
     public long Id { get; set; }
 

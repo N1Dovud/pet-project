@@ -5,7 +5,7 @@ using WebApi.Models.Helpers;
 
 namespace WebApi.Services.TaskServices;
 
-internal interface IListTaskService
+public interface IListTaskService
 {
     Task<ResultWithData<ListTaskInfo?>> GetAllTasksAsync(long userId, long listId);
 

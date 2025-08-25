@@ -2,7 +2,7 @@ using WebApi.Common;
 
 namespace WebApi.Services.CommentServices;
 
-internal interface ICommentService
+public interface ICommentService
 {
     Task<Result> AddComment(long userId, long taskId, string note);
 

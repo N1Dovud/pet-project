@@ -12,7 +12,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Route("api")]
 [Authorize]
-internal class ToDoListController(IToDoListService listService): ControllerBase
+public class ToDoListController(IToDoListService listService): ControllerBase
 {
     [HttpGet("lists")]
     public async Task<IActionResult> GetLists()

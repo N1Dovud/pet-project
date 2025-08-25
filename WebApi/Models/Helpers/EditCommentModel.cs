@@ -1,6 +1,6 @@
 namespace WebApi.Models.Helpers;
 
-internal class EditCommentModel
+public class EditCommentModel
 {
     public long CommentId { get; set; }
 

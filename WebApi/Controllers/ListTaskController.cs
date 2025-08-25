@@ -13,7 +13,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Authorize]
 [Route("api")]
-internal class ListTaskController(IListTaskService service): ControllerBase
+public class ListTaskController(IListTaskService service): ControllerBase
 {
     [HttpGet("tasks")]
     public async Task<IActionResult> GetTasks(long listId)

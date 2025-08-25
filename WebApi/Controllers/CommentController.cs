@@ -9,7 +9,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Authorize]
 [Route("api")]
-internal class CommentController(ICommentService service): ControllerBase
+public class CommentController(ICommentService service): ControllerBase
 {
     [HttpPost("add-comment")]
     public async Task<IActionResult> AddComment(AddCommentModel model)

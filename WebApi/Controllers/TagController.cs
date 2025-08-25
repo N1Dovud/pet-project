@@ -11,7 +11,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Authorize]
 [Route("api")]
-internal class TagController(ITagService tagService): ControllerBase
+public class TagController(ITagService tagService): ControllerBase
 {
     [HttpGet("tags")]
     public async Task<IActionResult> GetAllTags()

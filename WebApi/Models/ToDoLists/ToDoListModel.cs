@@ -1,6 +1,6 @@
 namespace WebApi.Models.ToDoLists;
 
-internal class ToDoListModel
+public class ToDoListModel
 {
     public long? Id { get; set; }
 

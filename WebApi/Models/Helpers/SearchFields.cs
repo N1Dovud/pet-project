@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Models.Helpers;
 
-internal enum SearchFields
+public enum SearchFields
 {
     Title,
 

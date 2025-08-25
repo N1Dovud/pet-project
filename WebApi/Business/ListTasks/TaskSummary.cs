@@ -3,7 +3,7 @@ using WebApi.Models.Enums;
 
 namespace WebApi.Business.ListTasks;
 
-internal class TaskSummary
+public class TaskSummary
 {
     public TaskSummary(IEnumerable<Tag> tags)
     {

@@ -1,6 +1,6 @@
 namespace WebApi.Business.Tags;
 
-internal class Tag
+public class Tag
 {
     public long Id { get; set; }
 
