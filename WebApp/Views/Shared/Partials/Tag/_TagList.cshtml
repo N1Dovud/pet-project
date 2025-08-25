@@ -1,15 +1,19 @@
 @model TagListViewModel
 <div class="tags d-flex flex-wrap gap-2 mb-3">
+    @if (Model.Tags.Count == 0)
+    {
+        <p>There is no tag for now!</p>
+    }
     @foreach (var tag in Model.Tags)
     {
         @await Html.PartialAsync("Partials/Tag/_TaskTagCard", new TagViewModel
         {
             DisplayTag = true,
-        FiltersTasks = false,
-        HasDeleteButton = Model.IsOwner,
-        ReturnUrl = Model.ReturnUrl,
-        Tag = tag,
-        TaskId = Model.TaskId,
+            FiltersTasks = false,
+            HasDeleteButton = Model.IsOwner,
+            ReturnUrl = Model.ReturnUrl,
+            Tag = tag,
+            TaskId = Model.TaskId,
         })
         }
     @if (Model.IsOwner)

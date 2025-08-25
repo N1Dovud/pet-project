@@ -1,6 +1,7 @@
 @model List<TagModel?>?;
 
-<div>
+<h1>Tags</h1>
+<div class="tag-list">
     @foreach (var tag in @Model ?? []) {
         @await Html.PartialAsync("Partials/Tag/_TaskTagCard", new TagViewModel
         {

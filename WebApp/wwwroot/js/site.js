@@ -3,26 +3,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchTypeSelect = document.getElementById("search-type");
     const queryInput = document.getElementById("query-value");
     const submitBtn = document.getElementById("submit-btn");
-    function updateInputType() {
-        const selectedValue = searchTypeSelect.value;
-        if (selectedValue === "DueDate" || selectedValue === "CreationDate") {
-            queryInput.type = "date";
-            submitBtn.style.display = "inline-block";
-        }
-        else {
-            queryInput.type = "text";
-            submitBtn.style.display = "none";
-        }
-    }
 
-    updateInputType();
-    searchTypeSelect.addEventListener("change", updateInputType);
+    if (searchTypeSelect && queryInput && submitBtn) {
+        function updateInputType() {
+            const selectedValue = searchTypeSelect.value;
+            if (selectedValue === "DueDate" || selectedValue === "CreationDate") {
+                queryInput.type = "date";
+                submitBtn.style.display = "inline-block";
+            }
+            else {
+                queryInput.type = "text";
+                submitBtn.style.display = "none";
+            }
+        }
+
+        updateInputType();
+        searchTypeSelect.addEventListener("change", updateInputType);
+    }
 
 
     document.addEventListener("click", function (e) {
         const container = e.target.closest(".add-tag-container");
         if (!container) return;
-
+        console.log(e.target);
         const taskId = container.dataset.taskId;
         const returnUrl = container.dataset.returnUrl;
 

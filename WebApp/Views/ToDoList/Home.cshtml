@@ -9,7 +9,7 @@
                     <form class="search-form" method="get" asp-action="SearchTasks" asp-controller="ListTask">
                         <div class="row g-2 align-items-end">
                             <div class="col-md-3">
-                                <label for="search-type" class="form-label">Search By</label>
+                                <label for="search-type" class="form-label">Search Tasks By</label>
                                 <select id="search-type" name="searchType" class="search-select form-select">
                                     @foreach (SearchFields searchField in Enum.GetValues(typeof(SearchFields)))
                                     {

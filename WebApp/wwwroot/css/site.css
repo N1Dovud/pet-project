@@ -24,3 +24,18 @@ body {
 .task {
     border: 1px solid black;
 }
+
+.tag {
+    padding: 30px;
+    font-size: 1.5rem;
+    border-radius: 10%;
+}
+
+.tag-list {
+    margin-top: 50px;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}

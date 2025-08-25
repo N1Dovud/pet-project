@@ -1,11 +1,11 @@
 @model TagViewModel;
-<div class="tag d-flex align-items-center">
+<div class="d-flex align-items-center">
     @if (Model.FiltersTasks)
     {
         <form class="tag-filter-form" method="get" asp-action="GetTasksByTag" asp-controller="Tag">
             <input type="hidden" name="TagId" value="@Model?.Tag?.Id" />
             <input type="hidden" name="TagName" value="@Model?.Tag?.Name" />
-            <input type="submit" class="btn btn-link p-0 text-decoration-none" value="@Model?.Tag?.Name" />
+            <input type="submit" class="btn btn-link p-2 text-decoration-none tag" value="@Model?.Tag?.Name" />
         </form>
     }
     @if (Model.DisplayTag)

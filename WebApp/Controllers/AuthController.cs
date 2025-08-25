@@ -104,10 +104,10 @@ public class AuthController(UserManager<User> userManager, IJwtService jwtServic
         return this.View();
     }
 
-    [HttpGet("/logout")]
+    [HttpPost("/logout")]
     public IActionResult Logout()
     {
         jwtService.ClearJwtToken(this.HttpContext);
-        return this.RedirectToAction("Home", "ToDoList");
+        return this.RedirectToAction("Index");
     }
 }
